@@ -16,7 +16,7 @@ public class HomeController {
     @RequestMapping("/home")
     private String showHome(Model model){
 //        model.addAttribute("nhanVien", dataIntermediateService.getSharedDataNhanVien());
-        return  "home/index";
+        return  "home/layout";
 //                "chip/basic-table";
     }
 

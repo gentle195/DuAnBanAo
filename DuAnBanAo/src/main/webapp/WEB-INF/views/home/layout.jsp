@@ -2,337 +2,463 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>GPhoneS Store </title>
+    <title>Quixlab - Bootstrap Admin Dashboard Template by Themefisher.com</title>
     <!-- Favicon icon -->
-
     <link rel="icon" type="image/png" sizes="16x16" href="../../../images/favicon.png">
-    <link rel="stylesheet" href="../../../vendor/owl-carousel/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="../../../vendor/owl-carousel/css/owl.theme.default.min.css">
-    <link href="../../../vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="../../../vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
+    <!-- Pignose Calender -->
+    <link href="../../../plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="../../../plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="../../../plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
     <link href="../../../css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../css/app.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
-
 </head>
 
 <body>
 
-<!--*******************
-    Preloader start
-********************-->
-<div id="preloader">
-    <div class="sk-three-bounce">
-        <div class="sk-child sk-bounce1"></div>
-        <div class="sk-child sk-bounce2"></div>
-        <div class="sk-child sk-bounce3"></div>
-    </div>
-</div>
-<!--*******************
-    Preloader end
-********************-->
-
-
-<!--**********************************
-    Main wrapper start
-***********************************-->
-<div id="main-wrapper">
-
-    <!--**********************************
-        Nav header start
-    ***********************************-->
-    <div class="nav-header">
-        <a href="index.html" class="brand-logo">
-            <img class="logo-abbr" src="../../../uploads/GPhoneS.png" alt="">
-            <h3 style="color: white;font-family: 'Times New Roman';margin: 30px">GPhoneS</h3>
-        </a>
-
-        <div class="nav-control">
-            <div class="hamburger">
-                <span class="line"></span><span class="line"></span><span class="line"></span>
-            </div>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
         </div>
     </div>
-    <!--**********************************
-        Nav header end
-    ***********************************-->
+    <!--*******************
+        Preloader end
+    ********************-->
 
+    
     <!--**********************************
-        Header start
+        Main wrapper start
     ***********************************-->
-    <div class="header">
-        <div class="header-content">
-            <nav class="navbar navbar-expand">
-                <div class="collapse navbar-collapse justify-content-between">
-                    <div class="header-left">
-                        <div class="search_bar dropdown">
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <b class="logo-abbr"><img src="images/logo.png" alt=""> </b>
+                    <span class="logo-compact"><img src="../../../images/logo-compact.png" alt=""></span>
+                    <span class="brand-title">
+                        <img src="images/logo-text.png" alt="">
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">    
+            <div class="header-content clearfix">
+                
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="toggle-icon"><i class="icon-menu"></i></span>
+                    </div>
+                </div>
+                <div class="header-left">
+                    <div class="input-group icons">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+                        </div>
+                        <input type="search" class="form-control" placeholder="Search Dashboard" aria-label="Search Dashboard">
+                        <div class="drop-down animated flipInX d-md-none">
+                            <form action="#">
+                                <input type="text" class="form-control" placeholder="Search">
+                            </form>
                         </div>
                     </div>
-
-                    <ul class="navbar-nav header-right">
-                        <li class="nav-item dropdown header-profile">
-                            <a class="nav-link" href="#" role="button" data-toggle="dropdown">
-
-                                <security:authorize access="isAuthenticated()">
-                                    hi, <security:authentication property="principal.username"/>
-                                </security:authorize>
-                                <security:authorize access="!isAuthenticated()">
-                                    <a href="/login">Login</a>
-
-                                </security:authorize>
-
-
+                </div>
+                <div class="header-right">
+                    <ul class="clearfix">
+                        <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
+                                <i class="mdi mdi-email-outline"></i>
+                                <span class="badge badge-pill gradient-1">3</span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a href="/thong-tin-ca-nhan" class="dropdown-item">
-                                    <i class="icon-user"></i>
-                                    <span class="ml-2">Profile </span>
-                                </a>
-                                <a href="/logout" class="dropdown-item"
-                                   onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
-                                    <i class="icon-key"></i>
-                                    <span class="ml-2">Logout </span>
-                                </a>
+                            <div class="drop-down animated fadeIn dropdown-menu">
+                                <div class="dropdown-content-heading d-flex justify-content-between">
+                                    <span class="">3 New Messages</span>  
+                                    <a href="javascript:void()" class="d-inline-block">
+                                        <span class="badge badge-pill gradient-1">3</span>
+                                    </a>
+                                </div>
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li class="notification-unread">
+                                            <a href="javascript:void()">
+                                                <img class="float-left mr-3 avatar-img" src="images/avatar/1.jpg" alt="">
+                                                <div class="notification-content">
+                                                    <div class="notification-heading">Saiful Islam</div>
+                                                    <div class="notification-timestamp">08 Hours ago</div>
+                                                    <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="notification-unread">
+                                            <a href="javascript:void()">
+                                                <img class="float-left mr-3 avatar-img" src="images/avatar/2.jpg" alt="">
+                                                <div class="notification-content">
+                                                    <div class="notification-heading">Adam Smith</div>
+                                                    <div class="notification-timestamp">08 Hours ago</div>
+                                                    <div class="notification-text">Can you do me a favour?</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <img class="float-left mr-3 avatar-img" src="images/avatar/3.jpg" alt="">
+                                                <div class="notification-content">
+                                                    <div class="notification-heading">Barak Obama</div>
+                                                    <div class="notification-timestamp">08 Hours ago</div>
+                                                    <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <img class="float-left mr-3 avatar-img" src="images/avatar/4.jpg" alt="">
+                                                <div class="notification-content">
+                                                    <div class="notification-heading">Hilari Clinton</div>
+                                                    <div class="notification-timestamp">08 Hours ago</div>
+                                                    <div class="notification-text">Hello</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </li>
+                        <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
+                                <i class="mdi mdi-bell-outline"></i>
+                                <span class="badge badge-pill gradient-2">3</span>
+                            </a>
+                            <div class="drop-down animated fadeIn dropdown-menu dropdown-notfication">
+                                <div class="dropdown-content-heading d-flex justify-content-between">
+                                    <span class="">2 New Notifications</span>  
+                                    <a href="javascript:void()" class="d-inline-block">
+                                        <span class="badge badge-pill gradient-2">5</span>
+                                    </a>
+                                </div>
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Events near you</h6>
+                                                    <span class="notification-text">Within next 5 days</span> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Event Started</h6>
+                                                    <span class="notification-text">One hour ago</span> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Event Ended Successfully</h6>
+                                                    <span class="notification-text">One hour ago</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Events to Join</h6>
+                                                    <span class="notification-text">After two days</span> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </li>
+                        <li class="icons dropdown d-none d-md-flex">
+                            <a href="javascript:void(0)" class="log-user"  data-toggle="dropdown">
+                                <span>English</span>  <i class="fa fa-angle-down f-s-14" aria-hidden="true"></i>
+                            </a>
+                            <div class="drop-down dropdown-language animated fadeIn  dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li><a href="javascript:void()">English</a></li>
+                                        <li><a href="javascript:void()">Dutch</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="icons dropdown">
+                            <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
+                                <span class="activity active"></span>
+                                <img src="images/user/1.png" height="40" width="40" alt="">
+                            </div>
+                            <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="app-profile.html"><i class="icon-user"></i> <span>Profile</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <i class="icon-envelope-open"></i> <span>Inbox</span> <div class="badge gradient-3 badge-pill gradient-1">3</div>
+                                            </a>
+                                        </li>
+                                        
+                                        <hr class="my-2">
+                                        <li>
+                                            <a href="page-lock.html"><i class="icon-lock"></i> <span>Lock Screen</span></a>
+                                        </li>
+                                        <li><a href="page-login.html"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </li>
                     </ul>
                 </div>
-            </nav>
-        </div>
-        <div class="notifications"></div>
-    </div>
-    <!--**********************************
-        Header end ti-comment-alt
-    ***********************************-->
-
-    <!--**********************************
-        Sidebar start
-    ***********************************-->
-    <div class="quixnav">
-        <div class="quixnav-scroll">
-            <ul class="metismenu" id="menu">
-                <li class="nav-label first">Main Menu</li>
-
-                <li><a href="/home" aria-expanded="false">
-                    <i class="icon icon-single-04"></i>Trang chủ</a>
-                </li>
-                <li class="nav-label">Apps</li>
-                <li><a href="/ban-hang/hien-thi" aria-expanded="false"><i
-                        class="icon icon-app-store"></i>Bán hàng</a>
-                </li>
-                <li><a href="/hoa-don/hien-thi" aria-expanded="false"><i
-                        class="icon icon-chart-bar-33"></i>Hoá đơn</a>
-                </li>
-<%--                <li><a href="/hoa-don-online/hien-thi" aria-expanded="false"><i--%>
-<%--                        class="icon icon-chart-bar-33"></i>Đơn hàng online</a>--%>
-<%--                </li>--%>
-                <li><a href="/doi-tra/hien-thi" aria-expanded="false">
-                    <i class="ti-control-shuffle pa"></i>
-                    Đổi trả</a>
-                </li>
-                <li><a href="/imei/chinh-sach" aria-expanded="false">
-                    <i class="icon icon-book-open-2"></i>
-                    Chính sách</a>
-                </li>
-
-                <li class="nav-label">Quản lý</li>
-                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                        class="icon icon-world-2"></i><span class="nav-text">Quản lý sản phẩm</span></a>
-                    <ul aria-expanded="false">
-                        <li><a href="/khuyen-mai/hien-thi">Khuyến mại</a></li>
-                        <li><a href="/imei/hien-thi">IMEI Sản Phẩm</a></li>
-                        <li><a href="/chi-tiet-san-pham/hien-thi">Chi Tiết Sản Phẩm</a></li>
-                        <li><a href="/san-pham/hien-thi">Sản Phẩm</a></li>
-                        <li><a href="/hang-dien-thoai/hien-thi">Hãng</a></li>
-                        <li><a href="/mau-sac/hien-thi">Màu Sắc</a></li>
-                        <li><a href="/camera/hien-thi">Camera</a></li>
-                        <li><a href="/dung-luong-pin/hien-thi">Dung Lượng Pin</a></li>
-                        <li><a href="/pin/hien-thi">Pin</a></li>
-                        <li><a href="/man-hinh/hien-thi">Màn Hình</a></li>
-                        <li><a href="/ram/hien-thi">Ram</a></li>
-                        <li><a href="/rom/hien-thi">Rom</a></li>
-                        <li><a href="/chip/hien-thi">Chip</a></li>
-                        <li><a href="/anh/hien-thi">Ảnh</a></li>
-                    </ul>
-                </li>
-
-                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                        class="icon icon-plug"></i><span class="nav-text">Quản lý tài khoản</span></a>
-                    <ul aria-expanded="false">
-                        <li><a href="/nhan-vien/hien-thi">Nhân Viên</a></li>
-                        <li><a href="/chuc-vu/hien-thi">Chức Vụ</a></li>
-                        <li><a href="/khach-hang/hien-thi">Khách Hàng</a></li>
-                        <li><a href="/hang-khach-hang/hien-thi">Hạng Khách Hàng</a></li>
-                        <li><a href="/dia-chi/hien-thi">Địa Chỉ</a></li>
-                    </ul>
-                </li>
-
-
-                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                        class="icon icon-form"></i><span class="nav-text">Thống kê</span></a>
-                    <ul aria-expanded="false">
-                        <li><a href="/thong-ke/hien-thi">Doanh Thu theo tháng</a></li>
-<%--                        <li><a href="/thong-ke/hien-thi-sp">Doanh thu theo sản phẩm</a></li>--%>
-                        <li><a href="/thong-ke/hien-thi-sl-doi-tra">Số lượng đổi hàng và Doanh thu theo hãng</a></li>
-                        <li><a href="/thong-ke/hien-thi-khach-hang">Doanh thu khách hàng</a></li>
-                        <li><a href="/thong-ke/hien-thi-nhan-vien">Doanh thu nhân viên</a></li>
-
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-
-    </div>
-    <!--**********************************
-        Sidebar end
-    ***********************************-->
-
-    <!--**********************************
-        Content body start
-    ***********************************-->
-    <div class="content-body">
-        <!-- row -->
-        <div class="container-fluid">
-            <div class="right_col" role="main">
-                <!-- top tiles -->
-                <jsp:include page="${contentPage}"/>
-                <ul class="notifications" style="margin-top: 55px"></ul>
             </div>
         </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="nk-sidebar">           
+            <div class="nk-nav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label">Dashboard</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="../../../index.html">Home 1</a></li>
+                            <!-- <li><a href="../../../index-2.html">Home 2</a></li> -->
+                        </ul>
+                    </li>
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Layouts</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="../../../layout-blank.html">Blank</a></li>
+                            <li><a href="../../../layout-one-column.html">One Column</a></li>
+                            <li><a href="../../../layout-two-column.html">Two column</a></li>
+                            <li><a href="../../../layout-compact-nav.html">Compact Nav</a></li>
+                            <li><a href="../../../layout-vertical.html">Vertical</a></li>
+                            <li><a href="../../../layout-horizontal.html">Horizontal</a></li>
+                            <li><a href="../../../layout-boxed.html">Boxed</a></li>
+                            <li><a href="../../../layout-wide.html">Wide</a></li>
+                            
+                            
+                            <li><a href="../../../layout-fixed-header.html">Fixed Header</a></li>
+                            <li><a href="layout-fixed-sidebar.html">Fixed Sidebar</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label">Apps</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">Email</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="../../../email-inbox.html">Inbox</a></li>
+                            <li><a href="../../../email-read.html">Read</a></li>
+                            <li><a href="../../../email-compose.html">Compose</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/hoa-don/hien-thi" aria-expanded="false">
+                            <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Hoá đơn</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-graph menu-icon"></i> <span class="nav-text">Charts</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="../../../chart-flot.html">Flot</a></li>
+                            <li><a href="../../../chart-morris.html">Morris</a></li>
+                            <li><a href="../../../chart-chartjs.html">Chartjs</a></li>
+                            <li><a href="../../../chart-chartist.html">Chartist</a></li>
+                            <li><a href="../../../chart-sparkline.html">Sparkline</a></li>
+                            <li><a href="../../../chart-peity.html">Peity</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label">Quản lý sản phẩm</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-grid menu-icon"></i><span class="nav-text">UI Components</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="../../../ui-accordion.html">Accordion</a></li>
+                            <li><a href="../../../ui-alert.html">Alert</a></li>
+                            <li><a href="../../../ui-badge.html">Badge</a></li>
+                            <li><a href="../../../ui-button.html">Button</a></li>
+                            <li><a href="../../../ui-button-group.html">Button Group</a></li>
+                            <li><a href="../../../ui-cards.html">Cards</a></li>
+                            <li><a href="../../../ui-carousel.html">Carousel</a></li>
+                            <li><a href="../../../ui-dropdown.html">Dropdown</a></li>
+                            <li><a href="../../../ui-list-group.html">List Group</a></li>
+                            <li><a href="../../../ui-media-object.html">Media Object</a></li>
+                            <li><a href="../../../ui-modal.html">Modal</a></li>
+                            <li><a href="../../../ui-pagination.html">Pagination</a></li>
+                            <li><a href="../../../ui-popover.html">Popover</a></li>
+                            <li><a href="../../../ui-progressbar.html">Progressbar</a></li>
+                            <li><a href="../../../ui-tab.html">Tab</a></li>
+                            <li><a href="../../../ui-typography.html">Typography</a></li>
+                        <!-- </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-layers menu-icon"></i><span class="nav-text">Components</span>
+                        </a>
+                        <ul aria-expanded="false"> -->
+                            <li><a href="../../../uc-nestedable.html">Nestedable</a></li>
+                            <li><a href="../../../uc-noui-slider.html">Noui Slider</a></li>
+                            <li><a href="../../../uc-sweetalert.html">Sweet Alert</a></li>
+                            <li><a href="../../../uc-toastr.html">Toastr</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="widgets.html" aria-expanded="false">
+                            <i class="icon-badge menu-icon"></i><span class="nav-text">Widget</span>
+                        </a>
+                    </li>
+                    <li class="nav-label">Forms</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-note menu-icon"></i><span class="nav-text">Forms</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="../../../form-basic.html">Basic Form</a></li>
+                            <li><a href="../../../form-validation.html">Form Validation</a></li>
+                            <li><a href="../../../form-step.html">Step Form</a></li>
+                            <li><a href="../../../form-editor.html">Editor</a></li>
+                            <li><a href="../../../form-picker.html">Picker</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label">Table</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-menu menu-icon"></i><span class="nav-text">Table</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="../../../table-basic.html" aria-expanded="false">Basic Table</a></li>
+                            <li><a href="../../../table-datatable.html" aria-expanded="false">Data Table</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label">Pages</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-notebook menu-icon"></i><span class="nav-text">Pages</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="../../../page-login.html">Login</a></li>
+                            <li><a href="../../../page-register.html">Register</a></li>
+                            <li><a href="../../../page-lock.html">Lock Screen</a></li>
+                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
+                                <ul aria-expanded="false">
+                                    <li><a href="../../../page-error-404.html">Error 404</a></li>
+                                    <li><a href="../../../page-error-403.html">Error 403</a></li>
+                                    <li><a href="../../../page-error-400.html">Error 400</a></li>
+                                    <li><a href="../../../page-error-500.html">Error 500</a></li>
+                                    <li><a href="../../../page-error-503.html">Error 503</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <div class="container-fluid mt-3">
+                <jsp:include page="${contentPage}"/>
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright &copy; Designed & Developed by <a href="https://themeforest.net/user/quixlab">Quixlab</a> 2018</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
     </div>
     <!--**********************************
-        Content body end
-    ***********************************-->
-
-
-    <!--**********************************
-        Footer start
+        Main wrapper end
     ***********************************-->
 
     <!--**********************************
-        Footer end
+        Scripts
     ***********************************-->
+    <script src="../../../plugins/common/common.min.js"></script>
+    <script src="../../../js/custom.min.js"></script>
+    <script src="../../../js/settings.js"></script>
+    <script src="../../../js/gleek.js"></script>
+    <script src="../../../js/styleSwitcher.js"></script>
 
-    <!--**********************************
-       Support ticket button start
-    ***********************************-->
-
-    <!--**********************************
-       Support ticket button end
-    ***********************************-->
-
-
-</div>
-<script src="../../../js/app.js"></script>
-
-<!--**********************************
-    Main wrapper end
-***********************************-->
-
-<!--**********************************
-    Scripts
-***********************************-->
-<!-- Required vendors -->
-<script src="../../../vendor/global/global.min.js"></script>
-<script src="../../../js/quixnav-init.js"></script>
-<script src="../../../js/custom.min.js"></script>
-
-
-<!-- Vectormap -->
-<script src="../vendor/raphael/raphael.min.js"></script>
-<%--    <script src="./vendor/morris/morris.min.js"></script>--%>
+    <!-- Chartjs -->
+    <script src="../../../plugins/chart.js/Chart.bundle.min.js"></script>
+    <!-- Circle progress -->
+    <script src="../../../plugins/circle-progress/circle-progress.min.js"></script>
+    <!-- Datamap -->
+    <script src="../../../plugins/d3v3/index.js"></script>
+    <script src="../../../plugins/topojson/topojson.min.js"></script>
+    <script src="../../../plugins/datamaps/datamaps.world.min.js"></script>
+    <!-- Morrisjs -->
+    <script src="../../../plugins/raphael/raphael.min.js"></script>
+    <script src="../../../plugins/morris/morris.min.js"></script>
+    <!-- Pignose Calender -->
+    <script src="../../../plugins/moment/moment.min.js"></script>
+    <script src="../../../plugins/pg-calendar/js/pignose.calendar.min.js"></script>
+    <!-- ChartistJS -->
+    <script src="../../../plugins/chartist/js/chartist.min.js"></script>
+    <script src="../../../plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
 
 
-<script src="../../../vendor/circle-progress/circle-progress.min.js"></script>
-<script src="../../../vendor/chart.js/Chart.bundle.min.js"></script>
 
-<script src="../../../vendor/gaugeJS/dist/gauge.min.js"></script>
-
-<!--  flot-chart js -->
-<script src="../../../vendor/flot/jquery.flot.js"></script>
-<script src="../../../vendor/flot/jquery.flot.resize.js"></script>
-
-<!-- Owl Carousel -->
-<script src="../../../vendor/owl-carousel/js/owl.carousel.min.js"></script>
-
-<!-- Counter Up -->
-<script src="../../../vendor/jqvmap/js/jquery.vmap.min.js"></script>
-<script src="../../../vendor/jqvmap/js/jquery.vmap.usa.js"></script>
-<script src="../../../vendor/jquery.counterup/jquery.counterup.min.js"></script>
-
-<!-- Data table -->
-<script src="../../../vendor/datatables/js/jquery.dataTables.min.js"></script>
-<script src="../../../js/plugins-init/datatables.init.js"></script>
-
+    <script src="../../../js/dashboard/dashboard-1.js"></script>
 
 </body>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src="../../../js/select-2.js"></script>
-<script>
 
-</script>
 </html>
-
-<script>
-    <c:if test="${modalthemmausac==0}">
-    document.getElementById("modalMauSac").click();
-    </c:if>
-    <c:if test="${modalthemsanpham==0}">
-    document.getElementById("modalSanPham").click();
-    </c:if>
-    <c:if test="${modalthemchip==0}">
-    document.getElementById("modalChip").click();
-    </c:if>
-    <c:if test="${modalthemram==0}">
-    document.getElementById("modalRam").click();
-    </c:if>
-    <c:if test="${modalthemrom==0}">
-    document.getElementById("modalRom").click();
-    </c:if>
-    <c:if test="${modalthempin==0}">
-    document.getElementById("modalPin").click();
-    </c:if>
-    //ctsp
-
-    <c:if test="${modalthemmanhinh==0}">
-    document.getElementById("modalManHinh").click();
-
-    </c:if>
-    <c:if test="${modalthemhang==0}">
-    document.getElementById("modalHang").click();
-
-    </c:if>
-    <c:if test="${modalthemcamera==0}">
-    document.getElementById("modalCamera").click();
-
-    </c:if>
-
-    <c:if test="${batmodalthemsolg==0}">
-    document.getElementById("modalthemsolgctsp").click();
-    </c:if>
-
-
-</script>
-<script>
-    function loadSelect2diachi() {
-        $('#selectSanPham2').select2({
-            theme: 'bootstrap-5',
-            dropdownParent: $('#myModal11')
-
-        });
-
-    }
-    loadSelect2diachi();
-</script>
