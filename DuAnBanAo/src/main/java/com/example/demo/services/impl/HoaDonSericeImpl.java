@@ -15,7 +15,47 @@ public class HoaDonSericeImpl implements HoaDonSerice {
     private HoaDonRepository hoaDonRepository;
 
     @Override
+    public List<HoaDon> hoaDonAll() {
+        return hoaDonRepository.findAll();
+    }
+
+    @Override
+    public List<HoaDon> hoaDonHuy() {
+        return hoaDonRepository.hoaDonHuy();
+    }
+
+    @Override
+    public List<HoaDon> hoaDonChoXacNhan() {
+        return hoaDonRepository.hoaDonChoXacNhan();
+    }
+
+    @Override
     public List<HoaDon> hoaDonChoGiaoHang() {
         return hoaDonRepository.hoaDonChoGiaoHang();
+    }
+
+    @Override
+    public List<HoaDon> hoaDonDangVanChuyen() {
+        return hoaDonRepository.hoaDonDangVanChuyen();
+    }
+
+    @Override
+    public List<HoaDon> hoaDonDaGiaoHang() {
+        return hoaDonRepository.hoaDonDaGiaoHang();
+    }
+
+    @Override
+    public List<HoaDon> hoaDonDaThanhToan() {
+        return hoaDonRepository.hoaDonChoThanhToan();
+    }
+
+    @Override
+    public List<HoaDon> hoaDonChoThanhToan() {
+        return hoaDonRepository.hoaDonDaThanhToan();
+    }
+
+    @Override
+    public List<HoaDon> hoaDonHoanThanh() {
+        return hoaDonRepository.hoaDonHoanThanh();
     }
 }

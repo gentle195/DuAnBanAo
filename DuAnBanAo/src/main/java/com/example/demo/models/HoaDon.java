@@ -60,6 +60,9 @@ public class HoaDon {
     @Column(name = "PhiShip")
     private BigDecimal phiShip;
 
+    @Column(name = "LoaiHoaDon")
+    private int loaiHoaDon;
+
     @Column(name = "GhiChu")
     private String ghiChu;
 

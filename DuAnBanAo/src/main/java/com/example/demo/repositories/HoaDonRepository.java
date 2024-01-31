@@ -18,11 +18,31 @@ import java.util.UUID;
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
 
-//    @Query("select hd from HoaDon hd where (hd.tinhTrang= 0 or hd.tinhTrang= 1 or hd.tinhTrang= 2 or hd.tinhTrang= 3) and hd.tinhTrangGiaoHang =0 order by hd.ngayTao desc")
-//    List<HoaDon> hoaDon();
-
     @Query("select hd from HoaDon hd where hd.trangThaiHoaDon = 1 order by hd.ngayTao desc")
+    List<HoaDon> hoaDonHuy();
+
+    @Query("select hd from HoaDon hd where hd.trangThaiHoaDon = 2 order by hd.ngayTao desc")
+    List<HoaDon> hoaDonChoXacNhan();
+
+    @Query("select hd from HoaDon hd where hd.trangThaiHoaDon = 3 order by hd.ngayTao desc")
     List<HoaDon> hoaDonChoGiaoHang();
+
+    @Query("select hd from HoaDon hd where hd.trangThaiHoaDon = 4 order by hd.ngayTao desc")
+    List<HoaDon> hoaDonDangVanChuyen();
+
+    @Query("select hd from HoaDon hd where hd.trangThaiHoaDon = 5 order by hd.ngayTao desc")
+    List<HoaDon> hoaDonDaGiaoHang();
+
+    @Query("select hd from HoaDon hd where hd.trangThaiHoaDon = 6 order by hd.ngayTao desc")
+    List<HoaDon> hoaDonDaThanhToan();
+
+    @Query("select hd from HoaDon hd where hd.trangThaiHoaDon = 7 order by hd.ngayTao desc")
+    List<HoaDon> hoaDonChoThanhToan();
+
+    @Query("select hd from HoaDon hd where hd.trangThaiHoaDon = 8 order by hd.ngayTao desc")
+    List<HoaDon> hoaDonHoanThanh();
+
+
 
 //    @Query("select hd from HoaDon hd where hd.tinhTrangGiaoHang =2 order by hd.ngayTao desc")
 //    List<HoaDon> hoaDonDangGiaoHang();
