@@ -309,13 +309,13 @@
                             <li><a href="../../../chart-peity.html">Peity</a></li>
                         </ul>
                     </li>
-                    <li class="nav-label">Quản lý sản phẩm</li>
+
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-grid menu-icon"></i><span class="nav-text">UI Components</span>
+                            <i class="icon-grid menu-icon"></i><span class="nav-text">Quản lý sản phẩm</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="../../../ui-accordion.html">Accordion</a></li>
+                            <li><a href="/homes">Sản phẩm</a></li>
                             <li><a href="../../../ui-alert.html">Alert</a></li>
                             <li><a href="../../../ui-badge.html">Badge</a></li>
                             <li><a href="../../../ui-button.html">Button</a></li>
