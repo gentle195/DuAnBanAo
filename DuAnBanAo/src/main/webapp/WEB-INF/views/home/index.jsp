@@ -295,12 +295,8 @@
                     </li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Apps</span>
+                            <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Hoá đơn</span>
                         </a>
-                        <ul aria-expanded="false">
-                            <li><a href="./app-profile.html">Profile</a></li>
-                            <li><a href="./app-calender.html">Calender</a></li>
-                        </ul>
                     </li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
@@ -315,7 +311,7 @@
                             <li><a href="./chart-peity.html">Peity</a></li>
                         </ul>
                     </li>
-                    <li class="nav-label">UI Components</li>
+                    <li class="nav-label">Quản lý sản phẩm</li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-grid menu-icon"></i><span class="nav-text">UI Components</span>
