@@ -27,7 +27,7 @@ public class ChiTietSanPham {
     private UUID id;
 
     private String ma;
-    private String soLuongTon;
+    private int soLuongTon;
     private BigDecimal giaNhap;
     private BigDecimal giaBan;
     private String moTa;
@@ -60,6 +60,11 @@ public class ChiTietSanPham {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idCoAo")
     private CoAo coAo;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idHinhAnh")
+    private HinhAnh hinhAnh;
 
 
 }
