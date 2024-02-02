@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,21 +35,25 @@ public class KhachHang {
     @Column(name = "Ma")
     private String ma;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "HoTen")
     private String hoTen;
 
     @Column(name = "NgaySinh")
     private Date ngaySinh;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "SoDienThoai")
     private String soDienThoai;
 
     @Column(name = "GioiTinh")
     private Boolean gioiTinh;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "Email")
     private String email;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "TaiKhoan")
     private String taiKhoan;
 
@@ -69,10 +74,6 @@ public class KhachHang {
 
     @Column(name = "TrangThai")
     private int trangThai;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "IdDiaChi")
-    private DiaChi diaChi;
 
 
 }

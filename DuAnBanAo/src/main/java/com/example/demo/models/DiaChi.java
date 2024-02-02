@@ -36,15 +36,19 @@ public class DiaChi {
     @Column(name = "Ma")
     private String ma;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "DiaChi")
     private String diaChi;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "ThanhPho")
     private String thanhPho;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "Quan")
     private String quan;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "Phuong")
     private String phuong;
 
@@ -69,5 +73,7 @@ public class DiaChi {
     @Column(name = "TrangThai")
     private int trangThai;
 
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "IdKhachHang")
+    private KhachHang khachHang;
 }

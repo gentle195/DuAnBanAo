@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,10 +31,11 @@ public class ChucVu {
     @Column(name = "Id")
     private UUID id;
 
-    //    @NotBlank(message = "Không để trống thông tin")
+
     @Column(name = "Ma")
     private String ma;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Size(min = 6, message = "Tên phải lớn hơn hoặc bằng 6 kí tự")
     @Column(name = "Ten")
     private String ten;
