@@ -4,9 +4,12 @@ import com.example.demo.models.HoaDon;
 import com.example.demo.repositories.HoaDonRepository;
 import com.example.demo.services.HoaDonSerice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class HoaDonSericeImpl implements HoaDonSerice {
@@ -15,47 +18,57 @@ public class HoaDonSericeImpl implements HoaDonSerice {
     private HoaDonRepository hoaDonRepository;
 
     @Override
-    public List<HoaDon> hoaDonAll() {
-        return hoaDonRepository.findAll();
+    public Page<HoaDon> hoaDonAll(Pageable pageable) {
+        return hoaDonRepository.hoaDonAll(pageable);
     }
 
     @Override
-    public List<HoaDon> hoaDonHuy() {
-        return hoaDonRepository.hoaDonHuy();
+    public HoaDon findById(UUID id) {
+        return hoaDonRepository.findById(id).orElse(null);
     }
 
     @Override
-    public List<HoaDon> hoaDonChoXacNhan() {
-        return hoaDonRepository.hoaDonChoXacNhan();
+    public Page<HoaDon> hoaDonHuy(Pageable pageable) {
+        return hoaDonRepository.hoaDonHuy(pageable);
     }
 
     @Override
-    public List<HoaDon> hoaDonChoGiaoHang() {
-        return hoaDonRepository.hoaDonChoGiaoHang();
+    public Page<HoaDon> hoaDonChoXacNhan(Pageable pageable) {
+        return hoaDonRepository.hoaDonChoXacNhan(pageable);
     }
 
     @Override
-    public List<HoaDon> hoaDonDangVanChuyen() {
-        return hoaDonRepository.hoaDonDangVanChuyen();
+    public Page<HoaDon> hoaDonDaXacNhan(Pageable pageable) { return hoaDonRepository.hoaDonDaXacNhan(pageable);
     }
 
     @Override
-    public List<HoaDon> hoaDonDaGiaoHang() {
-        return hoaDonRepository.hoaDonDaGiaoHang();
+    public Page<HoaDon> hoaDonChoGiaoHang(Pageable pageable) {
+        return hoaDonRepository.hoaDonChoGiaoHang(pageable);
     }
 
     @Override
-    public List<HoaDon> hoaDonDaThanhToan() {
-        return hoaDonRepository.hoaDonChoThanhToan();
+    public Page<HoaDon> hoaDonDangVanChuyen(Pageable pageable) {
+        return hoaDonRepository.hoaDonDangVanChuyen(pageable);
+    }
+    @Override
+    public Page<HoaDon> hoaDonHoanThanh(Pageable pageable) {
+        return hoaDonRepository.hoaDonHoanThanh(pageable);
     }
 
-    @Override
-    public List<HoaDon> hoaDonChoThanhToan() {
-        return hoaDonRepository.hoaDonDaThanhToan();
-    }
+//    @Override
+//    public Page<HoaDon> hoaDonDaGiaoHang(Pageable pageable) {
+//        return hoaDonRepository.hoaDonDaGiaoHang(pageable);
+//    }
 
-    @Override
-    public List<HoaDon> hoaDonHoanThanh() {
-        return hoaDonRepository.hoaDonHoanThanh();
-    }
+//    @Override
+//    public Page<HoaDon> hoaDonDaThanhToan(Pageable pageable) {
+//        return hoaDonRepository.hoaDonChoThanhToan(pageable);
+//    }
+
+//    @Override
+//    public Page<HoaDon> hoaDonChoThanhToan(Pageable pageable) {
+//        return hoaDonRepository.hoaDonDaThanhToan(pageable);
+//    }
+
+
 }

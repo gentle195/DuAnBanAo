@@ -1,28 +1,37 @@
 package com.example.demo.services;
 
 import com.example.demo.models.HoaDon;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface HoaDonSerice {
 
 
-    public List<HoaDon> hoaDonAll();
+    Page<HoaDon> hoaDonAll(Pageable pageable);
 
-    public List<HoaDon> hoaDonHuy();
+     HoaDon findById(UUID id);
 
-    public List<HoaDon> hoaDonChoXacNhan();
+     Page<HoaDon> hoaDonHuy(Pageable pageable);
 
-    public List<HoaDon> hoaDonChoGiaoHang();
+     Page<HoaDon> hoaDonChoXacNhan(Pageable pageable);
 
-    public List<HoaDon> hoaDonDangVanChuyen();
+     Page<HoaDon> hoaDonDaXacNhan(Pageable pageable);
 
-    public List<HoaDon> hoaDonDaGiaoHang();
+     Page<HoaDon> hoaDonChoGiaoHang(Pageable pageable);
 
-    public List<HoaDon> hoaDonDaThanhToan();
+     Page<HoaDon> hoaDonDangVanChuyen(Pageable pageable);
 
-    public List<HoaDon> hoaDonChoThanhToan();
+     Page<HoaDon> hoaDonHoanThanh(Pageable pageable);
 
-    public List<HoaDon> hoaDonHoanThanh();
+//     Page<HoaDon> hoaDonDaGiaoHang(Pageable pageable);
+
+//     Page<HoaDon> hoaDonDaThanhToan(Pageable pageable);
+
+//     Page<HoaDon> hoaDonChoThanhToan(Pageable pageable);
+
+
 
 }
