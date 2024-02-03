@@ -38,7 +38,7 @@ public class DiaChi {
 
     @NotBlank(message = "Không để trống thông tin")
     @Column(name = "DiaChi")
-    private String diaChi;
+    private String soDiaChi;
 
     @NotBlank(message = "Không để trống thông tin")
     @Column(name = "ThanhPho")
