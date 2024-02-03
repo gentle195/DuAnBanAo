@@ -146,10 +146,8 @@ public class HoaDonController {
                                 @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
         HoaDon hoaDon = hoaDonSerice.findById(id);
         Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
-        Page<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(pageable);
-        model.addAttribute("listHoaDonChiTiet", page.getContent());
-        model.addAttribute("page", page.getNumber());
-        model.addAttribute("total", page.getTotalPages());
+        List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);
+        model.addAttribute("listHoaDonChiTiet", page);
         model.addAttribute("hoaDonDetail", hoaDon);
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return  "home/layout";

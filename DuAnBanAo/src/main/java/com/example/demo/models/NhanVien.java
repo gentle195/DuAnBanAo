@@ -40,35 +40,42 @@ public class NhanVien {
     @Column(name = "ma")
     private String ma;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "Ten")
-    private String ten;
+    private String hoTen;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "DiaChi")
     private String diaChi;
 
     @Column(name = "NgaySinh")
     private Date ngaySinh;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "SdtNhanVien")
-    private String sdtNhanVien;
+    private String sdt;
 
     @Column(name = "GioiTinh")
     private Boolean gioiTinh;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "Email")
     private String email;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "TaiKhoan")
     private String taiKhoan;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "CCCD")
     private String CCCD;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "MatKhau")
     private String matKhau;
 
     @Column(name = "TrangThai")
-    private int trangThai;
+    private int tinhTrang;
 
     @Column(name = "NgayTao")
     private Date ngayTao;
@@ -76,8 +83,8 @@ public class NhanVien {
     @Column(name = "NgaySua")
     private Date ngaySua;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_chuc_vu")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "IdChucVu")
     private ChucVu chucVu;
 
 

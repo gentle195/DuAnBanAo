@@ -14,13 +14,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
     <!-- Favicon icon -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
 </head>
 <body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://harvesthq.github.io/chosen/chosen.jquery.js"></script>
-
-<link rel="stylesheet" href="https://harvesthq.github.io/chosen/chosen.css">
-
 <c:if test="${thongBao != null}">
     <div id="modalError" class="modal fade">
         <div class="modal-dialog modal-dialog-centered">
@@ -28,7 +24,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
-                  vl thưt          <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: block;">
+                            <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: block;">
                                     <span class="swal2-x-mark swal2-animate-x-mark"><span
                                             class="swal2-x-mark-line-left"></span><span
                                             class="swal2-x-mark-line-right"></span></span></div>
@@ -80,20 +76,21 @@
     <div class="card">
         <div class="card-body">
             <div>
-                <ul class="nav nav-pills mb-3" id="setting-panel" role="tablist">
+                <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab"
-                           aria-controls="description" aria-selected="true">Thông tin khách hàng</a>
+                           aria-controls="description" aria-selected="true">Thông tin nhân viên</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/khach-hang/view-add" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm thông
-                            tin khách hàng</a>
+                        <a class="nav-link" href="/nhan-vien/view-add" role="tab"
+                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                            thông tin
+                            nhân viên</a>
                     </li>
                     <li class="nav-item">
-
-                        <a class="nav-link" href="/khach-hang/hien-thi-delete" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Khách hàng đã ngừng</a>
+                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab"
+                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Nhân
+                            viên ngừng hoạt động</a>
                     </li>
                 </ul>
             </div>
@@ -103,9 +100,9 @@
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title" style="float: left">Danh sách khách hàng</h4>
+                                <h4 class="card-title" style="float: left">Danh sách nhân viên</h4>
                                 <%--            Tìm kiếm               --%>
-                                <form action="/khach-hang/search-con-hoat-dong" method="post">
+                                <form action="/nhan-vien/search-con-hoat-dong" method="post">
                                     <div class="input-group" style="width: 30%; float: right">
                                         <input type="text" class="form-control" placeholder="Bạn tìm gì..."
                                                aria-label="Bạn tìm gì..." name="search">
@@ -116,17 +113,20 @@
                                 </form>
                                 <%--           kết thúc tìm kiếm         --%>
                                 <div class="table-responsive">
-                                    <table class="table table-striped" style="color: black">
+                                    <table class="table table-striped" style="color: black; width: 1800px">
                                         <thead>
                                         <tr>
                                             <th>Mã</th>
                                             <th>Tên</th>
-                                            <th>Ngày sinh</th>
-                                            <th>Giới tính</th>
+                                            <th>Địa Chỉ</th>
+                                            <th>Ngày Sinh</th>
+                                            <th>Số Điện Thoại</th>
+                                            <th>Giới Tính</th>
                                             <th>Email</th>
-                                            <th>SĐT</th>
-                                            <th>Tài khoản</th>
-                                            <th>Mật khẩu</th>
+                                            <th>Căn Cước</th>
+                                            <th>Chức Vụ</th>
+                                            <th>Tài Khoản</th>
+                                            <th>Mật Khẩu</th>
                                             <th>Tình Trạng</th>
                                             <th>Ngày Tạo</th>
                                             <th>Ngày Sửa</th>
@@ -136,41 +136,44 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listKhachHang}" var="khachHang">
+                                        <c:forEach items="${listNhanVien}" var="nhanVien">
                                             <tr>
-                                                <td>${khachHang.ma}</td>
-                                                <td>${khachHang.hoTen}</td>
-                                                <td>${khachHang.ngaySinh}</td>
+                                                <td>${nhanVien.ma}</td>
+                                                <td>${nhanVien.hoTen}</td>
+                                                <td>${nhanVien.diaChi}</td>
+                                                <td>${nhanVien.ngaySinh}</td>
+                                                <td>${nhanVien.sdt}</td>
                                                 <td>
-                                                    <c:if test="${khachHang.gioiTinh == true}">Nam</c:if>
-                                                    <c:if test="${khachHang.gioiTinh == false}">Nữ</c:if>
+                                                    <c:if test="${nhanVien.gioiTinh==true}">Nam</c:if>
+                                                    <c:if test="${nhanVien.gioiTinh==false}">Nữ</c:if>
                                                 </td>
-                                                <td>${khachHang.email}</td>
-                                                <td>${khachHang.soDienThoai}</td>
-                                                <td>${khachHang.taiKhoan}</td>
-                                                <td>${khachHang.matKhau}</td>
+                                                <td>${nhanVien.email}</td>
+                                                <td>${nhanVien.CCCD}</td>
+                                                <td>${nhanVien.chucVu.ten}</td>
+                                                <td>${nhanVien.taiKhoan}</td>
+                                                <td>${nhanVien.matKhau}</td>
                                                 <td>
-                                                    <c:if test="${khachHang.trangThai==0}">Đang hoạt động</c:if>
-                                                    <c:if test="${khachHang.trangThai==1}">Ngừng hoạt động</c:if>
+                                                    <c:if test="${nhanVien.tinhTrang==0}">Còn hoạt động</c:if>
+                                                    <c:if test="${nhanVien.tinhTrang==1}">Ngừng hoạt động</c:if>
                                                 </td>
-                                                <td>${khachHang.ngayTao}</td>
-                                                <td>${khachHang.ngaySua}</td>
+                                                <td>${nhanVien.ngayTao}</td>
+                                                <td>${nhanVien.ngaySua}</td>
                                                 <td>
-                                                    <a href="/khach-hang/detail/${khachHang.id}"
+                                                    <a href="/nhan-vien/detail/${nhanVien.id}"
                                                        class="btn btn-warning btn-icon-text"
                                                        tabindex="-1"
                                                        role="button"
                                                        onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
                                                         <i class="ti-file btn-icon-prepend"></i>
                                                         Detail</a>
-                                                    <a href="/khach-hang/view-update/${khachHang.id}"
+                                                    <a href="/nhan-vien/view-update/${nhanVien.id}"
                                                        class="btn btn-warning btn-icon-text"
                                                        tabindex="-1"
                                                        role="button"
                                                        onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
                                                         <i class="ti-file btn-icon-prepend"></i>
                                                         Update</a>
-                                                    <a href="/khach-hang/delete/${khachHang.id}"
+                                                    <a href="/nhan-vien/delete/${nhanVien.id}"
                                                        class="btn btn-danger btn-icon-text"
                                                        tabindex="-1"
                                                        role="button"
@@ -182,20 +185,20 @@
                                         </c:forEach>
                                         </tbody>
                                     </table>
-                                    <c:if test="${not listKhachHang.isEmpty()}">
+                                    <c:if test="${not listNhanVien.isEmpty()}">
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination justify-content-center pagination-lg">
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="/khach-hang/hien-thi?pageNum=0"><<</a>
+                                                                         href="/nhan-vien/hien-thi?pageNum=0"><<</a>
                                                 </li>
                                                 <c:forEach begin="1" end="${totalPage}" varStatus="status">
                                                     <li class="page-item">
-                                                        <a href="/khach-hang/hien-thi?pageNum=${status.index -1}"
+                                                        <a href="/nhan-vien/hien-thi?pageNum=${status.index -1}"
                                                            class="page-link">${status.index}</a>
                                                     </li>
                                                 </c:forEach>
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="/khach-hang/hien-thi?pageNum=${total-1}">>></a>
+                                                                         href="/nhan-vien/hien-thi?pageNum=${total-1}">>></a>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -209,54 +212,81 @@
         </div>
     </div>
 </div>
-<button style="display: none" type="button" id="batmodaldetailkhachhang" class="btn btn-primary" data-bs-toggle="modal"
-        data-bs-target="#detailKichCo">
+<button style="display: none" type="button" id="batmodaldetailnhanvien" class="btn btn-primary" data-bs-toggle="modal"
+        data-bs-target="#detailChatLieu">
     Open modal
 </button>
-<div class="modal" id="detailKichCo">
+<div class="modal" id="detailChatLieu">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body" style="color: black">
-                <form:form method="post" modelAttribute="khachHang">
-                <div class="form-group">
-                    <form:label class="form-label" path="hoTen">Họ và tên:</form:label>
-                    <form:input class="form-control" path="hoTen" placeholder="" readonly="true"/>
-                    <form:errors path="hoTen" cssStyle="color: red"></form:errors>
-                </div>
-                <div class="form-group">
-                    <div class="form-control">
-                        <form:label class="form-label" path="gioiTinh">Giới tính:</form:label>
-                        <form:radiobutton path="gioiTinh" value="true" checked="true" />Nam
-                        <form:radiobutton path="gioiTinh" value="false"/> Nữ
-                        <form:errors path="gioiTinh" cssStyle="color: red"></form:errors>
+                <form:form method="post" modelAttribute="nhanVien">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <form:label class="form-label" path="hoTen">Họ tên:</form:label>
+                                <form:input class="form-control" path="hoTen" readonly="true"/>
+                                <form:errors path="hoTen" cssStyle="color: red"></form:errors>
+                            </div>
+                            <div class="form-group">
+                                <form:label class="form-label" path="diaChi">Địa chỉ:</form:label>
+                                <form:input class="form-control" path="diaChi" readonly="true"/>
+                                <form:errors path="diaChi" cssStyle="color: red"></form:errors>
+                            </div>
+                            <div class="form-group">
+                                <form:label class="form-label" path="sdt">SĐT:</form:label>
+                                <form:input class="form-control" path="sdt" readonly="true"/>
+                                <form:errors path="sdt" cssStyle="color: red"></form:errors>
+                            </div>
+                            <div class="form-group">
+                                <form:label class="form-label" path="CCCD">CCCD:</form:label>
+                                <form:input class="form-control" path="CCCD" readonly="true"/>
+                                <form:errors path="CCCD" cssStyle="color: red"></form:errors>
+                            </div>
+                            <div class="form-group">
+                                <form:label class="form-label" path="ngaySinh">Ngày sinh:</form:label>
+                                <form:input class="form-control" path="ngaySinh" type="date" required="true"
+                                            readonly="true"/>
+                                <form:errors path="ngaySinh" cssStyle="color: red"></form:errors>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <form:label class="form-label" path="gioiTinh">Giới tính:</form:label>
+                                <div class="form-control">
+                                    <form:radiobutton path="gioiTinh" value="true" checked="true"/>Nam
+                                    <form:radiobutton path="gioiTinh" value="false"
+                                                      cssStyle="margin-left: 1cm"/>
+                                    Nữ
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <form:label class="form-label" path="email">Email:</form:label>
+                                <form:input class="form-control" path="email" readonly="true"/>
+                                <form:errors path="email" cssStyle="color: red"></form:errors>
+                            </div>
+                            <div class="form-group">
+                                <form:label class="form-label" path="taiKhoan">Tài khoản:</form:label>
+                                <form:input class="form-control" path="taiKhoan" readonly="true"/>
+                                <form:errors path="taiKhoan" cssStyle="color: red"></form:errors>
+                            </div>
+                            <div class="form-group">
+                                <form:label class="form-label" path="matKhau">Mật khẩu:</form:label>
+                                <form:input class="form-control" path="matKhau" readonly="true"/>
+                                <form:errors path="matKhau" cssStyle="color: red"></form:errors>
+                            </div>
+                            <div class="form-group">
+                                <form:label class="form-label" path="chucVu">Chức vụ:</form:label>
+                                <form:select path="chucVu" class="form-control" id="selectChucVu"
+                                             cssStyle="font-weight: bold; width: 100%">
+                                    <option selected disabled>Chức vụ</option>
+                                    <form:options items="${listChucVu}" itemValue="id" itemLabel="ten"/>
+                                </form:select>
+                                <form:errors path="chucVu"/>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <form:label class="form-label" path="ngaySinh">Ngày sinh:</form:label>
-                    <form:input class="form-control" path="ngaySinh"  type="date"  readonly="true"/>
-                    <form:errors path="ngaySinh" cssStyle="color: red"></form:errors>
-                </div>
-                <div class="form-group">
-                    <form:label class="form-label" path="soDienThoai">Số điện thoại:</form:label>
-                    <form:input class="form-control" path="soDienThoai" readonly="true"/>
-                    <form:errors path="soDienThoai" cssStyle="color: red"></form:errors>
-                </div>
-                <div class="form-group">
-                    <form:label class="form-label" path="email">Email:</form:label>
-                    <form:input class="form-control" path="email" readonly="true"/>
-                    <form:errors path="email" cssStyle="color: red"></form:errors>
-                </div>
-                <div class="form-group">
-                    <form:label class="form-label" path="taiKhoan">Tài khoản:</form:label>
-                    <form:input class="form-control" path="taiKhoan" readonly="true"/>
-                    <form:errors path="taiKhoan" cssStyle="color: red"></form:errors>
-                </div>
-                <div class="form-group">
-                    <form:label class="form-label" path="matKhau">Mật khẩu:</form:label>
-                    <form:input class="form-control" path="matKhau" readonly="true"/>
-                    <form:errors path="matKhau" cssStyle="color: red"></form:errors>
-                </div>
-            </form:form>
+                </form:form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
@@ -268,11 +298,14 @@
 </div>
 
 </body>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"
-        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
         $('#modalError').modal('show');
@@ -282,10 +315,21 @@
     $(document).ready(function () {
         $('#modalSuccess').modal('show');
     });
+
 </script>
 <script>
-    <c:if test="${batmodaldetailkhachhang==0}">
-    document.getElementById('batmodaldetailkhachhang').click();
+    <c:if test="${batmodalthemnhanvien==0}">
+    document.getElementById('batmodalthemnhanvien').click();
+    </c:if>
+</script>
+<script>
+    <c:if test="${batmodaldetailnhanvien==0}">
+    document.getElementById('batmodaldetailnhanvien').click();
+    </c:if>
+</script>
+<script>
+    <c:if test="${batmodalupdatenhanvien==0}">
+    document.getElementById('batmodalupdatenhanvien').click();
     </c:if>
 </script>
 </html>

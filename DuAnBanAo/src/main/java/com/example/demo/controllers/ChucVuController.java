@@ -77,9 +77,9 @@ public class ChucVuController {
         String mhd = "";
         Integer sl = chucVuService.findAll().size() + 1;
         if (sl < 9) {
-            mhd = "MS0" + sl;
+            mhd = "CV0" + sl;
         } else {
-            mhd = "MS" + sl;
+            mhd = "CV" + sl;
         }
         chucVu.setMa(mhd);
         chucVu.setNgayTao(Date.valueOf(LocalDate.now()));

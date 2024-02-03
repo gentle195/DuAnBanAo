@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="../../../plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
     <!-- Custom Stylesheet -->
     <link href="../../../css/style.css" rel="stylesheet">
+    <link href="../../../plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
 </head>
 
 <body>
@@ -282,6 +284,7 @@
 <!--**********************************
     Scripts
 ***********************************-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="../../../plugins/common/common.min.js"></script>
 <script src="../../../js/custom.min.js"></script>
 <script src="../../../js/settings.js"></script>
@@ -308,7 +311,9 @@
 
 
 <script src="../../../js/dashboard/dashboard-1.js"></script>
-
+<script src="../../../plugins/tables/js/jquery.dataTables.min.js"></script>
+<script src="../../../plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+<script src="../../../plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
 </body>
 
 </html>

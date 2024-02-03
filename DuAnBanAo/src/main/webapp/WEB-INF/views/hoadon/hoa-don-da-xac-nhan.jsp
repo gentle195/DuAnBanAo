@@ -77,8 +77,7 @@
                                                         <c:if test="${DXN.trangThaiGiaoHang == 2}">Đã xác nhận</c:if>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn mb-1  btn-outline-primary">
-                                                            <a href="/hoa-don/detail/${All.id}">Xem</a></button>
+                                                        <button type="button" class="btn mb-1 btn-flat btn-primary">Xem</button>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

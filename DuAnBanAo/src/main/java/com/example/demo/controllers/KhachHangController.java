@@ -107,9 +107,9 @@ public class KhachHangController {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<KhachHang> page = KhachHangService.getAll(pageable);
         model.addAttribute("listKhachHang", page.getContent());
-        model.addAttribute("KhachHang", KhachHangService.findById(id));
+        model.addAttribute("khachHang", KhachHangService.findById(id));
         model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodaldetailcoao", 0);
+        model.addAttribute("batmodaldetailkhachhang", 0);
         model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
         return "home/layout";
     }
@@ -220,13 +220,13 @@ public class KhachHangController {
             Page<KhachHang> page = KhachHangService.getAll(pageable);
             model.addAttribute("listKhachHang", page.getContent());
             model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("contentPage", "../khach-hang/hien-thi.jsp");
+            model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
             return "home/layout";
         } else {
             List<KhachHang> list = KhachHangService.search0(search);
             model.addAttribute("listKhachHang", list);
             model.addAttribute("thongBaoThanhCong", "Tìm kiếm dữ liệu thành công");
-            model.addAttribute("contentPage", "../khach-hang/hien-thi.jsp");
+            model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
             return "home/layout";
         }
 
@@ -242,13 +242,13 @@ public class KhachHangController {
             Page<KhachHang> page = KhachHangService.getAll1(pageable);
             model.addAttribute("listKhachHang", page.getContent());
             model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("contentPage", "../khach-hang/hien-thi-ngung-hoat-dong.jsp");
+            model.addAttribute("contentPage", "../khachhang/hien-thi-ngung-hoat-dong.jsp");
             return "home/layout";
         } else {
             List<KhachHang> list = KhachHangService.search1(search);
             model.addAttribute("listKhachHang", list);
             model.addAttribute("thongBaoThanhCong", "Tìm kiếm dữ liệu thành công");
-            model.addAttribute("contentPage", "../khach-hang/hien-thi-ngung-hoat-dong.jsp");
+            model.addAttribute("contentPage", "../khachhang/hien-thi-ngung-hoat-dong.jsp");
             return "home/layout";
         }
 

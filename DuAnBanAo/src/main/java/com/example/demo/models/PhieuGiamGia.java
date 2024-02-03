@@ -10,11 +10,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -33,28 +38,29 @@ public class PhieuGiamGia {
     @Column(name = "Id")
     private UUID id;
 
-
     @Column(name = "Ma")
     private String ma;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "Ten")
     private String ten;
 
     @Column(name = "HinhThucGiam")
-    private String hinhThucGiam;
+    private Boolean hinhThucGiam;
 
     @Column(name = "NgayBatDau")
-    private DateTime ngayBatDau;
+    private String ngayBatDau;
 
     @Column(name = "NgayketThuc")
-    private DateTime ngayketThuc;
+    private String ngayketThuc;
 
-    @Column(name = "GiamToiThieu")
-    private BigDecimal giamToiThieu;
+    @NotNull(message = "Không để trống thông tin")
+    @DecimalMin(value = "1", message = "% giảm phải lớn hơn 0")
+    @DecimalMax(value = "20", message = "% giảm tối đa 20%")
+    @Column(name = "TienGiam")
+    private int tienGiam;
 
-    @Column(name = "GiamToiDa")
-    private BigDecimal GiamToiDa;
-
+    @CreationTimestamp
     @Column(name = "NgayTao")
     private Date ngayTao;
 
@@ -67,10 +73,13 @@ public class PhieuGiamGia {
     @Column(name = "NguoiSua")
     private String nguoiSua;
 
+    @NotNull(message = "Không để trống thông tin")
+    @DecimalMin(value = "1", message = "Số lượng phải lớn hơn 0")
+    @DecimalMax(value = "100", message = "Số lượng tối đa 100")
     @Column(name = "SoLuong")
-    private int SoLuong;
+    private int soLuong;
 
     @Column(name = "TrangThai")
-    private int TrangThai;
+    private int trangThai;
 
 }

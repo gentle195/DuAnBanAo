@@ -78,9 +78,9 @@ public class ThuongHieuController {
         String mhd = "";
         Integer sl = thuongHieuService.findAll().size() + 1;
         if (sl < 9) {
-            mhd = "MS0" + sl;
+            mhd = "TH0" + sl;
         } else {
-            mhd = "MS" + sl;
+            mhd = "TH" + sl;
         }
         thuongHieu.setMa(mhd);
         thuongHieu.setNgayTao(Date.valueOf(LocalDate.now()));
