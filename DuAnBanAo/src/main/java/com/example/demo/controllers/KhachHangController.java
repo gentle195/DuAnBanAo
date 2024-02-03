@@ -147,12 +147,7 @@ public class KhachHangController {
                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         if (bindingResult.hasErrors()) {
 
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<KhachHang> page = KhachHangService.getAll(pageable);
-            model.addAttribute("listKhachHang", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("batmodalupdatecoao", 0);
-            model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
+            model.addAttribute("contentPage", "../khachhang/khach-hang-update.jsp");
             return "home/layout";
         }
         KhachHang cl = KhachHangService.findById(id);

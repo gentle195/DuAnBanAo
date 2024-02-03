@@ -112,7 +112,7 @@
                     </form>
                     <%--           kết thúc tìm kiếm         --%>
                     <div class="table-responsive">
-                        <table class="table table-striped" style="color: black">
+                        <table class="table table-striped" style="color: black; width: 1500px;">
                             <thead>
                             <tr>
                                 <th>Mã</th>

@@ -57,6 +57,7 @@ public class KhachHang {
     @Column(name = "TaiKhoan")
     private String taiKhoan;
 
+    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "MatKhau")
     private String matKhau;
 
