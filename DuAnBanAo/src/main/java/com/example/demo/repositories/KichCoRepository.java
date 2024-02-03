@@ -33,4 +33,7 @@ public interface KichCoRepository extends JpaRepository<KichCo, UUID> {
     @Modifying
     @Query(value = "update KichCo set trangThai=0, ngaySua=convert(date,getdate(),105)", nativeQuery = true)
     void updateTT();
+
+    KichCo findKichCoByMa(String ma);
+    KichCo findKichCoByTen(String ten);
 }

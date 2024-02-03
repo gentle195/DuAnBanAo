@@ -25,4 +25,6 @@ public interface ChatLieuService {
     public List<ChatLieu> search0(String ten);
 
     public List<ChatLieu> search1(String ten);
+    ChatLieu findByMa(String ma);
+    ChatLieu findByTen(String ten);
 }

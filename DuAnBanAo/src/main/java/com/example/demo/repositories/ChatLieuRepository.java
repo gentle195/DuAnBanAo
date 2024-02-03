@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.models.ChatLieu;
+import com.example.demo.models.KichCo;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,4 +33,7 @@ public interface ChatLieuRepository extends JpaRepository<ChatLieu, UUID> {
     @Modifying
     @Query(value = "update ChatLieu set trangThai=0, ngaySua=convert(date,getdate(),105)", nativeQuery = true)
     void updateTT();
+
+    ChatLieu findChatLieuByMa(String ma);
+    ChatLieu findChatLieuByTen(String ten);
 }

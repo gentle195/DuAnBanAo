@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.models.ChatLieu;
 import com.example.demo.models.MauSac;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +26,7 @@ public interface MauSacService {
     public List<MauSac> search0(String ten);
 
     public List<MauSac> search1(String ten);
+
+    MauSac findByMa(String ma);
+    MauSac findByTen(String ten);
 }

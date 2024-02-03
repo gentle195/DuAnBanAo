@@ -1,5 +1,6 @@
 package com.example.demo.repositories;
 
+import com.example.demo.models.KichCo;
 import com.example.demo.models.MauSac;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -33,4 +34,7 @@ public interface MauSacRepository extends JpaRepository<MauSac, UUID> {
     @Modifying
     @Query(value = "update MauSac set trangThai=0, ngaySua=convert(date,getdate(),105)", nativeQuery = true)
     void updateTT();
+
+    MauSac findMauSacByMa(String ma);
+    MauSac findMauSacByTen(String ten);
 }

@@ -71,4 +71,14 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
     public List<ThuongHieu> search1(String ten) {
         return thuongHieuRepo.search1(ten);
     }
+
+    @Override
+    public ThuongHieu findByMa(String ma) {
+        return thuongHieuRepo.findThuongHieuByMa(ma);
+    }
+
+    @Override
+    public ThuongHieu findByTen(String ten) {
+        return thuongHieuRepo.findThuongHieuByTen(ten);
+    }
 }

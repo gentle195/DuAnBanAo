@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.models.ChatLieu;
 import com.example.demo.models.KichCo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +26,7 @@ public interface KichCoService {
     public List<KichCo> search0(String ten);
 
     public List<KichCo> search1(String ten);
+
+    KichCo findByMa(String ma);
+    KichCo findByTen(String ten);
 }

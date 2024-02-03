@@ -70,4 +70,14 @@ public class KichCoServiceImpl implements KichCoService {
     public List<KichCo> search1(String ten) {
         return kichCoRepo.search1(ten);
     }
+
+    @Override
+    public KichCo findByMa(String ma) {
+        return kichCoRepo.findKichCoByMa(ma);
+    }
+
+    @Override
+    public KichCo findByTen(String ten) {
+        return kichCoRepo.findKichCoByTen(ten);
+    }
 }

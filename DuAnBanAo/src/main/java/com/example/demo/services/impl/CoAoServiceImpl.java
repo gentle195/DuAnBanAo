@@ -70,4 +70,14 @@ public class CoAoServiceImpl implements CoAoService {
     public List<CoAo> search1(String ten) {
         return coAoRepo.search1(ten);
     }
+
+    @Override
+    public CoAo findByMa(String ma) {
+        return coAoRepo.findCoAoByMa(ma);
+    }
+
+    @Override
+    public CoAo findByTen(String ten) {
+        return coAoRepo.findCoAoByTen(ten);
+    }
 }

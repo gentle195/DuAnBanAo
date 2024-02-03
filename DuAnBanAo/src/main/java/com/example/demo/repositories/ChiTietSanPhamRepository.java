@@ -86,6 +86,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
     @Query(value = "select c from ChatLieu c where c.ten LIKE :keyword ")
     List<ChatLieu> searchCL(@Param("keyword") String keyword);
 
+
     @Query(value = "select c from ChatLieu c where c.ten LIKE :keyword and c.trangThai=:trangThai")
     List<ChatLieu> search22CL(@Param("keyword") String keyword, @Param("trangThai") Integer trangThai);
 

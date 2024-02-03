@@ -33,4 +33,6 @@ public interface ThuongHieuRepository extends JpaRepository<ThuongHieu, UUID> {
     @Modifying
     @Query(value = "update ThuongHieu set trangThai=0, ngaySua=convert(date,getdate(),105)", nativeQuery = true)
     void updateTT();
+    ThuongHieu findThuongHieuByMa(String ma);
+    ThuongHieu findThuongHieuByTen(String ma);
 }

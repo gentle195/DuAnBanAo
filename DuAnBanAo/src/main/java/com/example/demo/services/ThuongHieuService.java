@@ -25,4 +25,7 @@ public interface ThuongHieuService {
     public List<ThuongHieu> search0(String ten);
 
     public List<ThuongHieu> search1(String ten);
+    ThuongHieu findByMa(String ma);
+    ThuongHieu findByTen(String ten);
+
 }

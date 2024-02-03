@@ -36,6 +36,7 @@ public class ChiTietSanPham {
     private String nguoiTao;
     private String nguoiSua;
     private int trangThai;
+    //0: con hang : 1: hêt hang 2: ngung ban
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idSanPham")
@@ -65,6 +66,18 @@ public class ChiTietSanPham {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idHinhAnh")
     private HinhAnh hinhAnh;
+    public void loadFromViewModel(ChiTietSanPham vm) {
+        this.setChatLieu(vm.getChatLieu());
+        this.setCoAo(vm.getCoAo());
+        this.setGiaBan(vm.getGiaBan());
+        this.setKichCo(vm.getKichCo());
+        this.setSanPham(vm.getSanPham());
+        this.setTrangThai(vm.getTrangThai());
+        this.setSoLuongTon(vm.getSoLuongTon());
+        this.setNgayTao(vm.getNgayTao());
+        this.setThuongHieu(vm.getThuongHieu());
+        this.setMauSac(vm.getMauSac());
+    }
 
 
 }

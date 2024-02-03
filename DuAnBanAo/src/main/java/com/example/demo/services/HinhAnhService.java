@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface HinhAnhService {
     List<HinhAnh> findAll();
+    String getImageUploadPath();
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.models.ChatLieu;
 import com.example.demo.models.CoAo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +26,6 @@ public interface CoAoService {
     public List<CoAo> search0(String ten);
 
     public List<CoAo> search1(String ten);
+    CoAo findByMa(String ma);
+    CoAo findByTen(String ten);
 }

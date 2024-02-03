@@ -71,4 +71,14 @@ public class MauSacServiceImpl implements MauSacService {
     public List<MauSac> search1(String ten) {
         return mauSacRepo.search1(ten);
     }
+
+    @Override
+    public MauSac findByMa(String ma) {
+        return mauSacRepo.findMauSacByMa(ma);
+    }
+
+    @Override
+    public MauSac findByTen(String ten) {
+        return mauSacRepo.findMauSacByTen(ten);
+    }
 }
