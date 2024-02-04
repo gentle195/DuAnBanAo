@@ -65,7 +65,6 @@ public class DiaChiController {
         model.addAttribute("listDiaChi", page.getContent());
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("DiaChi", new DiaChi());
-        model.addAttribute("batmodalthemcoao", 0);
         model.addAttribute("contentPage", "../diaChi/dia-chi-add.jsp");
         return "home/layout";
     }
@@ -99,7 +98,7 @@ public class DiaChiController {
         model.addAttribute("listKhachHang",khachHangService.findAll());
         model.addAttribute("listDiaChi", page.getContent());
         model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodalthemcoao", 1);
+        model.addAttribute("batmodalthemdiachi", 1);
         model.addAttribute("thongBaoThanhCong", "Thêm dữ liệu thành công");
         model.addAttribute("contentPage", "../diaChi/hien-thi.jsp");
         return "home/layout";
@@ -115,7 +114,7 @@ public class DiaChiController {
         model.addAttribute("listDiaChi", page.getContent());
         model.addAttribute("DiaChi", DiaChiService.findById(id));
         model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodaldetailcoao", 0);
+        model.addAttribute("batmodaldetaildiachi", 0);
         model.addAttribute("contentPage", "../diaChi/hien-thi.jsp");
         return "home/layout";
     }
@@ -130,7 +129,7 @@ public class DiaChiController {
         model.addAttribute("listDiaChi", page.getContent());
         model.addAttribute("DiaChi", DiaChiService.findById(id));
         model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodaldetailcoao", 0);
+        model.addAttribute("batmodaldetaildiachi", 0);
         model.addAttribute("contentPage", "../diaChi/hien-thi-ngung-hoat-dong.jsp");
         return "home/layout";
     }
@@ -160,7 +159,7 @@ public class DiaChiController {
             model.addAttribute("listKhachHang",khachHangService.findAll());
             model.addAttribute("listDiaChi", page.getContent());
             model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("batmodalupdatecoao", 0);
+            model.addAttribute("batmodalupdatediachi", 0);
             model.addAttribute("contentPage", "../diaChi/hien-thi.jsp");
             return "home/layout";
         }
@@ -180,7 +179,7 @@ public class DiaChiController {
         model.addAttribute("listKhachHang",khachHangService.findAll());
         model.addAttribute("listDiaChi", page.getContent());
         model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodalupdatecoao", 1);
+        model.addAttribute("batmodalupdatediachi", 1);
         model.addAttribute("thongBaoThanhCong", "Cập nhật dữ liệu thành công");
         model.addAttribute("contentPage", "../diaChi/hien-thi.jsp");
         return "home/layout";

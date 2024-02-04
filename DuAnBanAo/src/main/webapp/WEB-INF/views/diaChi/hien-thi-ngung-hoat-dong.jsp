@@ -193,8 +193,77 @@
         </div>
     </div>
 </div>
-</div>
-</div>
+<button style="display: none" type="button" id="batmodaldetaildiachi" class="btn btn-primary" data-bs-toggle="modal"
+        data-bs-target="#detailKichCo">
+    Open modal
+</button>
+<div class="modal" id="detailKichCo">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" style="color: black">
+                <form:form method="post" modelAttribute="DiaChi">
+                    <div class="form-group" style="display: none">
+                        <form:label class="form-label" path="ma">Mã:</form:label>
+                        <form:input class="form-control" path="ma" readonly="true"/>
+                        <form:errors path="ma" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="soDiaChi">Địa Chỉ:</form:label>
+                        <form:input class="form-control" path="soDiaChi" readonly="true"/>
+                        <form:errors path="soDiaChi" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="thanhPho">Thành phố:</form:label>
+                        <form:input class="form-control" path="thanhPho" readonly="true"/>
+                        <form:errors path="thanhPho" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="quan">Quận:</form:label>
+                        <form:input class="form-control" path="quan" readonly="true"/>
+                        <form:errors path="quan" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="phuong">Phường:</form:label>
+                        <form:input class="form-control" path="phuong" readonly="true"/>
+                        <form:errors path="phuong" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="nguoiTao">Người tạo:</form:label>
+                        <form:input class="form-control" path="nguoiTao" readonly="true"/>
+                        <form:errors path="nguoiTao" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="nguoiSua">Người sửa:</form:label>
+                        <form:input class="form-control" path="nguoiSua" readonly="true"/>
+                        <form:errors path="nguoiSua" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="khachHang">Khách hàng:</form:label>
+                        <form:select path="khachHang" class="form-control"
+                                     cssStyle="font-weight: bold; width: 100%">
+                            <option selected disabled>Khách hàng</option>
+                            <form:options items="${listKhachHang}" itemValue="id" itemLabel="hoTen"/>
+                        </form:select>
+                        <form:errors path="khachHang"/>
+                    </div>
+                    <div class="col-12">
+                        <div style="text-align: center">
+
+                            <button type="submit" class="btn btn-primary mr-2"
+                                    onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
+                                Thêm thông tin
+                            </button>
+                        </div>
+                    </div>
+                </form:form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"
@@ -213,18 +282,8 @@
     });
 </script>
 <script>
-    <c:if test="${batmodalthemchatlieu==0}">
-    document.getElementById('batmodalthemchatlieu').click();
-    </c:if>
-</script>
-<script>
-    <c:if test="${batmodaldetailchatlieu==0}">
-    document.getElementById('batmodaldetailchatlieu').click();
-    </c:if>
-</script>
-<script>
-    <c:if test="${batmodalupdatechatlieu==0}">
-    document.getElementById('batmodalupdatechatlieu').click();
+    <c:if test="${batmodaldetaildiachi==0}">
+    document.getElementById('batmodaldetaildiachi').click();
     </c:if>
 </script>
 </html>

@@ -69,4 +69,14 @@ public class ChatLieuServiceImpl implements ChatLieuService {
     public List<ChatLieu> search1(String ten) {
         return chatLieuRepository.search1(ten);
     }
+
+    @Override
+    public ChatLieu findByMa(String ma) {
+        return chatLieuRepository.findChatLieuByMa(ma);
+    }
+
+    @Override
+    public ChatLieu findByTen(String ten) {
+        return chatLieuRepository.findChatLieuByTen(ten);
+    }
 }
