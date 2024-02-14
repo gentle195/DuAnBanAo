@@ -1,7 +1,6 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.models.ChiTietSanPham;
-import com.example.demo.models.SanPham;
+import com.example.demo.models.*;
 import com.example.demo.repositories.ChiTietSanPhamRepository;
 import com.example.demo.repositories.SanPhamRepository;
 import com.example.demo.services.SanPhamService;
@@ -107,8 +106,8 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
-    public List<ChiTietSanPham> findAllCTSP(UUID check) {
-        return chiTietSanPhamRepository.findAllCTSP(check);
+    public List<ChiTietSanPham> findAllCTSP() {
+        return chiTietSanPhamRepository.findAllCTSP();
     }
 
     @Override
@@ -124,5 +123,25 @@ public class SanPhamServiceImpl implements SanPhamService {
     @Override
     public SanPham findByTen(String ten) {
         return sanPhamRepo.findSanPhamByTen(ten);
+    }
+
+    @Override
+    public List<ChiTietSanPham> showQR(UUID id) {
+        return chiTietSanPhamRepository.showQR(id);
+    }
+
+    @Override
+    public boolean existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieu(ChatLieu chatLieu, CoAo coAo, KichCo kichCo, MauSac mauSac, ThuongHieu thuongHieu) {
+        return chiTietSanPhamRepository.existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieu(chatLieu, coAo, kichCo, mauSac, thuongHieu);
+    }
+
+    @Override
+    public List<ChiTietSanPham> loc(UUID idSanPham, UUID idChatLieu, UUID idCoAo, UUID idKichCo, UUID idMauSac, UUID idThuongHieu) {
+        return chiTietSanPhamRepository.loc(idSanPham, idChatLieu, idCoAo, idKichCo, idMauSac, idThuongHieu);
+    }
+
+    @Override
+    public ChiTietSanPham scan(String ma) {
+        return chiTietSanPhamRepository.scan(ma);
     }
 }

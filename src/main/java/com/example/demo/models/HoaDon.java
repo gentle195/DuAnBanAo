@@ -45,7 +45,7 @@ public class HoaDon {
 
     //    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "SdtNguoiNhan")
-    private String sdtNguoiNhan;
+            private String sdtNguoiNhan;
 
     //    @NotBlank(message = "Không để trống thông tin"
     @Column(name = "EmailNguoiNhan")
@@ -55,7 +55,7 @@ public class HoaDon {
     @Column(name = "TongTien")
     private BigDecimal tongTien;
 
-//    @DecimalMin(value = "0", message = "Phí ship phải là số và lớn hơn hoặc bằng 0")
+    //    @DecimalMin(value = "0", message = "Phí ship phải là số và lớn hơn hoặc bằng 0")
 //    @DecimalMax(value = "300000", message = "Phí ship tối đa là 300.000")
     @Column(name = "PhiShip")
     private BigDecimal phiShip;
@@ -103,7 +103,6 @@ public class HoaDon {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdPGG")
     private PhieuGiamGia phieuGiamGia;
-
 
 
 }

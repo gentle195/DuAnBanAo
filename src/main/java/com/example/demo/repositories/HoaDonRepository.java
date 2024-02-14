@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 import java.sql.Date;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -62,5 +63,11 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
 //
 //    @Query("select hd from HoaDon hd left join KhachHang kh on hd.khachHang.id=kh.id where kh.id=:id")
 //    Page<HoaDon> hoaDonKH(UUID id);
+
+    @Query("select hd from HoaDon hd where hd.trangThaiHoaDon=0")
+    List<HoaDon> hoaDonCho();
+
+    @Query("select hd from HoaDon hd")
+    List<HoaDon> findAllHoaDon();
 
 }

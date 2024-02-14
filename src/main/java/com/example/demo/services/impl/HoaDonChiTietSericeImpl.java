@@ -1,11 +1,13 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.models.ChiTietSanPham;
 import com.example.demo.models.HoaDon;
 import com.example.demo.models.HoaDonChiTiet;
 import com.example.demo.repositories.HoaDonChiTietRepository;
 import com.example.demo.repositories.HoaDonRepository;
 import com.example.demo.services.HoaDonChiTietSerice;
 import com.example.demo.services.HoaDonSerice;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,5 +26,22 @@ public class HoaDonChiTietSericeImpl implements HoaDonChiTietSerice {
     @Override
     public List<HoaDonChiTiet> hoaDonChiTietAll(UUID pageable) {
         return hoaDonChiTietRepository.hoaDonChiTietAll(pageable);
+    }
+
+    @Override
+    public HoaDonChiTiet add(HoaDonChiTiet hoaDonChiTiet) {
+        return hoaDonChiTietRepository.save(hoaDonChiTiet);
+    }
+
+    @Override
+    public HoaDonChiTiet update(UUID id, HoaDonChiTiet hoaDonChiTiet) {
+        if (id != null) {
+            HoaDonChiTiet chiTietUpdate = hoaDonChiTietRepository.findById(id).orElse(null);
+            if (chiTietUpdate != null) {
+                BeanUtils.copyProperties(hoaDonChiTiet, chiTietUpdate);
+                hoaDonChiTietRepository.save(chiTietUpdate);
+            }
+        }
+        return null;
     }
 }

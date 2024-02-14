@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
     <!-- Favicon icon -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
 </head>
 <body>
 <c:if test="${thongBao != null}">
@@ -133,6 +134,77 @@
                                         </div>
                                     </form:form>
                                 </div>
+                                <form action="/san-pham/chi-tiet-san-pham/loc" method="post"
+                                      onsubmit="return checkLoc()">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <select name="chatLieu" class="form-control"
+                                                        style="font-weight: bold; width: 100%"
+                                                        id="selectChatLieu">
+                                                    <option selected disabled>Chất liệu</option>
+                                                    <c:forEach items="${listChatLieu}" var="cl" varStatus="i">
+                                                        <option value="${cl.id}">${cl.ten}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <select name="mauSac" class="form-control"
+                                                        style="font-weight: bold; width: 100%"
+                                                        id="selectMauSac">
+                                                    <option selected disabled>Màu sắc</option>
+                                                    <c:forEach items="${listMauSac}" var="ms" varStatus="i">
+                                                        <option value="${ms.id}">${ms.ten}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <select name="thuongHieu" class="form-control"
+                                                        style="font-weight: bold; width: 100%"
+                                                        id="selectThuongHieu">
+                                                    <option selected disabled>Thương hiệu</option>
+                                                    <c:forEach items="${listThuongHieu}" var="th" varStatus="i">
+                                                        <option value="${th.id}">${th.ten}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <select name="coAo" class="form-control"
+                                                        style="font-weight: bold; width: 100%"
+                                                        id="selectCoAo">
+                                                    <option selected disabled>Cổ áo</option>
+                                                    <c:forEach items="${listCoAo}" var="ca" varStatus="i">
+                                                        <option value="${ca.id}">${ca.ten}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <select name="kichCo" class="form-control"
+                                                        style="font-weight: bold; width: 100%"
+                                                        id="selectKichCo">
+                                                    <option selected disabled>Kích cỡ</option>
+                                                    <c:forEach items="${listKichCo}" var="kc" varStatus="i">
+                                                        <option value="${kc.id}">${kc.ten}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12" style="text-align: center">
+                                            <button type="submit" class="btn btn-primary mr-2"
+                                                    onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
+                                                Lọc Thông Tin
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                                 <br><br>
                                 <h4 class="card-title" style="float: left">Danh sách chi tiết sản phẩm</h4>
                                 <%--            Tìm kiếm               --%>
@@ -152,7 +224,7 @@
                                         <thead>
                                         <tr>
                                             <th>Mã</th>
-                                            <%--                                            <th>Ảnh Sản Phẩm</th>--%>
+                                            <th>Ảnh Sản Phẩm</th>
                                             <th>Tên Sản Phẩm</th>
                                             <th>Thương Hiệu</th>
                                             <th>Cổ Áo</th>
@@ -173,7 +245,11 @@
                                         <c:forEach items="${listCTSP}" var="ctsp">
                                             <tr>
                                                 <td>${ctsp.ma}</td>
-                                                    <%--                                                <td>${ctsp.sten}</td>--%>
+                                                <td>
+                                                    <img src="../../../uploads/${ctsp.hinhAnh.duongDan1}" width="40"
+                                                         height="40"
+                                                         style="border-radius:50% 50% 50% 50%">
+                                                </td>
                                                 <td>${ctsp.sanPham.ten}</td>
                                                 <td>${ctsp.thuongHieu.ten}</td>
                                                 <td>${ctsp.coAo.ten}</td>
@@ -210,6 +286,53 @@
                                                        onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
                                                         <i class="ti-file btn-icon-prepend"></i>
                                                         Update</a>
+                                                    <c:if test="${ctsp.trangThai==1}">
+                                                        <a href="/san-pham/chi-tiet-san-pham/delete/${ctsp.id}"
+                                                           class="btn btn-danger btn-icon-text"
+                                                           tabindex="-1"
+                                                           role="button"
+                                                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
+                                                            <i class="ti-reload btn-icon-prepend"></i>
+                                                            Status</a>
+                                                    </c:if>
+                                                    <a href="/san-pham/chi-tiet-san-pham/show-qr/${ctsp.id}"
+                                                       class="btn btn-info btn-icon-text"
+                                                       data-bs-toggle="modal"
+                                                       data-bs-target="#showQR_${ctsp.id}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                             fill="currentColor" class="bi bi-qr-code-scan"
+                                                             viewBox="0 0 16 16">
+                                                            <path d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0v-3Zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5ZM.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5Zm15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5ZM4 4h1v1H4V4Z"/>
+                                                            <path d="M7 2H2v5h5V2ZM3 3h3v3H3V3Zm2 8H4v1h1v-1Z"/>
+                                                            <path d="M7 9H2v5h5V9Zm-4 1h3v3H3v-3Zm8-6h1v1h-1V4Z"/>
+                                                            <path d="M9 2h5v5H9V2Zm1 1v3h3V3h-3ZM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-3V8H8Zm2 2H9V9h1v1Zm4 2h-1v1h-2v1h3v-2Zm-4 2v-1H8v1h2Z"/>
+                                                            <path d="M12 9h2V8h-2v1Z"/>
+                                                        </svg>
+                                                        QR Code</a>
+                                                    <div class="modal fade" id="showQR_${ctsp.id}" tabindex="-1"
+                                                         aria-labelledby="exampleModalLabelQR"
+                                                         aria-hidden="true" data-backdrop="static">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h2 class="modal-title" id="exampleModalLabelQR">QR
+                                                                        Code</h2>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <table class="table" id="table_id">
+                                                                        <tbody id="listCTSP_${ctsp.id}"
+                                                                               class="ctsp_search">
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -308,11 +431,11 @@
     Open modal
 </button>
 <div class="modal" id="updateCoAo">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-body" style="color: black">
                 <form:form action="/san-pham/chi-tiet-san-pham/update/${chiTiet.id}" method="post"
-                           modelAttribute="chiTiet">
+                           modelAttribute="chiTiet" enctype="multipart/form-data">
                     <div style="display: none">
                         <form:input class="form-control" path="ma"/>
                         <form:input class="form-control" path="sanPham"/>
@@ -320,9 +443,116 @@
                         <form:input class="form-control" path="mauSac"/>
                         <form:input class="form-control" path="kichCo"/>
                         <form:input class="form-control" path="coAo"/>
+                        <form:input class="form-control" path="hinhAnh"/>
                         <form:input class="form-control" path="chatLieu"/>
                         <form:input class="form-control" path="ngayTao"/>
                         <form:input class="form-control" path="nguoiTao"/>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div align="center">
+                                        <div style="display: none">
+                                            <input style="" type="text" name="checkanh1" value="cu1" id="cucheck1">
+                                            <br>
+                                        </div>
+                                        <div align="center">
+                                            <br>
+                                            <label style="border: 5px solid white;width: 150px;height: 150px;border-radius:50% 50% 50% 50%;"
+                                                   for="anhmoi1">
+                                                <img id="preview-anh1-2" class="preview-image"
+                                                     src="../../../uploads/${chiTiet.hinhAnh.duongDan1}" alt=""
+                                                     width="100%" height="100%"
+                                                     style="border-radius:50% 50% 50% 50%;border: 2px solid #8c8c8c">
+                                                <br><br>
+                                                ẢNH 1
+                                            </label>
+                                            <br>
+                                            <div style="display: none">
+                                                <input type="file" name="anh1s" accept="image/jpeg, image/png"
+                                                       id="anhmoi1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div align="center">
+                                        <div style="display: none">
+                                            <input style="" type="text" name="checkanh2" value="cu2" id="cucheck2">
+                                            <br>
+                                        </div>
+                                        <div align="center">
+                                            <br>
+                                            <label style="border: 5px solid white;width: 150px;height: 150px;border-radius:50% 50% 50% 50%;"
+                                                   for="anhmoi2">
+                                                <img id="preview-anh2-2" class="preview-image"
+                                                     src="../../../uploads/${chiTiet.hinhAnh.duongDan2}" alt=""
+                                                     width="100%" height="100%"
+                                                     style="border-radius:50% 50% 50% 50%;border: 2px solid #8c8c8c">
+                                                <br><br>
+                                                ẢNH 2
+                                            </label>
+                                            <br>
+                                            <div style="display: none">
+                                                <input type="file" name="anh2s" accept="image/jpeg, image/png"
+                                                       id="anhmoi2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div align="center">
+                                        <div style="display: none">
+                                            <input style="" type="text" name="checkanh3" value="cu3" id="cucheck3">
+                                            <br>
+                                        </div>
+                                        <div align="center">
+                                            <br>
+                                            <label style="border: 5px solid white;width: 150px;height: 150px;border-radius:50% 50% 50% 50%;"
+                                                   for="anhmoi3">
+                                                <img id="preview-anh3-2" class="preview-image"
+                                                     src="../../../uploads/${chiTiet.hinhAnh.duongDan3}" alt=""
+                                                     width="100%" height="100%"
+                                                     style="border-radius:50% 50% 50% 50%;border: 2px solid #8c8c8c">
+                                                <br><br>
+                                                ẢNH 3
+                                            </label>
+                                            <br>
+                                            <div style="display: none">
+                                                <input type="file" name="anh3s" accept="image/jpeg, image/png"
+                                                       id="anhmoi3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div align="center">
+                                        <div style="display: none">
+                                            <input style="" type="text" name="checkanh4" value="cu4" id="cucheck4">
+                                            <br>
+                                        </div>
+                                        <div align="center">
+                                            <br>
+                                            <label style="border: 5px solid white;width: 150px;height: 150px;border-radius:50% 50% 50% 50%;"
+                                                   for="anhmoi4">
+                                                <img id="preview-anh4-2" class="preview-image"
+                                                     src="../../../uploads/${chiTiet.hinhAnh.duongDan4}" alt=""
+                                                     width="100%" height="100%"
+                                                     style="border-radius:50% 50% 50% 50%;border: 2px solid #8c8c8c">
+                                                <br><br>
+                                                ẢNH 4
+                                            </label>
+                                            <br>
+                                            <div style="display: none">
+                                                <input type="file" name="anh4s" accept="image/jpeg, image/png"
+                                                       id="anhmoi4">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <form:label class="form-label" path="soLuongTon">Số lượng tồn:</form:label>
@@ -356,6 +586,130 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#selectThuongHieu').select2();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#selectCoAo').select2();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#selectMauSac').select2();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#selectChatLieu').select2();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#selectKichCo').select2();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('div[id^="showQR_"]').on('show.bs.modal', async function (e) {
+            const id = e.currentTarget.id.split("_")[1];
+            const url = "http://localhost:8080/san-pham/chi-tiet-san-pham/show-qr/" + id;
+            console.log(id, url);
+            try {
+                const resp = await fetch(url);
+                const data = await resp.json();
+                console.log(data)
+                let html = '';
+                for (let i = 0; i < data.length; i++) {
+                    const ctsp = data[i];
+                    const tr = `
+                <tr>
+                    <td align="center"><img src="../../../maqr/` + ctsp.maQR + `" width="300" height="300"></td>
+                </tr>
+            `;
+                    html += tr;
+                }
+
+                $("#listCTSP_" + id).html(html);
+            } catch (err) {
+                console.error(err)
+            }
+        });
+    });
+</script>
+<script>
+    const imageInput1 = document.getElementById('anhmoi1');
+
+    const previewAnh12 = document.getElementById('preview-anh1-2');
+
+    imageInput1.addEventListener('change', function () {
+        const file = imageInput1.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewAnh12.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewAnh12.src = '';
+        }
+        document.getElementById('cucheck1').value = 'moi1';
+    });
+    const imageInput2 = document.getElementById('anhmoi2');
+
+    const previewAnh22 = document.getElementById('preview-anh2-2');
+
+    imageInput2.addEventListener('change', function () {
+        const file = imageInput2.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewAnh22.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewAnh22.src = '';
+        }
+        document.getElementById('cucheck2').value = 'moi2';
+    });
+    const imageInput3 = document.getElementById('anhmoi3');
+
+    const previewAnh32 = document.getElementById('preview-anh3-2');
+
+    imageInput3.addEventListener('change', function () {
+        const file = imageInput3.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewAnh32.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewAnh32.src = '';
+        }
+        document.getElementById('cucheck3').value = 'moi3';
+    });
+    const imageInput4 = document.getElementById('anhmoi4');
+
+    const previewAnh42 = document.getElementById('preview-anh4-2');
+
+    imageInput4.addEventListener('change', function () {
+        const file = imageInput4.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewAnh42.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewAnh42.src = '';
+        }
+        document.getElementById('cucheck4').value = 'moi4';
+    });
+</script>
 <script>
     $(document).ready(function () {
         $('#modalError').modal('show');

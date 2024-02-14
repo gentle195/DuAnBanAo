@@ -11,4 +11,8 @@ import java.util.UUID;
 public interface HoaDonChiTietSerice {
 
     List<HoaDonChiTiet> hoaDonChiTietAll(UUID id);
+
+    HoaDonChiTiet add(HoaDonChiTiet hoaDonChiTiet);
+
+    HoaDonChiTiet update(UUID id, HoaDonChiTiet hoaDonChiTiet);
 }

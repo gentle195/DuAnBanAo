@@ -1,7 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.models.ChiTietSanPham;
-import com.example.demo.models.SanPham;
+import com.example.demo.models.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -37,11 +36,19 @@ public interface SanPhamService {
 
     public List<SanPham> search1(String ten);
 
-    List<ChiTietSanPham> findAllCTSP(UUID check);
+    List<ChiTietSanPham> findAllCTSP();
 
     List<ChiTietSanPham> findChiTietSanPhamBySanPham(SanPham sanPham);
 
     SanPham findByMa(String ma);
 
     SanPham findByTen(String ten);
+
+    List<ChiTietSanPham> showQR(UUID id);
+
+    boolean existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieu(ChatLieu chatLieu, CoAo coAo, KichCo kichCo, MauSac mauSac, ThuongHieu thuongHieu);
+
+    List<ChiTietSanPham> loc(UUID idSanPham, UUID idChatLieu, UUID idCoAo, UUID idKichCo, UUID idMauSac, UUID idThuongHieu);
+
+    ChiTietSanPham scan(String ma);
 }

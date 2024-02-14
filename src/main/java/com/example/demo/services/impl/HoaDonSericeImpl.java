@@ -3,6 +3,7 @@ package com.example.demo.services.impl;
 import com.example.demo.models.HoaDon;
 import com.example.demo.repositories.HoaDonRepository;
 import com.example.demo.services.HoaDonSerice;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,6 +54,33 @@ public class HoaDonSericeImpl implements HoaDonSerice {
     @Override
     public Page<HoaDon> hoaDonHoanThanh(Pageable pageable) {
         return hoaDonRepository.hoaDonHoanThanh(pageable);
+    }
+
+    @Override
+    public List<HoaDon> hoaDonCho() {
+        return hoaDonRepository.hoaDonCho();
+    }
+
+    @Override
+    public HoaDon add(HoaDon hoaDon) {
+        return hoaDonRepository.save(hoaDon);
+    }
+
+    @Override
+    public HoaDon update(UUID id, HoaDon hoaDon) {
+        if (id != null) {
+            HoaDon hoaDonUpdate = hoaDonRepository.findById(id).orElse(null);
+            if (hoaDonUpdate != null) {
+                BeanUtils.copyProperties(hoaDon, hoaDonUpdate);
+                hoaDonRepository.save(hoaDonUpdate);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<HoaDon> findAll() {
+        return hoaDonRepository.findAllHoaDon();
     }
 
 //    @Override

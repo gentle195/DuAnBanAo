@@ -17,6 +17,30 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
 </head>
 <body>
+<c:if test="${thongBao != null}">
+    <div id="modalError" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: block;">
+                                    <span class="swal2-x-mark swal2-animate-x-mark"><span
+                                            class="swal2-x-mark-line-left"></span><span
+                                            class="swal2-x-mark-line-right"></span></span></div>
+                            <h4 style="color: red;margin: 10px;text-align: center">${thongBao}</h4>
+                        </div>
+                        <div class="col-12" style="text-align: center;margin-top: 20px">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</c:if>
 <c:if test="${thongBaoThanhCong != null}">
     <div id="modalSuccess" class="modal fade">
         <div class="modal-dialog modal-dialog-centered">
@@ -71,7 +95,8 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="description" role="tabpanel"
                      aria-labelledby="description-tab">
-                    <form:form action="/san-pham/chi-tiet-san-pham/add" method="post" modelAttribute="chiTiet">
+                    <form:form action="/san-pham/chi-tiet-san-pham/add" method="post" modelAttribute="chiTiet"
+                               enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-12" style="text-align: center">
                                 <div class="form-group">
@@ -104,6 +129,7 @@
                                                 <option selected disabled>Cổ áo</option>
                                                 <form:options items="${listCoAo}" itemValue="id" itemLabel="ten"/>
                                             </form:select>
+                                            <span class="text-danger">${errorCoAo}</span>
                                             <form:errors path="coAo"/>
                                         </div>
                                         <div class="col-1">
@@ -124,6 +150,7 @@
                                                 <option selected disabled>Thương hiệu</option>
                                                 <form:options items="${listThuongHieu}" itemValue="id" itemLabel="ten"/>
                                             </form:select>
+                                            <span class="text-danger">${errorThuongHieu}</span>
                                             <form:errors path="thuongHieu"/>
                                         </div>
                                         <div class="col-1">
@@ -144,6 +171,7 @@
                                                 <option selected disabled>Chất liệu</option>
                                                 <form:options items="${listChatLieu}" itemValue="id" itemLabel="ten"/>
                                             </form:select>
+                                            <span class="text-danger">${errorChatLieu}</span>
                                             <form:errors path="chatLieu"/>
                                         </div>
                                         <div class="col-1">
@@ -164,6 +192,7 @@
                                                 <option selected disabled>Kích cỡ</option>
                                                 <form:options items="${listKichCo}" itemValue="id" itemLabel="ten"/>
                                             </form:select>
+                                            <span class="text-danger">${errorKichThuoc}</span>
                                             <form:errors path="kichCo"/>
                                         </div>
                                         <div class="col-1">
@@ -184,6 +213,7 @@
                                                 <option selected disabled>Màu sắc</option>
                                                 <form:options items="${listMauSac}" itemValue="id" itemLabel="ten"/>
                                             </form:select>
+                                            <span class="text-danger">${errorMauSac}</span>
                                             <form:errors path="mauSac"/>
                                         </div>
                                         <div class="col-1">
@@ -191,6 +221,84 @@
                                                data-bs-target="#addMauSac">
                                                 <img src="../../../images/plus.png">
                                             </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div align="center">
+                                                <br>
+                                                <label style="border: 5px solid white;width: 150px;height: 150px;border-radius:50% 50% 50% 50%;"
+                                                       for="anhmoi1">
+                                                    <img id="preview-anh1-2" class="preview-image" src="" alt=""
+                                                         width="100%" height="100%"
+                                                         style="border-radius:50% 50% 50% 50%;border: 2px solid #8c8c8c">
+                                                    <br><br>
+                                                    ẢNH 1
+                                                </label>
+                                                <br>
+                                                <div style="display: none">
+                                                    <input type="file" name="anh1s" accept="image/jpeg, image/png"
+                                                           id="anhmoi1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div align="center">
+                                                <br>
+                                                <label style="border: 5px solid white;width: 150px;height: 150px;border-radius:50% 50% 50% 50%;"
+                                                       for="anhmoi2">
+                                                    <img id="preview-anh2-2" class="preview-image" src="" alt=""
+                                                         width="100%" height="100%"
+                                                         style="border-radius:50% 50% 50% 50%;border: 2px solid #8c8c8c">
+                                                    <br><br>
+                                                    ẢNH 2
+                                                </label>
+                                                <br>
+                                                <div style="display: none">
+                                                    <input type="file" name="anh2s" accept="image/jpeg, image/png"
+                                                           id="anhmoi2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div align="center">
+                                                <br>
+                                                <label style="border: 5px solid white;width: 150px;height: 150px;border-radius:50% 50% 50% 50%;"
+                                                       for="anhmoi3">
+                                                    <img id="preview-anh3-2" class="preview-image" src="" alt=""
+                                                         width="100%" height="100%"
+                                                         style="border-radius:50% 50% 50% 50%;border: 2px solid #8c8c8c">
+                                                    <br><br>
+                                                    ẢNH 3
+                                                </label>
+                                                <br>
+                                                <div style="display: none">
+                                                    <input type="file" name="anh3s" accept="image/jpeg, image/png"
+                                                           id="anhmoi3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div align="center">
+                                                <br>
+                                                <label style="border: 5px solid white;width: 150px;height: 150px;border-radius:50% 50% 50% 50%;"
+                                                       for="anhmoi4">
+                                                    <img id="preview-anh4-2" class="preview-image" src="" alt=""
+                                                         width="100%" height="100%"
+                                                         style="border-radius:50% 50% 50% 50%;border: 2px solid #8c8c8c">
+                                                    <br><br>
+                                                    ẢNH 4
+                                                </label>
+                                                <br>
+                                                <div style="display: none">
+                                                    <input type="file" name="anh4s" accept="image/jpeg, image/png"
+                                                           id="anhmoi4">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -374,6 +482,72 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    const imageInput1 = document.getElementById('anhmoi1');
+
+    const previewAnh12 = document.getElementById('preview-anh1-2');
+
+    imageInput1.addEventListener('change', function () {
+        const file = imageInput1.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewAnh12.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewAnh12.src = '';
+        }
+    });
+    const imageInput2 = document.getElementById('anhmoi2');
+
+    const previewAnh22 = document.getElementById('preview-anh2-2');
+
+    imageInput2.addEventListener('change', function () {
+        const file = imageInput2.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewAnh22.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewAnh22.src = '';
+        }
+    });
+    const imageInput3 = document.getElementById('anhmoi3');
+
+    const previewAnh32 = document.getElementById('preview-anh3-2');
+
+    imageInput3.addEventListener('change', function () {
+        const file = imageInput3.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewAnh32.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewAnh32.src = '';
+        }
+    });
+    const imageInput4 = document.getElementById('anhmoi4');
+
+    const previewAnh42 = document.getElementById('preview-anh4-2');
+
+    imageInput4.addEventListener('change', function () {
+        const file = imageInput4.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewAnh42.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewAnh42.src = '';
+        }
+    });
+</script>
 <script>
     $(document).ready(function () {
         $('#selectChucVu').select2();
