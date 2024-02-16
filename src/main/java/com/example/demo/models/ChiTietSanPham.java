@@ -32,7 +32,7 @@ public class ChiTietSanPham {
     private String ma;
     private String maQR;
 
-    @DecimalMin(value = "1", message = "Số lượng tồn lớn hơn 0")
+//    @DecimalMin(value = "1", message = "Số lượng tồn lớn hơn 0")
     @DecimalMax(value = "1000", message = "Số lượng tồn nhỏ hơn hoặc bằng 1000")
     @NotNull(message = "Không để trống dữ liệu")
     private int soLuongTon;

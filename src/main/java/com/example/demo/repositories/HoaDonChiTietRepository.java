@@ -16,4 +16,11 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
 
     @Query("select hd from HoaDonChiTiet hd left join HoaDon h on hd.idHoaDon.id=h.id where h.id =:id")
     List<HoaDonChiTiet> hoaDonChiTietAll(UUID id);
+
+//    @Query("select hd from HoaDonChiTiet hd left join HoaDon h on hd.idHoaDon.id=h.id where h.id =:id and hd.trangThai=0")
+//    List<HoaDonChiTiet> hoaDonChiTietBanHang(UUID id);
+    @Query("select hdct from HoaDonChiTiet hdct where hdct.idHoaDon.id= :id and " +
+            "(hdct.idCTSP.sanPham.ten like %:ten% or hdct.idCTSP.mauSac.ten like %:ten% or hdct.idCTSP.kichCo.ten like %:ten% " +
+            "or hdct.idCTSP.thuongHieu.ten like %:ten% or hdct.idCTSP.coAo.ten like %:ten% or hdct.idCTSP.chatLieu.ten like %:ten% )")
+    List<HoaDonChiTiet> searchBanTaiQuay(UUID id, String ten);
 }

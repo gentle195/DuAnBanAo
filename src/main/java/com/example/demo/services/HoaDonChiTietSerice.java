@@ -15,4 +15,11 @@ public interface HoaDonChiTietSerice {
     HoaDonChiTiet add(HoaDonChiTiet hoaDonChiTiet);
 
     HoaDonChiTiet update(UUID id, HoaDonChiTiet hoaDonChiTiet);
+
+    HoaDonChiTiet findHoaDonChiTiet(UUID id);
+
+    public Boolean delete(UUID id);
+
+    //    List<HoaDonChiTiet> hoaDonChiTietBanHang(UUID id);
+    List<HoaDonChiTiet> searchBanTaiQuay(UUID id, String ten);
 }

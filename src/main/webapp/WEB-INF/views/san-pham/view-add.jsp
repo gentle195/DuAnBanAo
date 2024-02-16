@@ -118,6 +118,7 @@
                                     <form:label class="form-label" path="soLuongTon">Số lượng tồn:</form:label>
                                     <form:input class="form-control" path="soLuongTon" type="number"/>
                                     <form:errors path="soLuongTon" cssStyle="color: red"></form:errors>
+                                    <label style="color: red">${thongBaoSoLuong}</label>
                                 </div>
                             </div>
                             <div class="col-4">

@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.models.ChiTietSanPham;
 import com.example.demo.models.HoaDon;
 import com.example.demo.models.HoaDonChiTiet;
+import com.example.demo.models.KhachHang;
 import com.example.demo.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,6 @@ public class BanHangTaiQuayController {
     private HoaDon hoaDonnn = new HoaDon();
     private ChiTietSanPham ct = new ChiTietSanPham();
     private UUID idHoaDon = null;
-    private BigDecimal total = BigDecimal.ZERO;
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model, @ModelAttribute("HoaDonCho") HoaDon hoaDon, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham) {
@@ -260,7 +260,7 @@ public class BanHangTaiQuayController {
                             chiTiet.setTrangThai(0);
                             sanPhamService.updateCTSP(chiTiet.getId(), chiTiet);
                         }
-                        for (HoaDonChiTiet hdctt: hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon)
+                        for (HoaDonChiTiet hdctt : hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon)
                         ) {
                             total = total.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
                             hoaDonnn.setTongTien(total);
@@ -307,8 +307,8 @@ public class BanHangTaiQuayController {
                     chiTiet.setTrangThai(0);
                     sanPhamService.updateCTSP(chiTiet.getId(), chiTiet);
                 }
-                for (HoaDonChiTiet hdctt: hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon)
-                     ) {
+                for (HoaDonChiTiet hdctt : hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon)
+                ) {
                     total = total.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
                     hoaDonnn.setTongTien(total);
                     hoaDonnn.setNgaySua(Date.valueOf(LocalDate.now()));
@@ -337,11 +337,12 @@ public class BanHangTaiQuayController {
             }
         }
     }
+
     @GetMapping("/them-gio-hang/{ma}")
     public String qrCode(Model model, @PathVariable("ma") String scan, @ModelAttribute("HoaDonCho") HoaDon hoaDon,
-                         @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham){
-        ChiTietSanPham chiTietSanPham1=sanPhamService.scan(scan);
-        if(chiTietSanPham1.getTrangThai()==1){
+                         @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham) {
+        ChiTietSanPham chiTietSanPham1 = sanPhamService.scan(scan);
+        if (chiTietSanPham1.getTrangThai() == 1) {
             model.addAttribute("chiTiet", ct);
             model.addAttribute("HoaDonCho", hoaDonnn);
             List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
@@ -360,7 +361,7 @@ public class BanHangTaiQuayController {
             model.addAttribute("listSanPham", sanPhamService.findAll());
             model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
             return "home/layout";
-        }else if( chiTietSanPham1.getTrangThai()==2){
+        } else if (chiTietSanPham1.getTrangThai() == 2) {
             model.addAttribute("chiTiet", ct);
             model.addAttribute("HoaDonCho", hoaDonnn);
             List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
@@ -379,7 +380,7 @@ public class BanHangTaiQuayController {
             model.addAttribute("listSanPham", sanPhamService.findAll());
             model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
             return "home/layout";
-        }else{
+        } else {
             model.addAttribute("chiTiet", chiTietSanPham1);
             ct = chiTietSanPham1;
             model.addAttribute("HoaDonCho", hoaDonnn);
@@ -400,5 +401,132 @@ public class BanHangTaiQuayController {
             model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
             return "home/layout";
         }
+    }
+
+    @GetMapping("/delete-hoa-don-chi-tiet/{id}")
+    public String deteteHoaDonChiTiet(Model model, @ModelAttribute("HoaDonCho") HoaDon hoaDon,
+                                      @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @PathVariable("id") UUID id) {
+        BigDecimal total = BigDecimal.ZERO;
+        HoaDonChiTiet hdct = hoaDonChiTietSerice.findHoaDonChiTiet(id);
+        ChiTietSanPham ctsp = sanPhamService.findCTSPById(hdct.getIdCTSP().getId());
+        ctsp.setSoLuongTon(ctsp.getSoLuongTon() + hdct.getSoLuong());
+        ctsp.setNgaySua(Date.valueOf(LocalDate.now()));
+        ctsp.setTrangThai(0);
+        sanPhamService.updateCTSP(ctsp.getId(), ctsp);
+        hoaDonChiTietSerice.delete(id);
+        List<HoaDonChiTiet> list = hoaDonChiTietSerice.hoaDonChiTietAll(hdct.getIdHoaDon().getId());
+        HoaDon hd = hoaDonSerice.findById(hdct.getIdHoaDon().getId());
+        if (list.isEmpty()) {
+            hd.setTongTien(BigDecimal.ZERO);
+            hd.setNgaySua(Date.valueOf(LocalDate.now()));
+            total = hd.getTongTien();
+//        hd.setNguoiSua();
+        } else {
+            BigDecimal subTotal = list.stream()
+                    .map(hdd -> (BigDecimal.valueOf(hdd.getDonGia().intValue() * hdd.getSoLuong())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            total = subTotal;
+            hd.setTongTien(subTotal);
+            hd.setNgaySua(Date.valueOf(LocalDate.now()));
+//        hd.setNguoiSua();
+
+        }
+        hoaDonSerice.update(hd.getId(), hd);
+        model.addAttribute("tong", String.valueOf(total));
+        model.addAttribute("HoaDonCho", hoaDonnn);
+        List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
+        model.addAttribute("listHoaDon", listHD);
+        model.addAttribute("listNhanVien", nhanVienService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHDCT", hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon));
+        model.addAttribute("HoaDon", hoaDonnn);
+        model.addAttribute("thongBaoThanhCong", "Thêm sản phẩm thành công");
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
+        return "home/layout";
+    }
+
+    @GetMapping("/cap-nhat-so-luong/{id}")
+    public String capNhatSoLuong(Model model, @ModelAttribute("HoaDonCho") HoaDon hoaDon,
+                                 @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @PathVariable("id") UUID id) {
+        HoaDonChiTiet hdct = hoaDonChiTietSerice.findHoaDonChiTiet(id);
+        model.addAttribute("chiTiet", hdct.getIdCTSP());
+        ct = hdct.getIdCTSP();
+        model.addAttribute("HoaDonCho", hoaDonnn);
+        List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
+        model.addAttribute("listHoaDon", listHD);
+        model.addAttribute("listNhanVien", nhanVienService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHDCT", hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon));
+        model.addAttribute("HoaDon", hoaDonnn);
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("batmodalnhapsanpham", 0);
+        model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
+        return "home/layout";
+    }
+
+    @GetMapping("/remove/{id}")
+    public String removeHoaDon(Model model, @ModelAttribute("HoaDonCho") HoaDon hoaDon,
+                               @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @PathVariable("id") UUID id) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        LocalDate capNhat = LocalDate.now();
+        List<HoaDonChiTiet> list = hoaDonChiTietSerice.hoaDonChiTietAll(id);
+        if (!list.isEmpty()) {
+            for (HoaDonChiTiet hdct : list
+            ) {
+                ChiTietSanPham ctsp = sanPhamService.findCTSPById(hdct.getIdCTSP().getId());
+                ctsp.setSoLuongTon(ctsp.getSoLuongTon() + hdct.getSoLuong());
+                ctsp.setNgaySua(Date.valueOf(capNhat));
+                ctsp.setTrangThai(0);
+                sanPhamService.updateCTSP(ctsp.getId(), ctsp);
+                hdct.setTrangThai(8);
+                hoaDonChiTietSerice.update(hdct.getId(), hdct);
+            }
+            hd.setTrangThaiHoaDon(8);
+            hd.setTrangThaiGiaoHang(5);
+            hd.setNgaySua(Date.valueOf(capNhat));
+//            hd.setNguoiSua();
+            hoaDonSerice.update(id, hd);
+        } else {
+            hd.setTrangThaiHoaDon(8);
+            hd.setTrangThaiGiaoHang(5);
+            hd.setNgaySua(Date.valueOf(capNhat));
+//            hd.setNguoiSua();
+            hoaDonSerice.update(id, hd);
+        }
+        List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
+        model.addAttribute("listHoaDon", listHD);
+        model.addAttribute("listNhanVien", nhanVienService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHDCT", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã chuyển sang trạng thái hủy, có thể vào trang hóa đơn hủy để xem lại thông tin hóa đơn");
+        model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
+        return "home/layout";
+    }
+    @ResponseBody
+    @GetMapping("/search-hoa-don-chi-tiet")
+    public List<HoaDonChiTiet> searchHoaDonChiTiet(Model model, @RequestParam("search-hoa-don-chi-tiet") String search,
+                                                   @ModelAttribute("HoaDonCho") HoaDon hoaDon,@ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham) {
+        List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSerice.searchBanTaiQuay(idHoaDon, search);
+        return listHoaDonChiTiets;
     }
 }

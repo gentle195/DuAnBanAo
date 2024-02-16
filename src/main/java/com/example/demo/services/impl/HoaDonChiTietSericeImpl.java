@@ -44,4 +44,31 @@ public class HoaDonChiTietSericeImpl implements HoaDonChiTietSerice {
         }
         return null;
     }
+
+    @Override
+    public HoaDonChiTiet findHoaDonChiTiet(UUID id) {
+        return hoaDonChiTietRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Boolean delete(UUID id) {
+        if (id != null) {
+            HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(id).orElse(null);
+            if (hoaDonChiTiet != null) {
+                hoaDonChiTietRepository.delete(hoaDonChiTiet);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<HoaDonChiTiet> searchBanTaiQuay(UUID id, String ten) {
+        return hoaDonChiTietRepository.searchBanTaiQuay(id, ten);
+    }
+
+//    @Override
+//    public List<HoaDonChiTiet> hoaDonChiTietBanHang(UUID id) {
+//        return hoaDonChiTietRepository.hoaDonChiTietBanHang(id);
+//    }
 }

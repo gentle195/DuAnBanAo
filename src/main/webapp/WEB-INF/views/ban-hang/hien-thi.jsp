@@ -128,20 +128,21 @@
                                             phẩm</a>
                                     </div>
                                     <div class="col-6">
-                                        <form action="/san-pham/search-con-hoat-dong" method="post">
-                                            <div class="input-group" style="width: 100%; float: right">
-                                                <input type="text" class="form-control" placeholder="Bạn tìm gì..."
-                                                       aria-label="Bạn tìm gì..." name="search">
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-sm btn-primary" type="submit">Search</button>
-                                                </div>
+                                        <div class="input-group" style="width: 100%; float: right">
+                                            <input type="text" class="form-control" placeholder="Bạn tìm gì..."
+                                                   aria-label="Bạn tìm gì..." name="search-hoa-don-chi-tiet"
+                                                   id="search-hoa-don-chi-tiet">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-sm btn-primary" type="button"
+                                                        id="button-search-hoa-don-chi-tiet">Search
+                                                </button>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                                     <%--           kết thúc tìm kiếm         --%>
                                 <div class="table-responsive">
-                                    <table class="table table-striped" style="color: black">
+                                    <table class="table table-striped" style="color: black;width: 1000px">
                                         <thead>
                                         <tr>
                                             <th>Ảnh</th>
@@ -153,7 +154,7 @@
                                             <th></th>
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="table-search-hoa-don-chi-tiet">
                                         <c:forEach items="${listHDCT}" var="hdct">
                                             <tr>
                                                 <td><img src="../../../uploads/${hdct.idCTSP.hinhAnh.duongDan1}"
@@ -180,6 +181,15 @@
                                                     VND
                                                 </td>
                                                 <td>
+                                                    <a href="/ban-hang/cap-nhat-so-luong/${hdct.id}"
+                                                       class="btn btn-warning btn-icon-text"
+                                                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Cập
+                                                        nhật số lượng</a>
+                                                    <a href="/ban-hang/delete-hoa-don-chi-tiet/${hdct.id}"
+                                                       tyle="text-decoration: none;color: black"
+                                                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;"
+                                                    ><img src="../../../images/delete.png" width="24px"
+                                                          height="24px"></a>
 
                                                 </td>
                                             </tr>
@@ -686,6 +696,50 @@
     <c:if test="${batmodalnhapsanpham==0}">
     document.getElementById('batmodalnhapsanpham').click();
     </c:if>
+</script>
+<script>
+    $('button[id^="button-search-hoa-don-chi-tiet"]').on('click', async function (e) {
+        const btn = $(this);
+        const search = $("#search-hoa-don-chi-tiet").val();
+        const url = "http://localhost:8080/ban-hang/search-hoa-don-chi-tiet?search-hoa-don-chi-tiet=" + search;
+        try {
+            const resp = await fetch(url);
+            const data = await resp.json();
+            console.log(data)
+            // Hiển thị dữ liệu tìm kiếm
+            let html = ``;
+            for (let i = 0; i < data.length; i++) {
+                const hdct = data[i];
+                var thongTin= hdct.idCTSP.chatLieu.ten +` - ` +
+                    hdct.idCTSP.thuongHieu.ten +` - ` + hdct.idCTSP.coAo.ten +` - ` +
+                    hdct.idCTSP.kichCo.ten +` - ` + hdct.idCTSP.mauSac.ten
+                const tr = `
+            <tr>
+                <td align="center"><img src="../../../uploads/` + hdct.idCTSP.hinhAnh.duongDan1 + `" width="40" height="40"></td>
+                <td>` + hdct.idCTSP.sanPham.ten + `</td>
+                <td colspan="5">` + thongTin + `</td>
+                <td>` + new Intl.NumberFormat("vi-VN").format(hdct.donGia) + ` VND </td>
+                <td>` + hdct.soLuong + `</td>
+                <td>` + new Intl.NumberFormat("vi-VN").format(hdct.donGia * hdct.soLuong) + ` VND</td>
+                <td>
+                    <a href="/ban-hang/cap-nhat-so-luong/` + hdct.id + `"
+                       class="btn btn-warning btn-icon-text"
+                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Cập
+                       nhật số lượng</a>
+                    <a href="/ban-hang/delete-hoa-don-chi-tiet/` + hdct.id + `"
+                       tyle="text-decoration: none;color: black"
+                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;"
+                       ><img src="../../../images/delete.png" width="24px" height="24px"></a>
+                </td>
+            </tr>
+            `;
+                html += tr;
+            }
+            $("#table-search-hoa-don-chi-tiet").html(html);
+        } catch (err) {
+            console.error(err)
+        }
+    });
 </script>
 <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script src="../../js/scan-qr.js"></script>

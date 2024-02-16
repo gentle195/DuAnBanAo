@@ -569,6 +569,23 @@ public class SanPhamController {
             model.addAttribute("contentPage", "../san-pham/view-add.jsp");
             return "home/layout";
         }
+        if (chiTietSanPham.getSoLuongTon() == 0) {
+            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
+            model.addAttribute("chatLieu", new ChatLieu());
+            model.addAttribute("thuongHieu", new ThuongHieu());
+            model.addAttribute("mauSac", new MauSac());
+            model.addAttribute("coAo", new CoAo());
+            model.addAttribute("kichCo", new KichCo());
+            model.addAttribute("errorKichThuoc", "Không để trống kích cỡ");
+            model.addAttribute("thongBaoSoLuong", "Số lượng tồn phải lớn hơn 0");
+            model.addAttribute("listChatLieu", chatLieuService.findAll());
+            model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+            model.addAttribute("listCoAo", coAoService.findAll());
+            model.addAttribute("listMauSac", mauSacService.findAll());
+            model.addAttribute("listKichCo", kichCoService.findAll());
+            model.addAttribute("contentPage", "../san-pham/view-add.jsp");
+            return "home/layout";
+        }
         if (sanPhamService.existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieu(chiTietSanPham.getChatLieu(),
                 chiTietSanPham.getCoAo(), chiTietSanPham.getKichCo(), chiTietSanPham.getMauSac(), chiTietSanPham.getThuongHieu())) {
             model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
@@ -729,6 +746,14 @@ public class SanPhamController {
             model.addAttribute("contentPage", "../san-pham/hien-thi-chi-tiet-san-pham.jsp");
             return "home/layout";
         }
+        if (chiTietSanPham.getSoLuongTon() == 0) {
+            model.addAttribute("batmodalupdatechitiet", 0);
+            model.addAttribute("thongBaoSoLuong", "Số lượng tồn phải lớn hơn 0");
+            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
+            model.addAttribute("listCTSP", sanPhamService.findChiTietSanPhamBySanPham(sanPhamService.findById(idSanPham)));
+            model.addAttribute("contentPage", "../san-pham/hien-thi-chi-tiet-san-pham.jsp");
+            return "home/layout";
+        }
         HinhAnh hinhAnh = hinhAnhService.searchId(chiTietSanPham.getHinhAnh().getId());
         String fileName1 = StringUtils.cleanPath(anh1.getOriginalFilename());
         if (checkanh1.equals("cu1")) {
@@ -825,8 +850,8 @@ public class SanPhamController {
                       @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham
     ) {
         List<ChiTietSanPham> list = sanPhamService.loc(idSanPham, chatLieuu, coAoo, kichCoo, mauSacc, thuongHieuu);
-        model.addAttribute("listCTSP",list);
-        model.addAttribute("thongBaoThanhCong","Lọc dữ liệu thành công");
+        model.addAttribute("listCTSP", list);
+        model.addAttribute("thongBaoThanhCong", "Lọc dữ liệu thành công");
         model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
         model.addAttribute("listChatLieu", chatLieuService.findAll());
         model.addAttribute("listThuongHieu", thuongHieuService.findAll());
