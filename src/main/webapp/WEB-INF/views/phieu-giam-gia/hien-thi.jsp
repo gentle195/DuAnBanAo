@@ -144,6 +144,7 @@
                                                 <td>
                                                     <c:if test="${phieuGiamGia.trangThai==0}">Còn hạn sử dụng</c:if>
                                                     <c:if test="${phieuGiamGia.trangThai==1}">Hết hạn sử dụng</c:if>
+                                                    <c:if test="${phieuGiamGia.trangThai==2}">Hết phiếu giảm giá</c:if>
                                                 </td>
                                                 <td>
                                                     <a href="/phieu-giam-gia/detail/${phieuGiamGia.id}"

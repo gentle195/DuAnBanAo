@@ -32,7 +32,7 @@ public class HoaDonController {
 
     @GetMapping ("/hoa-don/hien-thi")
     private String hoaDonHienThi(Model model, @RequestParam("pageNum") Optional<Integer> pageNum,
-                                 @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
         Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
         Page<HoaDon> page = hoaDonSerice.hoaDonAll(pageable);
         model.addAttribute("listHoaDonAll", page.getContent());
@@ -45,7 +45,7 @@ public class HoaDonController {
 
     @GetMapping ("/hoa-don/huy")
     private String hoaDonHuy(Model model, @RequestParam("pageNum") Optional<Integer> pageNum,
-                                 @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
         Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
         Page<HoaDon> page = hoaDonSerice.hoaDonHuy(pageable);
         model.addAttribute("listHoaDonHuy", page.getContent());
@@ -57,7 +57,7 @@ public class HoaDonController {
 
     @GetMapping ("/hoa-don/cho-xac-nhan")
     private String hoaDonChoXacNhan(Model model, @RequestParam("pageNum") Optional<Integer> pageNum,
-                             @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
         Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
         Page<HoaDon> page = hoaDonSerice.hoaDonChoXacNhan(pageable);
         model.addAttribute("listHoaDonChoXacNhan", page.getContent());
@@ -69,7 +69,7 @@ public class HoaDonController {
 
     @GetMapping ("/hoa-don/da-xac-nhan")
     private String hoaDonDaThanhToan(Model model, @RequestParam("pageNum") Optional<Integer> pageNum,
-                                     @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+                                     @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
         Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
         Page<HoaDon> page = hoaDonSerice.hoaDonDaXacNhan(pageable);
         model.addAttribute("listHoaDonDaXacNhan", page.getContent());
@@ -81,7 +81,7 @@ public class HoaDonController {
 
     @GetMapping ("/hoa-don/cho-giao-hang")
     private String hoaDonChoGiaoHang(Model model, @RequestParam("pageNum") Optional<Integer> pageNum,
-                                    @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+                                    @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
         Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
         Page<HoaDon> page = hoaDonSerice.hoaDonChoGiaoHang(pageable);
         model.addAttribute("listHoaDonChoGiaoHang", page.getContent());
@@ -93,7 +93,7 @@ public class HoaDonController {
 
     @GetMapping ("/hoa-don/dang-van-chuyen")
     private String hoaDonDangVanChuyen(Model model, @RequestParam("pageNum") Optional<Integer> pageNum,
-                                     @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+                                     @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
         Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
         Page<HoaDon> page = hoaDonSerice.hoaDonDangVanChuyen(pageable);
         model.addAttribute("listHoaDonDangVanChuyen", page.getContent());
@@ -105,7 +105,7 @@ public class HoaDonController {
 
 //    @GetMapping ("/hoa-don/da-giao-hang")
 //    private String hoaDonDaGiaoHang(Model model, @RequestParam("pageNum") Optional<Integer> pageNum,
-//                                       @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+//                                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
 //        Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
 //        Page<HoaDon> page = hoaDonSerice.hoaDonDaGiaoHang(pageable);
 //        model.addAttribute("listHoaDonDaGiaoHang", page.getContent());
@@ -117,7 +117,7 @@ public class HoaDonController {
 //
 //    @GetMapping ("/hoa-don/cho-thanh-toan")
 //    private String hoaDonChoThanhToan(Model model, @RequestParam("pageNum") Optional<Integer> pageNum,
-//                                    @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+//                                    @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
 //        Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
 //        Page<HoaDon> page = hoaDonSerice.hoaDonChoThanhToan(pageable);
 //        model.addAttribute("listHoaDonChoThanhToan", page.getContent());
@@ -131,7 +131,7 @@ public class HoaDonController {
 
     @GetMapping ("/hoa-don/hoan-thanh")
     private String hoaDonHoanThanh(Model model, @RequestParam("pageNum") Optional<Integer> pageNum,
-                                      @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+                                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
         Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
         Page<HoaDon> page = hoaDonSerice.hoaDonHoanThanh(pageable);
         model.addAttribute("listHoaDonHoanThanh", page.getContent());
@@ -143,7 +143,7 @@ public class HoaDonController {
 
     @GetMapping("/hoa-don/detail/{id}")
     private String hoaDonDetail(Model model, @PathVariable("id") UUID id, @RequestParam("pageNum") Optional<Integer> pageNum,
-                                @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
         HoaDon hoaDon = hoaDonSerice.findById(id);
         Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
         List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);

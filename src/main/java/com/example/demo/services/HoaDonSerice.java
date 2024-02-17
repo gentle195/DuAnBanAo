@@ -30,7 +30,7 @@ public interface HoaDonSerice {
 
     HoaDon add(HoaDon hoaDon);
 
-    HoaDon update(UUID id,HoaDon hoaDon);
+    HoaDon update(UUID id, HoaDon hoaDon);
 
     List<HoaDon> findAll();
 

@@ -49,15 +49,15 @@ public class KhachHang {
     @Column(name = "GioiTinh")
     private Boolean gioiTinh;
 
-    @NotBlank(message = "Không để trống thông tin")
+//    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "Email")
     private String email;
 
-    @NotBlank(message = "Không để trống thông tin")
+//    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "TaiKhoan")
     private String taiKhoan;
 
-    @NotBlank(message = "Không để trống thông tin")
+//    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "MatKhau")
     private String matKhau;
 

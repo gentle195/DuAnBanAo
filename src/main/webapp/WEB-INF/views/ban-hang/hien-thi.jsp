@@ -74,7 +74,7 @@
 </c:if>
 <section style="text-align: center">
     <div class="row">
-        <div class="col-9">
+        <div class="col-8">
             <div class="card">
                 <div class="card-body">
                     <div class="row outer-border border border-secondary"
@@ -108,27 +108,24 @@
                     </div>
                     <br>
                     <br>
-                    <c:if test="${HoaDon!=null}">
+                    <c:if test="${HoaDonCho!=null}">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title" style="float: left">Danh sách hóa đơn chi tiết</h4>
                                     <%--            Tìm kiếm               --%>
                                 <div class="row">
-                                    <div class="col-3">
+                                    <div class="col-4 btn-group" role="group" aria-label="Basic example">
                                         <a class="btn btn-secondary"
                                            data-bs-toggle="modal"
                                            data-bs-target="#QRScan" style="float: right; height: 45px;color: black">Scan
                                             QR</a>
-                                    </div>
-                                    <div class="col-3">
                                         <a href="/ban-hang/modal-san-pham"
                                            class="btn btn-secondary"
                                            data-bs-toggle="modal"
                                            data-bs-target="#newSanPham" style="float: right; height: 45px">Thêm sản
                                             phẩm</a>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="input-group" style="width: 100%; float: right">
+                                    <div class="col-8">
+                                        <div class="input-group" style="width: 80%; float: right">
                                             <input type="text" class="form-control" placeholder="Bạn tìm gì..."
                                                    aria-label="Bạn tìm gì..." name="search-hoa-don-chi-tiet"
                                                    id="search-hoa-don-chi-tiet">
@@ -140,6 +137,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br>
+                                <h4 class="card-title" style="float: left">Danh sách hóa đơn chi tiết</h4>
+                                <br>
                                     <%--           kết thúc tìm kiếm         --%>
                                 <div class="table-responsive">
                                     <table class="table table-striped" style="color: black;width: 1000px">
@@ -204,15 +204,19 @@
             </div>
         </div>
 
-        <c:if test="${HoaDon!= null}">
-            <div class="col-3">
-                <form:form action="/ban-hang/xac-nhan/${HoaDon.id}" modelAttribute="HoaDonCho" method="post">
+        <c:if test="${HoaDonCho!= null}">
+            <div class="col-4">
+                <form:form action="/ban-hang/thanh-toan/${HoaDonCho.id}" modelAttribute="HoaDonCho" method="post">
                     <div class="col-12 grid-margin " style="color: black">
                         <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
                             <div class="card-body">
                                 <h4 class="card-title">Thông Tin Hóa Đơn</h4>
                                 <form class="form-sample">
-
+                                    <div style="display: none">
+                                        <form:input class="form-control" path="ngayTao" readonly="true"/>
+                                        <form:input class="form-control" path="nguoiTao" readonly="true"/>
+                                        <form:input class="form-control" path="loaiHoaDon" readonly="true"/>
+                                    </div>
                                     <div class="form-group row">
                                         <form:label class="col-sm-12 col-form-label"
                                                     path="ma">Mã Hóa Đơn:</form:label>
@@ -243,7 +247,7 @@
                                                 <div class="col-10">
                                                     <form:select path="khachHang" class="form-control"
                                                                  id="selectKhachHang">
-                                                        <c:if test="${HoaDon.khachHang== null}">
+                                                        <c:if test="${HoaDonCho.khachHang== null}">
                                                             <option selected disabled value="1">
                                                                 Khách hàng
                                                             </option>
@@ -255,11 +259,11 @@
                                                     </form:select>
                                                     <label id="nullKH1" style="color: red"></label>
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-2" style="align-items: center">
                                                     <a href="/ban-hang/modal-khach-hang"
                                                        class="btn"
                                                        data-bs-toggle="modal"
-                                                       data-bs-target="#newKhachHang"><img
+                                                       data-bs-target="#newKhachHang" style="padding-right: 20px"><img
                                                             src="../../../images/plus.png" alt=""></a>
                                                 </div>
                                             </div>
@@ -267,20 +271,45 @@
                                     </div>
                                     <div class="form-group row">
                                         <form:label class="col-sm-12 col-form-label"
-                                                    path="sdtNguoiNhan">Số điện thoại:</form:label>
+                                                    path="sdtNguoiNhan">Số điện thoại người nhận:</form:label>
                                         <div class="col-sm-12">
                                             <form:input class="form-control" path="sdtNguoiNhan" id="sdthd"/>
                                             <label id="sdthd1" style="color: red"></label>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <form:label class="col-sm-12 col-form-label" path="tongTien"
-                                                    for="tienCanThanhToan">Tổng tiền:</form:label>
-                                        <div class="col-sm-12">
-                                            <form:input class="form-control" path="tongTien" readonly="true"
-                                                        value="${tong}"
-                                                        id="tienCanThanhToan"/>
-                                        </div>
+                                        <c:if test="${HoaDonCho.phieuGiamGia == null}">
+                                            <form:label class="col-sm-12 col-form-label" path="tongTien"
+                                                        for="tienCanThanhToan">Tổng tiền:</form:label>
+                                            <div class="col-sm-8">
+                                                <form:input class="form-control" path="tongTien" readonly="true"
+                                                            value="${tong}"
+                                                            id="tienCanThanhToan"/>
+                                            </div>
+                                            <div class="col-sm-4 ">
+                                                <a class="btn btn-secondary"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#phieuGiamGia" style="height: 45px">Chọn PGG</a>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${HoaDonCho.phieuGiamGia != null}">
+                                            <form:label class="col-sm-12 col-form-label" path="tongTien"
+                                                        for="tienCanThanhToan">Tổng tiền:</form:label>
+                                            <div class="col-sm-5">
+                                                <form:input class="form-control" path="tongTien" readonly="true"
+                                                            value="${tong}"
+                                                            id="tienCanThanhToan"/>
+                                            </div>
+                                            <div class="col-sm-7 btn-group" role="group" aria-label="Basic example">
+                                                <a class="btn btn-secondary"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#phieuGiamGia" style="height: 45px">Chọn PGG</a>
+
+                                                <a class="btn btn-secondary" href="/ban-hang/bo-phieu/${HoaDonCho.id}"
+                                                   style="height: 45px">Bỏ PGG</a>
+
+                                            </div>
+                                        </c:if>
                                     </div>
 
                                     <div class="form-group row">
@@ -298,13 +327,33 @@
                                             <label id="ketQua1" style="color: red"></label>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button type="submit" class="btn btn-primary"
-                                                    id="bthd" onclick="return checkhd()">Thanh toán
-                                            </button>
+                                    <div class="form-group row">
+                                        <form:label class="col-sm-12 col-form-label"
+                                                    path="hinhThucThanhToan">Phương thức thanh toán:</form:label>
+                                        <div class="col-sm-12">
+                                            <form:select class="form-control"
+                                                         path="hinhThucThanhToan">
+                                                <form:option value="0">Tiền mặt</form:option>
+                                                <form:option value="1">Chuyển khoản</form:option>
+                                            </form:select>
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <form:label class="col-sm-12 col-form-label"
+                                                    path="ghiChu">Ghi chú:</form:label>
+                                        <div class="col-sm-12">
+                                            <form:input class="form-control" path="ghiChu" />
+                                        </div>
+                                    </div>
+                                    <c:if test="${not listHDCT.isEmpty()}">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button type="submit" class="btn btn-primary"
+                                                        id="bthd" onclick="return checkhd()">Thanh toán
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </c:if>
                                 </form>
                             </div>
                         </div>
@@ -493,6 +542,58 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="phieuGiamGia" tabindex="-1" aria-labelledby="modal-1-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div>
+                            <div class="card-body">
+                                <div></div>
+                                <h4 class="card-title" style="float: left">Phiếu giảm giá</h4>
+                                <div class="table-responsive">
+                                    <div>
+                                        <table class="table table-striped table-bordered zero-configuration"
+                                               style="min-width: 1200px; color: black;text-align: center">
+                                            <thead>
+                                            <tr>
+                                                <th>Mã</th>
+                                                <th>Tên phiếu</th>
+                                                <th>Giá trị giảm</th>
+                                                <th>Ngày bắt đầu</th>
+                                                <th>Ngày kết thúc</th>
+                                                <th>Số Lượng Tồn</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody style="text-align: center">
+                                            <c:forEach items="${listPGG}" var="pgg">
+                                                <tr>
+                                                    <td>${pgg.ma}</td>
+                                                    <td>${pgg.ten}</td>
+                                                    <td>${pgg.tienGiam} %</td>
+                                                    <td>${pgg.ngayBatDau}</td>
+                                                    <td>${pgg.ngayketThuc}</td>
+                                                    <td>${pgg.soLuong}</td>
+                                                    <td>
+                                                        <a href="/ban-hang/chon-phieu-giam-gia/${pgg.id}"
+                                                           class="btn btn-warning btn-icon-text">Chọn</a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="QRScan" tabindex="-1" aria-labelledby="modal-1-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -562,6 +663,86 @@
                 </button>
                 <button type="button" class="btn btn-secondary"
                         data-bs-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="newKhachHang" tabindex="-1" aria-labelledby="khachHangLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <form action="/ban-hang/add-khach-hang" method="post">
+                    <div class="col-12 grid-margin" style="color:#0b0b0b;">
+                        <div class="card">
+                            <div class="card-body">
+                                <form class="form-sample">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Tên khách hàng:
+                                                </label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control" placeholder="" id="tenkh" name="hoTen"/>
+                                                    <label id="tenkh1" style="color: red"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Giới Tính:</label>
+                                                <div class="col-sm-9">
+                                                    <div class="form-control">
+                                                        <input type="radio" name="gioiTinh" value="true" checked="true"> Nam
+                                                        <input type="radio" name="gioiTinh" value="false" cssStyle="margin-left: 2cm"> Nữ
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label"
+                                                            >SĐT:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control" placeholder=""
+                                                                id="sdtkh" name="sđt"/>
+                                                    <label id="sdtkh1" style="color: red"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Ngày sinh:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control" name="ngaySinh" placeholder="" type="date" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div style="text-align: center">
+                                                <button type="submit" class="btn btn-primary mr-2"
+                                                        id="btkh" onclick="return checkhkh()">
+                                                    Thêm khách hàng
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Close
                 </button>
             </div>
         </div>
@@ -650,7 +831,7 @@
                     document.getElementById('tienKhachDua1').innerHTML = 'Tiền khách đưa phải là số nguyên dương';
                     document.getElementById('bthd').type = 'button';
                     return false
-                } else if ((parseFloat(tien) - parseFloat(toString(tongTien))) > 0) {
+                } else if ((parseFloat(tien) - parseFloat(tongTien)) >= 510000) {
                     document.getElementById('tienKhachDua1').innerHTML = 'Tiền khách đưa đang quá lớn';
                     document.getElementById('bthd').type = 'button';
                     return false;
@@ -675,6 +856,32 @@
             }
         }
 
+    }
+
+    function checkhkh() {
+        var tenhkh = document.getElementById("tenkh").value;
+        var sdtkh = document.getElementById("sdtkh").value;
+
+        if (
+            tenhkh.trim().length < 6 || tenhkh == ''
+        ) {
+            document.getElementById("btkh").type = "button";
+            document.getElementById("tenkh1").innerHTML = "Không để trống ,Tên ít nhất 6 ký tự";
+            return false;
+        } else {
+            document.getElementById("tenkh1").innerHTML = "";
+            var regex = /^0\d{9}$/;
+
+            if (!regex.test(sdtkh)) {
+                document.getElementById("sdtkh1").innerHTML = "SDT phải 10 số và bắt đầu là số 0";
+                document.getElementById("btkh").type = "button";
+                return false;
+            } else {
+                document.getElementById("sdtkh1").innerHTML = "";
+                document.getElementById("btkh").type = "submit";
+                return true;
+            }
+        }
     }
 </script>
 <script>
@@ -710,9 +917,9 @@
             let html = ``;
             for (let i = 0; i < data.length; i++) {
                 const hdct = data[i];
-                var thongTin= hdct.idCTSP.chatLieu.ten +` - ` +
-                    hdct.idCTSP.thuongHieu.ten +` - ` + hdct.idCTSP.coAo.ten +` - ` +
-                    hdct.idCTSP.kichCo.ten +` - ` + hdct.idCTSP.mauSac.ten
+                var thongTin = hdct.idCTSP.chatLieu.ten + ` - ` +
+                    hdct.idCTSP.thuongHieu.ten + ` - ` + hdct.idCTSP.coAo.ten + ` - ` +
+                    hdct.idCTSP.kichCo.ten + ` - ` + hdct.idCTSP.mauSac.ten
                 const tr = `
             <tr>
                 <td align="center"><img src="../../../uploads/` + hdct.idCTSP.hinhAnh.duongDan1 + `" width="40" height="40"></td>

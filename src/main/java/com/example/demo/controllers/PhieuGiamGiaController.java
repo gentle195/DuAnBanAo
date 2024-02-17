@@ -1,8 +1,12 @@
 package com.example.demo.controllers;
 
 
+import com.example.demo.models.HoaDon;
+import com.example.demo.models.HoaDonChiTiet;
 import com.example.demo.models.PhieuGiamGia;
 import com.example.demo.repositories.PhieuGiamGiaRepository;
+import com.example.demo.services.HoaDonChiTietSerice;
+import com.example.demo.services.HoaDonSerice;
 import com.example.demo.services.PhieuGiamGiaService;
 import com.example.demo.services.PhieuGiamGiaService;
 import jakarta.validation.Valid;
@@ -16,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,6 +35,10 @@ public class PhieuGiamGiaController {
     private PhieuGiamGiaService phieuService;
     @Autowired
     private PhieuGiamGiaRepository phieuGiamGiaRepository;
+    @Autowired
+    private HoaDonSerice hoaDonSerice;
+    @Autowired
+    private HoaDonChiTietSerice hoaDonChiTietSerice;
 
     @Scheduled(fixedRate = 1000)
     public void kiemtrangayhientaiVSkhoangtimegiamgia() {
@@ -50,10 +59,29 @@ public class PhieuGiamGiaController {
             // Kiểm tra xem currentDateTime có nằm trong khoảng [batdauDateTime, ketthucDateTime] không
             if ((currentDateTime.isAfter(batdauDateTime) && currentDateTime.isBefore(ketthucDateTime)) || currentDateTime.isBefore(batdauDateTime)) {
                 km.setTrangThai(0);
+                km.setNgaySua(Date.valueOf(LocalDate.now()));
                 phieuGiamGiaRepository.save(km);
             } else {
+                km.setSoLuong(km.getSoLuong()+1);
+                km.setNgaySua(Date.valueOf(LocalDate.now()));
                 km.setTrangThai(1);
                 phieuGiamGiaRepository.save(km);
+                List<HoaDon> lhd = hoaDonSerice.hoaDonCho();
+                for (HoaDon hd : lhd
+                ) {
+                    if (hd.getPhieuGiamGia() != null) {
+                        hd.setPhieuGiamGia(null);
+                        hd.setNgaySua(Date.valueOf(LocalDate.now()));
+                        BigDecimal giaGoc = BigDecimal.ZERO;
+                        for (HoaDonChiTiet hdctt : hoaDonChiTietSerice.hoaDonChiTietAll(hd.getId())
+                        ) {
+                            giaGoc = giaGoc.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
+
+                        }
+                        hd.setTongTien(giaGoc);
+                        hoaDonSerice.update(hd.getId(), hd);
+                    }
+                }
             }
         }
     }
