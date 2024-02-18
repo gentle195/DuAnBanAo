@@ -3,6 +3,9 @@ package com.example.demo.controllers;
 import com.example.demo.models.*;
 import com.example.demo.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -787,8 +790,8 @@ public class BanHangTaiQuayController {
     }
 
     @PostMapping("/thanh-toan/{id}")
-    public String thanhToan(Model model,@PathVariable("id") UUID id,@ModelAttribute("HoaDonCho") HoaDon hoaDon,
-                            @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham){
+    public ResponseEntity<byte[]> thanhToan(Model model, @PathVariable("id") UUID id, @ModelAttribute("HoaDonCho") HoaDon hoaDon,
+                                            @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham){
 //        hoaDon.setNguoiSua();
         hoaDon.setTenNguoiNhan(hoaDon.getKhachHang().getHoTen());
         hoaDon.setEmailNguoiNhan(hoaDon.getKhachHang().getEmail());
@@ -812,6 +815,15 @@ public class BanHangTaiQuayController {
         model.addAttribute("listKichCo", kichCoService.findAll());
         model.addAttribute("listSanPham", sanPhamService.findAll());
         model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
-        return "home/layout";
+
+        ResponseEntity<byte[]> responseEntity = hoaDonSerice.generatePdfDonTaiQuay(id);
+        byte[] pdfBytes = responseEntity.getBody();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "hoa_don_" + id + ".pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
     }
+
+
 }

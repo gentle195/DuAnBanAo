@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.models.HoaDon;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,5 +41,5 @@ public interface HoaDonSerice {
 
 //     Page<HoaDon> hoaDonChoThanhToan(Pageable pageable);
 
-
+    ResponseEntity<byte[]> generatePdfDonTaiQuay(UUID hoaDonId);
 }

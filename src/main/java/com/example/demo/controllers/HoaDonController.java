@@ -1,21 +1,33 @@
 
 package com.example.demo.controllers;
 
+import com.example.demo.models.ChatLieu;
+import com.example.demo.models.ChiTietSanPham;
 import com.example.demo.models.HoaDon;
 import com.example.demo.models.HoaDonChiTiet;
+import com.example.demo.models.KhachHang;
 import com.example.demo.services.HoaDonChiTietSerice;
 import com.example.demo.services.HoaDonSerice;
+import com.example.demo.services.KhachHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,6 +38,9 @@ public class HoaDonController {
 
     @Autowired
     HoaDonSerice hoaDonSerice;
+
+    @Autowired
+    KhachHangService khachHangService;
 
     @Autowired
     HoaDonChiTietSerice hoaDonChiTietSerice;
@@ -142,14 +157,49 @@ public class HoaDonController {
     }
 
     @GetMapping("/hoa-don/detail/{id}")
-    private String hoaDonDetail(Model model, @PathVariable("id") UUID id, @RequestParam("pageNum") Optional<Integer> pageNum,
+    private String hoaDonDetail(Model model, @ModelAttribute("hoaDon") HoaDon hoaDon, @PathVariable("id") UUID id, @RequestParam("pageNum") Optional<Integer> pageNum,
                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
-        HoaDon hoaDon = hoaDonSerice.findById(id);
+        HoaDon hoaDons = hoaDonSerice.findById(id);
+        List<KhachHang> khachHang = khachHangService.findAll();
         Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
         List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);
+        model.addAttribute("listKhachHang",khachHang);
         model.addAttribute("listHoaDonChiTiet", page);
-        model.addAttribute("hoaDonDetail", hoaDon);
+        model.addAttribute("hoaDonDetail", hoaDons);
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return  "home/layout";
     }
+
+    @GetMapping("/hoa-don/xuat-pdf-hoan-tat/{id}")
+    public ResponseEntity<byte[]> xuatPDF(@PathVariable("id") UUID id) {
+        ResponseEntity<byte[]> responseEntity = hoaDonSerice.generatePdfDonTaiQuay(id);
+        byte[] pdfBytes = responseEntity.getBody();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "hoa_don_" + id + ".pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+    }
+
+    @PostMapping("/hoa-don/update/{id}")
+    public String thanhToan(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon,@RequestParam("pageNum") Optional<Integer> pageNum,
+                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize){
+        hoaDon.setMa(hoaDon.getMa());
+        hoaDon.setTenNguoiNhan(hoaDon.getKhachHang().getHoTen());
+//        hoaDon.setEmailNguoiNhan(hoaDon.getKhachHang().getEmail());
+        hoaDon.setNgaySua(Date.valueOf(LocalDate.now()));
+        hoaDon.setSdtNguoiNhan(hoaDon.getSdtNguoiNhan());
+        hoaDonSerice.update(id,hoaDon);
+        HoaDon hoaDons = hoaDonSerice.findById(id);
+        List<KhachHang> khachHang = khachHangService.findAll();
+        Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
+        List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);
+        model.addAttribute("listKhachHang",khachHang);
+        model.addAttribute("listHoaDonChiTiet", page);
+        model.addAttribute("hoaDonDetail", hoaDons);
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return  "home/layout";
+    }
+
 }

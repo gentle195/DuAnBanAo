@@ -10,6 +10,12 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+    <!-- Favicon icon -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
     <style>
         .status-bar {
             display: flex;
@@ -191,7 +197,12 @@
                                     </div>
                                     <br>
                                     <br>
-                                    <h4 class="card-title">Thông tin đơn hàng</h4>
+                                    <h4 class="card-title">Thông tin đơn hàng
+                                        <c:if test="${hoaDonDetail.trangThaiHoaDon == 0}">
+                                            <button   id="batmodalUpdateHoaDon" class="btn btn-primary" data-bs-toggle="modal"
+                                               data-bs-target="#updateHoaDon">Cập nhập</button>
+                                        </c:if>
+                                    </h4>
                                     <div class="basic-form">
                                         <form>
                                             <div class="row">
@@ -289,5 +300,60 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="updateHoaDon" tabindex="-1" aria-labelledby="modal-1-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" style="color: black">
+                <form:form action="/hoa-don/update/${hoaDon.id}" method="post" modelAttribute="hoaDon">
+                    <div class="form-group">
+                        <form:label class="form-label" path="ma">Mã hoá đơn:</form:label>
+                        <form:input class="form-control" path="ma" readonly="true"/>
+                        <form:errors path="ma" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="tenNguoiNhan">Người nhận:</form:label>
+                        <form:input class="form-control" path="tenNguoiNhan" />
+                        <form:errors path="tenNguoiNhan" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="sdtNguoiNhan">SĐT người nhận:</form:label>
+                        <form:input class="form-control" path="sdtNguoiNhan" />
+                        <form:errors path="sdtNguoiNhan" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:select path="khachHang" class="form-control"
+                                     id="selectKhachHang">
+                            <c:if test="${hoaDonDetail.khachHang== null}">
+                                <option selected disabled value="1">
+                                    Khách hàng
+                                </option>
+                            </c:if>
+                            <c:forEach items="${listKhachHang}" var="kh">
+                                <option value="${kh.id}">${kh.hoTen}- ${kh.soDienThoai}</option>
+                            </c:forEach>
+                        </form:select>
+                    </div>
+                    <div style="text-align: center">
+                        <button type="submit" class="btn btn-primary mr-2"
+                                onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
+                            Cập nhật thông tin
+                        </button>
+                    </div>
+                </form:form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </html>
