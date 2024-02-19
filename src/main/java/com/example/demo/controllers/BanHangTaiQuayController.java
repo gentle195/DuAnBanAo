@@ -372,15 +372,17 @@ public class BanHangTaiQuayController {
                     chiTiet.setTrangThai(0);
                     sanPhamService.updateCTSP(chiTiet.getId(), chiTiet);
                 }
-                PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hoaDonnn.getPhieuGiamGia().getId());
-                for (HoaDonChiTiet hdctt : hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon)
-                ) {
-                    total = total.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
-                    hoaDonnn.setTongTien(total);
+                if (hoaDonnn.getPhieuGiamGia() != null) {
+                    PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hoaDonnn.getPhieuGiamGia().getId());
                     phieuGiamGia.setSoLuong(phieuGiamGia.getSoLuong() + 1);
                     phieuGiamGia.setTrangThai(0);
                     phieuGiamGia.setNgaySua(Date.valueOf(LocalDate.now()));
                     phieuGiamGiaService.update(phieuGiamGia.getId(), phieuGiamGia);
+                }
+                for (HoaDonChiTiet hdctt : hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon)
+                ) {
+                    total = total.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
+                    hoaDonnn.setTongTien(total);
                     hoaDonnn.setPhieuGiamGia(null);
                     hoaDonnn.setNgaySua(Date.valueOf(LocalDate.now()));
                     hoaDonSerice.update(hoaDonnn.getId(), hoaDonnn);
@@ -519,7 +521,7 @@ public class BanHangTaiQuayController {
         model.addAttribute("listPGG", phieuGiamGiaService.findAll());
         model.addAttribute("listKhachHang", khachHangService.findAll());
         model.addAttribute("listHDCT", hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon));
-        model.addAttribute("thongBaoThanhCong", "Thêm sản phẩm thành công");
+        model.addAttribute("thongBaoThanhCong", "Xóa sản phẩm thành công");
         model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
         model.addAttribute("listChatLieu", chatLieuService.findAll());
         model.addAttribute("listThuongHieu", thuongHieuService.findAll());

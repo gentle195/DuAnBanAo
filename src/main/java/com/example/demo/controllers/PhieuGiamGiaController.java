@@ -62,7 +62,7 @@ public class PhieuGiamGiaController {
                 km.setNgaySua(Date.valueOf(LocalDate.now()));
                 phieuService.update(km.getId(), km);
             } else {
-                km.setSoLuong(km.getSoLuong() + 1);
+//                km.setSoLuong(km.getSoLuong() + 1);
                 km.setNgaySua(Date.valueOf(LocalDate.now()));
                 km.setTrangThai(1);
                 phieuService.update(km.getId(), km);

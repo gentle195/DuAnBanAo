@@ -86,6 +86,61 @@
     <title>Document</title>
 </head>
 <body>
+<c:if test="${thongBao != null}">
+    <div id="modalError" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: block;">
+                                    <span class="swal2-x-mark swal2-animate-x-mark"><span
+                                            class="swal2-x-mark-line-left"></span><span
+                                            class="swal2-x-mark-line-right"></span></span></div>
+                            <h4 style="color: red;margin: 10px;text-align: center">${thongBao}</h4>
+                        </div>
+                        <div class="col-12" style="text-align: center;margin-top: 20px">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</c:if>
+<c:if test="${thongBaoThanhCong != null}">
+    <div id="modalSuccess" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="swal2-icon swal2-success swal2-animate-success-icon"
+                                 style="display: block;">
+                                <div class="swal2-success-circular-line-left"
+                                     style="background: rgb(255, 255, 255);"></div>
+                                <span class="swal2-success-line-tip swal2-animate-success-line-tip"></span> <span
+                                    class="swal2-success-line-long swal2-animate-success-line-long"></span>
+                                <div class="swal2-success-ring"></div>
+                                <div class="swal2-success-fix" style="background: rgb(255, 255, 255);"></div>
+                                <div class="swal2-success-circular-line-right"
+                                     style="background: rgb(255, 255, 255);"></div>
+                            </div>
+                            <h4 style="color: #10ae05;margin: 10px;text-align: center">${thongBaoThanhCong}</h4>
+                        </div>
+                        <div class="col-12" style="text-align: center;margin-top: 20px">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</c:if>
 <div class="col-md-12">
     <div class="card">
         <div class="card-body">
@@ -260,11 +315,10 @@
                                                            data-bs-target="#QRScan"
                                                            style="float: right; height: 45px;color: black">Scan
                                                             QR</a>
-                                                        <a href="/ban-hang/modal-san-pham"
-                                                           class="btn btn-secondary"
+                                                        <a class="btn btn-secondary"
                                                            data-bs-toggle="modal"
                                                            data-bs-target="#newSanPham"
-                                                           style="float: right; height: 45px">Thêm sản
+                                                           style="float: right; height: 45px;color: black">Thêm sản
                                                             phẩm</a>
                                                     </c:if>
                                                 </div>
@@ -274,38 +328,66 @@
                                                 <div class=" col-xl-12">
                                                     <div class="table-responsive">
                                                         <table class="table table-striped table-bordered zero-configuration"
-                                                               style="color: #0b0b0b">
+                                                               style="color: black">
                                                             <thead>
                                                             <tr>
-                                                                <th>#</th>
-                                                                <%--                                            <th>Ảnh</th>--%>
+                                                                <th>Ảnh</th>
                                                                 <th>Tên sản phẩm</th>
-                                                                <th>Màu</th>
-                                                                <th>Cổ</th>
-                                                                <th>Kích cỡ</th>
-                                                                <th>Thương kiệu</th>
-                                                                <th>Chất liệu</th>
+                                                                <th>Thông tin sản phẩm</th>
+                                                                <th>Đơn giá</th>
                                                                 <th>Số lượng</th>
-                                                                <th>Giá</th>
+                                                                <th>Thành tiền</th>
+                                                                <c:if test="${hoaDon.trangThaiHoaDon==0}">
+                                                                    <th></th>
+                                                                </c:if>
                                                             </tr>
                                                             </thead>
-                                                            <tbody>
-                                                            <c:forEach items="${listHoaDonChiTiet}"
-                                                                       var="HDCT" varStatus="i">
+                                                            <tbody id="table-search-hoa-don-chi-tiet">
+                                                            <c:forEach items="${listHoaDonChiTiet}" var="hdct">
                                                                 <tr>
-                                                                    <td>${i.index}</td>
                                                                     <td><img
-                                                                            src="../../../uploads/${HDCT.idCTSP.hinhAnh.duongDan1}"
+                                                                            src="../../../uploads/${hdct.idCTSP.hinhAnh.duongDan1}"
                                                                             width="40"
-                                                                            height="40"></td>
-                                                                    <td>${HDCT.idCTSP.sanPham.ten}</td>
-                                                                    <td>${HDCT.idCTSP.mauSac.ten}</td>
-                                                                    <td>${HDCT.idCTSP.coAo.ten}</td>
-                                                                    <td>${HDCT.idCTSP.kichCo.ten}</td>
-                                                                    <td>${HDCT.idCTSP.thuongHieu.ten}</td>
-                                                                    <td>${HDCT.idCTSP.chatLieu.ten}</td>
-                                                                    <td>${HDCT.soLuong}</td>
-                                                                    <td>${HDCT.soLuong * HDCT.donGia} VNĐ</td>
+                                                                            height="40"
+                                                                            style="border-radius:50% 50% 50% 50%"></td>
+                                                                    <td>${hdct.idCTSP.sanPham.ten}</td>
+                                                                    <td>${hdct.idCTSP.chatLieu.ten} -
+                                                                            ${hdct.idCTSP.thuongHieu.ten}
+                                                                        - ${hdct.idCTSP.coAo.ten} -
+                                                                            ${hdct.idCTSP.kichCo.ten}
+                                                                        - ${hdct.idCTSP.mauSac.ten}</td>
+                                                                    <td>
+                                                                        <script>
+                                                                            var donGia = ${hdct.donGia};
+                                                                            document.write(donGia.toLocaleString('vi-VN'));
+                                                                        </script>
+                                                                        VND
+                                                                    </td>
+                                                                    <td>${hdct.soLuong}</td>
+                                                                    <td>
+                                                                        <script>
+                                                                            var tongTien = ${hdct.donGia * hdct.soLuong};
+                                                                            document.write(tongTien.toLocaleString('vi-VN'));
+                                                                        </script>
+                                                                        VND
+                                                                    </td>
+                                                                    <c:if test="${hoaDon.trangThaiHoaDon==0}">
+                                                                        <td>
+                                                                            <a href="/hoa-don/cap-nhat-so-luong/${hdct.id}"
+                                                                               class="btn btn-warning btn-icon-text"
+                                                                               onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Cập
+                                                                                nhật số lượng</a>
+                                                                            <c:if test="${listHoaDonChiTiet.size()>1}">
+                                                                                <a href="/hoa-don/delete-hoa-don-chi-tiet/${hdct.id}"
+                                                                                   tyle="text-decoration: none;color: black"
+                                                                                   onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;"
+                                                                                ><img src="../../../images/delete.png"
+                                                                                      width="24px"
+                                                                                      height="24px"></a>
+                                                                            </c:if>
+
+                                                                        </td>
+                                                                    </c:if>
                                                                 </tr>
                                                             </c:forEach>
                                                             </tbody>
@@ -405,7 +487,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body" style="color: black">
-                <form:form action="/ban-hang/them-san-pham" method="post"
+                <form:form action="/hoa-don/them-san-pham" method="post"
                            modelAttribute="chiTiet" enctype="multipart/form-data">
                     <div style="display: none">
                         <form:input class="form-control" path="ma"/>
@@ -460,7 +542,7 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div>
-                            <form action="/ban-hang/loc" method="post"
+                            <form action="/hoa-don/loc" method="post"
                                   onsubmit="return checkLoc()">
                                 <div class="row">
                                     <div class="col-4">
@@ -611,7 +693,7 @@
                                                     </td>
                                                     <td>${ctsp.soLuongTon}</td>
                                                     <td>
-                                                        <a href="/ban-hang/nhap-so-luong/${ctsp.id}"
+                                                        <a href="/hoa-don/nhap-so-luong/${ctsp.id}"
                                                            class="btn btn-warning btn-icon-text">Nhập số lượng</a>
                                                     </td>
                                                 </tr>
@@ -685,6 +767,16 @@
     <c:if test="${batmodalnhapsanpham==0}">
     document.getElementById('batmodalnhapsanpham').click();
     </c:if>
+</script>
+<script>
+    $(document).ready(function () {
+        $('#modalError').modal('show');
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#modalSuccess').modal('show');
+    });
 </script>
 <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script src="../../js/scan-qr-2.js"></script>
