@@ -76,13 +76,11 @@
         <div class="card-body">
             <ul class="nav nav-pills mb-3" id="setting-panel" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link" href="/khach-hang/hien-thi" role="tab"
-                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông tin
+                    <a class="nav-link" href="/khach-hang/hien-thi" role="tab">Thông tin
                         khách hàng</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/khach-hang/view-add" role="tab"
-                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm thông
+                    <a class="nav-link" href="/khach-hang/view-add" role="tab">Thêm thông
                         tin khách hàng</a>
                 </li>
                 <li class="nav-item">

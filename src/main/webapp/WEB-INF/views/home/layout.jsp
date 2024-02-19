@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Quixlab - Bootstrap Admin Dashboard Template by Themefisher.com</title>
+    <title>Windzy</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../../../images/favicon.png">
@@ -52,8 +52,9 @@
             <a href="index.html">
                 <b class="logo-abbr"><img src="../../../images/logo.png" alt=""> </b>
                 <span class="logo-compact"><img src="../../../images/logo-compact.png" alt=""></span>
-                <span class="brand-title">
-                        <img src="../../../images/logo-text.png" alt="">
+                <span class="brand-title" style="color:white;font-family:verdana">
+                        <img src="../../../images/logo-text.png" width="45" height="45" alt="">
+                 Windzy
                     </span>
             </a>
         </div>

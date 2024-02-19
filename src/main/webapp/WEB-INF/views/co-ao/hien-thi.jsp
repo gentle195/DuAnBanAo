@@ -81,14 +81,12 @@
                            aria-controls="description" aria-selected="true">Thông tin cổ áo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/co-ao/view-add" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                        <a class="nav-link" href="/co-ao/view-add" role="tab">Thêm
                             thông tin
                             cổ áo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/co-ao/hien-thi-delete" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
+                        <a class="nav-link" href="/co-ao/hien-thi-delete" role="tab">
                             Cổ áo ngừng sử dụng</a>
                     </li>
                 </ul>

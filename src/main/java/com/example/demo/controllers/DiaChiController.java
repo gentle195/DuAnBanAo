@@ -70,7 +70,7 @@ public class DiaChiController {
     }
 
     @PostMapping("/add")
-    public String add(Model model, @Valid @ModelAttribute("diaChi") DiaChi DiaChi, BindingResult bindingResult
+    public String add(Model model, @Valid @ModelAttribute("DiaChi") DiaChi DiaChi, BindingResult bindingResult
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         if (bindingResult.hasErrors()) {
@@ -105,7 +105,7 @@ public class DiaChiController {
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") UUID id, @ModelAttribute("diaChi") DiaChi DiaChi
+    public String detail(Model model, @PathVariable("id") UUID id, @ModelAttribute("DiaChi") DiaChi DiaChi
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
@@ -149,7 +149,7 @@ public class DiaChiController {
     }
 
     @PostMapping("/update/{id}")
-    public String add(Model model, @PathVariable("id") UUID id, @Valid @ModelAttribute("diaChi") DiaChi DiaChi, BindingResult bindingResult
+    public String add(Model model, @PathVariable("id") UUID id, @Valid @ModelAttribute("DiaChi") DiaChi DiaChi, BindingResult bindingResult
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         if (bindingResult.hasErrors()) {
@@ -186,7 +186,7 @@ public class DiaChiController {
     }
 
     @GetMapping("/delete/{id}")
-    public String updateTrangThai(Model model, @PathVariable("id") UUID id, @ModelAttribute("diaChi") DiaChi DiaChi
+    public String updateTrangThai(Model model, @PathVariable("id") UUID id, @ModelAttribute("DiaChi") DiaChi DiaChi
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                   @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         DiaChi cl = DiaChiService.findById(id);
@@ -203,7 +203,7 @@ public class DiaChiController {
     }
 
     @GetMapping("/khoi-phuc/{id}")
-    public String updateTrangThaiNgung(Model model, @PathVariable("id") UUID id, @ModelAttribute("diaChi") DiaChi DiaChi
+    public String updateTrangThaiNgung(Model model, @PathVariable("id") UUID id, @ModelAttribute("DiaChi") DiaChi DiaChi
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                        @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         DiaChi cl = DiaChiService.findById(id);
@@ -220,7 +220,7 @@ public class DiaChiController {
     }
 
     @PostMapping("/search-con-hoat-dong")
-    public String search0(Model model, @ModelAttribute("diaChi") DiaChi DiaChi, @RequestParam("search") String search
+    public String search0(Model model, @ModelAttribute("DiaChi") DiaChi DiaChi, @RequestParam("search") String search
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                           @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         if (search.isEmpty()) {
@@ -242,7 +242,7 @@ public class DiaChiController {
     }
 
     @PostMapping("/search-ngung-hoat-dong")
-    public String search1(Model model, @ModelAttribute("diaChi") DiaChi DiaChi, @RequestParam("search") String search
+    public String search1(Model model, @ModelAttribute("DiaChi") DiaChi DiaChi, @RequestParam("search") String search
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                           @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         if (search.isEmpty()) {

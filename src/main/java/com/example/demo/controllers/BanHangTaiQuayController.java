@@ -127,7 +127,7 @@ public class BanHangTaiQuayController {
             List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
             model.addAttribute("thongBaoThanhCong", "Thêm hóa đơn chờ thành công");
             model.addAttribute("listHoaDon", listHD);
-            model.addAttribute("HoaDonCho", hoaDonnn);
+            model.addAttribute("HoaDonCho", null);
             model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
             return "home/layout";
         }
@@ -534,7 +534,7 @@ public class BanHangTaiQuayController {
     @GetMapping("/cap-nhat-so-luong/{id}")
     public String capNhatSoLuong(Model model, @ModelAttribute("HoaDonCho") HoaDon hoaDon,
                                  @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @PathVariable("id") UUID id) {
-        if(hoaDonnn.getPhieuGiamGia()!=null){
+        if (hoaDonnn.getPhieuGiamGia() != null) {
             PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hoaDonnn.getPhieuGiamGia().getId());
             phieuGiamGia.setSoLuong(phieuGiamGia.getSoLuong() + 1);
             phieuGiamGia.setTrangThai(0);
@@ -568,6 +568,7 @@ public class BanHangTaiQuayController {
                                @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham,
                                @PathVariable("id") UUID id) {
         HoaDon hd = hoaDonSerice.findById(id);
+        hoaDonnn = hd;
         if (hoaDonnn.getPhieuGiamGia() != null) {
             PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hoaDonnn.getPhieuGiamGia().getId());
             phieuGiamGia.setSoLuong(phieuGiamGia.getSoLuong() + 1);
@@ -601,6 +602,7 @@ public class BanHangTaiQuayController {
             hoaDonSerice.update(id, hd);
         }
         List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
+        model.addAttribute("HoaDonCho", null);
         model.addAttribute("listHoaDon", listHD);
         model.addAttribute("listNhanVien", nhanVienService.findAll());
         model.addAttribute("listPGG", phieuGiamGiaService.findAll());
@@ -791,7 +793,7 @@ public class BanHangTaiQuayController {
 
     @PostMapping("/thanh-toan/{id}")
     public ResponseEntity<byte[]> thanhToan(Model model, @PathVariable("id") UUID id, @ModelAttribute("HoaDonCho") HoaDon hoaDon,
-                                            @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham){
+                                            @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham) {
 //        hoaDon.setNguoiSua();
         hoaDon.setTenNguoiNhan(hoaDon.getKhachHang().getHoTen());
         hoaDon.setEmailNguoiNhan(hoaDon.getKhachHang().getEmail());
@@ -799,7 +801,7 @@ public class BanHangTaiQuayController {
         hoaDon.setTrangThaiHoaDon(3);
         hoaDon.setTrangThaiGiaoHang(6);
         hoaDon.setPhiShip(BigDecimal.ZERO);
-        hoaDonSerice.update(id,hoaDon);
+        hoaDonSerice.update(id, hoaDon);
         List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
         model.addAttribute("listHoaDon", listHD);
         model.addAttribute("HoaDonCho", null);
@@ -824,6 +826,5 @@ public class BanHangTaiQuayController {
 
         return ResponseEntity.ok().headers(headers).body(pdfBytes);
     }
-
 
 }

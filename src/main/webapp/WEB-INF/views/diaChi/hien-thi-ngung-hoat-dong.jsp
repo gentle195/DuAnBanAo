@@ -76,13 +76,11 @@
         <div class="card-body">
             <ul class="nav nav-pills mb-3" id="setting-panel" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link" href="/dia-chi/hien-thi" role="tab"
-                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông tin
+                    <a class="nav-link" href="/dia-chi/hien-thi" role="tab">Thông tin
                         địa chỉ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/dia-chi/view-add" role="tab"
-                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm thông
+                    <a class="nav-link" href="/dia-chi/view-add" role="tab">Thêm thông
                         tin địa chỉ</a>
                 </li>
                 <li class="nav-item">
@@ -101,7 +99,7 @@
                 <div class="card-body">
                     <h4 class="card-title" style="float: left">Danh sách địa chỉ</h4>
                     <%--            Tìm kiếm               --%>
-                    <form action="/dia-chi/search-con-hoat-dong" method="post">
+                    <form action="/dia-chi/search-ngung-hoat-dong" method="post">
                         <div class="input-group" style="width: 30%; float: right">
                             <input type="text" class="form-control" placeholder="Bạn tìm gì..."
                                    aria-label="Bạn tìm gì..." name="search">

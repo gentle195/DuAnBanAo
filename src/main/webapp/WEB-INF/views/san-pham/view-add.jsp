@@ -79,8 +79,7 @@
                 <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/san-pham/view-ctsp/${sanPham.id}" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông
+                        <a class="nav-link" href="/san-pham/view-ctsp/${sanPham.id}" role="tab">Thông
                             tin
                             chi tiết sản phẩm</a>
                     </li>

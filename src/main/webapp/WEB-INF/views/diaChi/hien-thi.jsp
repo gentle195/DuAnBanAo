@@ -81,15 +81,13 @@
                            aria-controls="description" aria-selected="true">Thông tin địa chỉ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/dia-chi/view-add" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                        <a class="nav-link" href="/dia-chi/view-add" role="tab">Thêm
                             thông
                             tin địa chỉ</a>
                     </li>
                     <li class="nav-item">
 
-                        <a class="nav-link" href="/dia-chi/hien-thi-delete" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Địa chỉ
+                        <a class="nav-link" href="/dia-chi/hien-thi-delete" role="tab">Địa chỉ
                             đã ngừng</a>
                     </li>
                 </ul>

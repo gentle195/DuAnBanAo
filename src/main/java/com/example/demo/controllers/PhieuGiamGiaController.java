@@ -60,16 +60,16 @@ public class PhieuGiamGiaController {
             if ((currentDateTime.isAfter(batdauDateTime) && currentDateTime.isBefore(ketthucDateTime)) || currentDateTime.isBefore(batdauDateTime)) {
                 km.setTrangThai(0);
                 km.setNgaySua(Date.valueOf(LocalDate.now()));
-                phieuGiamGiaRepository.save(km);
+                phieuService.update(km.getId(), km);
             } else {
-                km.setSoLuong(km.getSoLuong()+1);
-                km.setNgaySua(Date.valueOf(LocalDate.now()));
-                km.setTrangThai(1);
-                phieuGiamGiaRepository.save(km);
                 List<HoaDon> lhd = hoaDonSerice.hoaDonCho();
                 for (HoaDon hd : lhd
                 ) {
                     if (hd.getPhieuGiamGia() != null) {
+                        km.setSoLuong(km.getSoLuong() + 1);
+                        km.setNgaySua(Date.valueOf(LocalDate.now()));
+                        km.setTrangThai(1);
+                        phieuService.update(hd.getPhieuGiamGia().getId(), km);
                         hd.setPhieuGiamGia(null);
                         hd.setNgaySua(Date.valueOf(LocalDate.now()));
                         BigDecimal giaGoc = BigDecimal.ZERO;
@@ -81,6 +81,9 @@ public class PhieuGiamGiaController {
                         hd.setTongTien(giaGoc);
                         hoaDonSerice.update(hd.getId(), hd);
                     }
+                    km.setNgaySua(Date.valueOf(LocalDate.now()));
+                    km.setTrangThai(1);
+                    phieuService.update(km.getId(), km);
                 }
             }
         }

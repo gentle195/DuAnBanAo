@@ -82,14 +82,12 @@
                            aria-controls="description" aria-selected="true">Thông tin nhân viên</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/view-add" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                        <a class="nav-link" href="/nhan-vien/view-add" role="tab">Thêm
                             thông tin
                             nhân viên</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Nhân
+                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab">Nhân
                             viên ngừng hoạt động</a>
                     </li>
                 </ul>

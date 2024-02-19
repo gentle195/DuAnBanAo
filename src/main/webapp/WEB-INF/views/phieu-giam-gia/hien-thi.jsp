@@ -81,8 +81,7 @@
                            aria-controls="description" aria-selected="true">Thông tin phiếu giảm giá</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/phieu-giam-gia/view-add" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                        <a class="nav-link" href="/phieu-giam-gia/view-add" role="tab">Thêm
                             thông tin
                             phiếu giảm giá</a>
                     </li>

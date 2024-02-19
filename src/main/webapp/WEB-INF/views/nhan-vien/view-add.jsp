@@ -55,8 +55,7 @@
                 <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/hien-thi" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông
+                        <a class="nav-link" href="/nhan-vien/hien-thi" role="tab">Thông
                             tin
                             nhân viên</a>
                     </li>
@@ -65,8 +64,7 @@
                            aria-controls="description" aria-selected="true">Thêm thông tin nhân viên</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Nhân
+                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab">Nhân
                             viên ngừng hoạt động</a>
                     </li>
                 </ul>

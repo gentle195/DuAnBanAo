@@ -81,14 +81,12 @@
                            aria-controls="description" aria-selected="true">Thông tin thương hiệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/thuong-hieu/view-add" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                        <a class="nav-link" href="/thuong-hieu/view-add" role="tab">Thêm
                             thông tin
                             thương hiệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/thuong-hieu/hien-thi-delete" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thương hiệu ngừng sử dụng</a>
+                        <a class="nav-link" href="/thuong-hieu/hien-thi-delete" role="tab">Thương hiệu ngừng sử dụng</a>
                     </li>
                 </ul>
             </div>

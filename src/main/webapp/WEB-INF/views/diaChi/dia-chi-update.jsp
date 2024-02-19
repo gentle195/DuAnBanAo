@@ -22,8 +22,7 @@
             <div>
                 <ul class="nav nav-pills mb-3" id="setting-panel" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link" href="/khach-hang/hien-thi" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                        <a class="nav-link" href="/khach-hang/hien-thi" role="tab">Thêm
                             thông tin
                             khách hàng</a>
                     </li>
@@ -32,8 +31,7 @@
                            aria-controls="description" aria-selected="true">Cập nhật thông tin khách hàng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/khach-hang/hien-thi-delete" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Khách
+                        <a class="nav-link" href="/khach-hang/hien-thi-delete" role="tab">Khách
                             hàng
                             đã ngừng</a>
                     </li>

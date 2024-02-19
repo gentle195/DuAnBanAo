@@ -131,8 +131,8 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
-    public boolean existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieu(ChatLieu chatLieu, CoAo coAo, KichCo kichCo, MauSac mauSac, ThuongHieu thuongHieu) {
-        return chiTietSanPhamRepository.existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieu(chatLieu, coAo, kichCo, mauSac, thuongHieu);
+    public boolean existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieuAndSanPham(ChatLieu chatLieu, CoAo coAo, KichCo kichCo, MauSac mauSac, ThuongHieu thuongHieu, SanPham sanPham) {
+        return chiTietSanPhamRepository.existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieuAndSanPham(chatLieu, coAo, kichCo, mauSac, thuongHieu, sanPham);
     }
 
     @Override

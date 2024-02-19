@@ -39,7 +39,7 @@ public interface HoaDonSerice {
 
 //     Page<HoaDon> hoaDonDaThanhToan(Pageable pageable);
 
-//     Page<HoaDon> hoaDonChoThanhToan(Pageable pageable);
-
+    //     Page<HoaDon> hoaDonChoThanhToan(Pageable pageable);
     ResponseEntity<byte[]> generatePdfDonTaiQuay(UUID hoaDonId);
+
 }

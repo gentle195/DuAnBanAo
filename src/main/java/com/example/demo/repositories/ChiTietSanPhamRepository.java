@@ -34,7 +34,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
     @Query("select i from ChiTietSanPham i where i.id=:id")
     List<ChiTietSanPham> showQR(UUID id);
 
-    boolean existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieu(ChatLieu chatLieu, CoAo coAo, KichCo kichCo, MauSac mauSac, ThuongHieu thuongHieu);
+    boolean existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieuAndSanPham(ChatLieu chatLieu, CoAo coAo, KichCo kichCo, MauSac mauSac, ThuongHieu thuongHieu, SanPham sanPham);
 
     @Query("select ct from ChiTietSanPham ct left join SanPham sp on ct.sanPham.id=sp.id " +
             "left join ChatLieu cl on ct.chatLieu.id=cl.id left join CoAo ca on ct.coAo.id=ca.id " +

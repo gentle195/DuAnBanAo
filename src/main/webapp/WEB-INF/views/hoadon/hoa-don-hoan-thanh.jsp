@@ -77,17 +77,8 @@
                                                         <c:if test="${HT.trangThaiGiaoHang == 6}">Hoàn thành</c:if>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn mb-1 btn-flat btn-primary">Xem</button>
-                                                        <c:if test="${HT.trangThaiGiaoHang == 6}">
-                                                            <a href="/hoa-don/xuat-pdf-hoan-tat/${HT.id}"
-                                                               id="toastr-success-top-right-hoa-don-hoan-tat"
-                                                               class="btn btn-outline-success btn-icon-text"
-                                                               tabindex="-1"
-                                                               role="button"
-                                                               onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
-                                                                <i class="ti-file btn-icon-prepend"></i>
-                                                                Xuất PDF</a>
-                                                        </c:if>
+                                                        <button type="button" class="btn mb-1  btn-outline-primary">
+                                                            <a href="/hoa-don/detail/${All.id}">Xem</a></button>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

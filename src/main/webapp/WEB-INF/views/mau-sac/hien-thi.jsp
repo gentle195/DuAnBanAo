@@ -81,14 +81,12 @@
                            aria-controls="description" aria-selected="true">Thông tin màu sắc</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/mau-sac/view-add" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                        <a class="nav-link" href="/mau-sac/view-add" role="tab">Thêm
                             thông tin
                             màu sắc</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/mau-sac/hien-thi-delete" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
+                        <a class="nav-link" href="/mau-sac/hien-thi-delete" role="tab">
                             Màu sắc ngừng sử dụng</a>
                     </li>
                 </ul>

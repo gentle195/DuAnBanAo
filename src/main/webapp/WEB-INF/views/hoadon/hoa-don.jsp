@@ -6,7 +6,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="css/style.css" rel="stylesheet">
     <title>Document</title>
@@ -15,9 +16,10 @@
 <div class="col-md-12">
     <div class="card">
         <div class="card-body">
-            <ul  class="nav nav-pills mb-3" id="setting-panel" role="tablist">
+            <ul class="nav nav-pills mb-3" id="setting-panel" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="description-tab" data-toggle="tab" href="/hoa-don/hien-thi" role="tab"
+                    <a class="nav-link active" id="description-tab" data-toggle="tab" href="/hoa-don/hien-thi"
+                       role="tab"
                        aria-controls="description" aria-selected="false">Tất cả</a>
                 </li>
                 <li class="nav-item">
@@ -103,14 +105,16 @@
                             </div>
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center pagination-lg">
-                                    <li class="page-item"><a class="page-link" href="/hoa-don/hien-thi?pageNum=0">First</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                                             href="/hoa-don/hien-thi?pageNum=0">First</a></li>
                                     <c:forEach begin="1" end="${total}" varStatus="status">
                                         <li class="page-item">
                                             <a href="/hoa-don/hien-thi?pageNum=${status.index -1}"
                                                class="page-link">${status.index}</a>
                                         </li>
                                     </c:forEach>
-                                    <li class="page-item"><a class="page-link" href="/hoa-don/hien-thi?pageNum=${total-1}">Last</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                                             href="/hoa-don/hien-thi?pageNum=${total-1}">Last</a></li>
                                 </ul>
                             </nav>
                         </div>

@@ -81,14 +81,12 @@
                            aria-controls="description" aria-selected="true">Thông tin chất liệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/chat-lieu/view-add" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                        <a class="nav-link" href="/chat-lieu/view-add" role="tab">Thêm
                             thông tin
                             chất liệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/chat-lieu/hien-thi-delete" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Chất
+                        <a class="nav-link" href="/chat-lieu/hien-thi-delete" role="tab">Chất
                             liệu ngừng sử dụng</a>
                     </li>
                 </ul>

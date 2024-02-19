@@ -46,7 +46,7 @@ public interface SanPhamService {
 
     List<ChiTietSanPham> showQR(UUID id);
 
-    boolean existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieu(ChatLieu chatLieu, CoAo coAo, KichCo kichCo, MauSac mauSac, ThuongHieu thuongHieu);
+    boolean existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieuAndSanPham(ChatLieu chatLieu, CoAo coAo, KichCo kichCo, MauSac mauSac, ThuongHieu thuongHieu, SanPham sanPham);
 
     List<ChiTietSanPham> loc(UUID idSanPham, UUID idChatLieu, UUID idCoAo, UUID idKichCo, UUID idMauSac, UUID idThuongHieu);
 

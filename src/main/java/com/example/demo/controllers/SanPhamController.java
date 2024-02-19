@@ -586,8 +586,8 @@ public class SanPhamController {
             model.addAttribute("contentPage", "../san-pham/view-add.jsp");
             return "home/layout";
         }
-        if (sanPhamService.existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieu(chiTietSanPham.getChatLieu(),
-                chiTietSanPham.getCoAo(), chiTietSanPham.getKichCo(), chiTietSanPham.getMauSac(), chiTietSanPham.getThuongHieu())) {
+        if (sanPhamService.existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieuAndSanPham(chiTietSanPham.getChatLieu(),
+                chiTietSanPham.getCoAo(), chiTietSanPham.getKichCo(), chiTietSanPham.getMauSac(), chiTietSanPham.getThuongHieu(), chiTietSanPham.getSanPham())) {
             model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
             model.addAttribute("chatLieu", new ChatLieu());
             model.addAttribute("thuongHieu", new ThuongHieu());

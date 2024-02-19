@@ -86,14 +86,12 @@
                            aria-controls="description" aria-selected="true">Thông tin khách hàng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/khach-hang/view-add" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm thông
+                        <a class="nav-link" href="/khach-hang/view-add" role="tab">Thêm thông
                             tin khách hàng</a>
                     </li>
                     <li class="nav-item">
 
-                        <a class="nav-link" href="/khach-hang/hien-thi-delete" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Khách hàng đã ngừng</a>
+                        <a class="nav-link" href="/khach-hang/hien-thi-delete" role="tab">Khách hàng đã ngừng</a>
                     </li>
                 </ul>
             </div>

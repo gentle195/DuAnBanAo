@@ -79,8 +79,7 @@
                 <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/san-pham/hien-thi" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông
+                        <a class="nav-link" href="/san-pham/hien-thi" role="tab">Thông
                             tin
                             sản phẩm</a>
                     </li>
@@ -89,8 +88,7 @@
                            aria-controls="description" aria-selected="true">Danh sách chi tiết sản phẩm</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/san-pham/them-chi-tiet-san-pham" role="tab"
-                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm chi
+                        <a class="nav-link" href="/san-pham/them-chi-tiet-san-pham" role="tab">Thêm chi
                             tiết
                             sản phẩm</a>
                     </li>
