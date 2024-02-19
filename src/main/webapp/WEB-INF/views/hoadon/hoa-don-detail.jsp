@@ -295,7 +295,7 @@
                                                                 <tr>
                                                                     <td>${i.index}</td>
                                                                     <td><img
-                                                                            src="/images/${HDCT.idCTSP.hinhAnh.duongDan1}"
+                                                                            src="../../../uploads/${HDCT.idCTSP.hinhAnh.duongDan1}"
                                                                             width="40"
                                                                             height="40"></td>
                                                                     <td>${HDCT.idCTSP.sanPham.ten}</td>

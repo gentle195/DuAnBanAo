@@ -223,7 +223,7 @@ public class HoaDonSericeImpl implements HoaDonSerice {
             htmlContentBuilder.append("<body>");
 
             //Các nội dung của html
-            htmlContentBuilder.append("<h1>").append("GPhoneS Store").append("</h1>");
+            htmlContentBuilder.append("<h1>").append("Windzy Store").append("</h1>");
 
             NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
             // Thêm thông tin đơn hàng
