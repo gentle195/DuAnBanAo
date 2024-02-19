@@ -176,7 +176,7 @@ public class HoaDonController {
 
     @PostMapping("/hoa-don/update/{id}")
     public String thanhToan(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
-                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                            @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham,@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         hoaDon.setMa(hoaDon.getMa());
         hoaDon.setTenNguoiNhan(hoaDon.getKhachHang().getHoTen());
 //        hoaDon.setEmailNguoiNhan(hoaDon.getKhachHang().getEmail());
@@ -189,7 +189,7 @@ public class HoaDonController {
         List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);
         model.addAttribute("listKhachHang", khachHang);
         model.addAttribute("listHoaDonChiTiet", page);
-        model.addAttribute("hoaDonDetail", hoaDons);
+        model.addAttribute("hoaDon", hoaDons);
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return "home/layout";
     }
