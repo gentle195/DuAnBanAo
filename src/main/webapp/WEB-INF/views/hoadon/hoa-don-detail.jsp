@@ -395,7 +395,12 @@
                                                     </div>
                                                 </div>
                                                 <br>
-                                                <h5>Tổng tiền hàng: ${hoaDon.tongTien} VNĐ</h5>
+                                                <h5>Tổng tiền hàng:
+                                                    <script>
+                                                        var donGia = ${hoaDon.tongTien};
+                                                        document.write(donGia.toLocaleString('vi-VN'));
+                                                    </script> VNĐ
+                                                </h5>
                                             </div>
                                         </div>
                                     </div>
