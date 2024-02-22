@@ -259,6 +259,50 @@
                                                     data-bs-target="#updateHoaDon">Cập nhập
                                             </button>
                                         </c:if>
+
+                                        <%--                                        trạng thái chờ xác nhận--%>
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 0}">
+                                            <a href="/hoa-don/update-tt-1/${hoaDon.id}" class="btn btn-warning">Xác nhận
+                                                hóa đơn
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 0}">
+                                            <a href="/hoa-don/update-tt-8/${hoaDon.id}" class="btn btn-danger">Huỷ hóa
+                                                đơn
+                                            </a>
+                                        </c:if>
+
+                                        <%--                                        trạng thái đã xác nhận--%>
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 1}">
+                                            <a href="/hoa-don/update-tt-0/${hoaDon.id}" class="btn btn-outline-warning">
+                                                <- Quay lại trạng thái trước
+                                            </a>
+                                        </c:if>
+
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 1}">
+                                            <a href="/hoa-don/update-tt-3/${hoaDon.id}" class="btn btn-warning">Thanh
+                                                toán hoá đơn
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 1}">
+                                            <a href="/hoa-don/update-tt-8/${hoaDon.id}" class="btn btn-danger">Huỷ hoá
+                                                đơn
+                                            </a>
+                                        </c:if>
+
+                                        <%--                                        trạng thái thanh toán--%>
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 3}">
+                                            <a href="/hoa-don/update-tt-0/${hoaDon.id}" class="btn btn-outline-warning">
+                                                <-Quay lại trạng thái ban đầu
+                                            </a>
+                                        </c:if>
+
+                                        <%--                                        trạng thái huỷ--%>
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 8}">
+                                            <a href="/hoa-don/update-tt-0/${hoaDon.id}" class="btn btn-outline-warning">
+                                                Khôi phục
+                                            </a>
+                                        </c:if>
                                     </h4>
                                     <div class="basic-form">
                                         <form>
@@ -399,7 +443,8 @@
                                                     <script>
                                                         var donGia = ${hoaDon.tongTien};
                                                         document.write(donGia.toLocaleString('vi-VN'));
-                                                    </script> VNĐ
+                                                    </script>
+                                                    VNĐ
                                                 </h5>
                                             </div>
                                         </div>

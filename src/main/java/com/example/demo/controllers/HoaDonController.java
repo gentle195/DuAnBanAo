@@ -626,4 +626,108 @@ public class HoaDonController {
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return "home/layout";
     }
+
+    @GetMapping("/hoa-don/update-tt-1/{id}")
+    public String UpdateTT(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                            @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hd.setTrangThaiHoaDon(1);
+        hoaDonSerice.update(id, hd);
+        HoaDon hoaDons = hoaDonSerice.findById(id);
+        List<KhachHang> khachHang = khachHangService.findAll();
+        Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
+        List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);
+        model.addAttribute("listKhachHang", khachHang);
+        model.addAttribute("listHoaDonChiTiet", page);
+        model.addAttribute("hoaDon", hoaDons);
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
+
+    @GetMapping("/hoa-don/update-tt-3/{id}")
+    public String UpdateTT3(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                           @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hd.setTrangThaiHoaDon(3);
+        hoaDonSerice.update(id, hd);
+        HoaDon hoaDons = hoaDonSerice.findById(id);
+        List<KhachHang> khachHang = khachHangService.findAll();
+        Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
+        List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);
+        model.addAttribute("listKhachHang", khachHang);
+        model.addAttribute("listHoaDonChiTiet", page);
+        model.addAttribute("hoaDon", hoaDons);
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
+
+    @GetMapping("/hoa-don/update-tt-0/{id}")
+    public String UpdateTT0(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                            @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hd.setTrangThaiHoaDon(0);
+        hoaDonSerice.update(id, hd);
+        HoaDon hoaDons = hoaDonSerice.findById(id);
+        List<KhachHang> khachHang = khachHangService.findAll();
+        Pageable pageable = PageRequest.of(pageNum.orElse(0), pageSize);
+        List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);
+        model.addAttribute("listKhachHang", khachHang);
+        model.addAttribute("listHoaDonChiTiet", page);
+        model.addAttribute("hoaDon", hoaDons);
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
+
+    @GetMapping("/hoa-don/update-tt-8/{id}")
+    public String UpdateTT8(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                            @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hoaDonnn = hd;
+        if (hoaDonnn.getPhieuGiamGia() != null) {
+            PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hoaDonnn.getPhieuGiamGia().getId());
+            phieuGiamGia.setSoLuong(phieuGiamGia.getSoLuong() + 1);
+            phieuGiamGia.setTrangThai(0);
+            phieuGiamGia.setNgaySua(Date.valueOf(LocalDate.now()));
+            phieuGiamGiaService.update(phieuGiamGia.getId(), phieuGiamGia);
+        }
+        LocalDate capNhat = LocalDate.now();
+        List<HoaDonChiTiet> list = hoaDonChiTietSerice.hoaDonChiTietAll(id);
+        if (!list.isEmpty()) {
+            for (HoaDonChiTiet hdct : list
+            ) {
+                ChiTietSanPham ctsp = sanPhamService.findCTSPById(hdct.getIdCTSP().getId());
+                ctsp.setSoLuongTon(ctsp.getSoLuongTon() + hdct.getSoLuong());
+                ctsp.setNgaySua(Date.valueOf(capNhat));
+                ctsp.setTrangThai(0);
+                sanPhamService.updateCTSP(ctsp.getId(), ctsp);
+                hdct.setTrangThai(8);
+                hoaDonChiTietSerice.update(hdct.getId(), hdct);
+            }
+            hd.setTrangThaiHoaDon(8);
+            hd.setTrangThaiGiaoHang(5);
+            hd.setNgaySua(Date.valueOf(capNhat));
+//            hd.setNguoiSua();
+            hoaDonSerice.update(id, hd);
+        } else {
+            hd.setTrangThaiHoaDon(8);
+            hd.setTrangThaiGiaoHang(5);
+            hd.setNgaySua(Date.valueOf(capNhat));
+//            hd.setNguoiSua();
+            hoaDonSerice.update(id, hd);
+        }
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+//        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã chuyển sang trạng thái hủy, có thể vào trang hóa đơn hủy để xem lại thông tin hóa đơn");
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
 }
