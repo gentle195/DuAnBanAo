@@ -79,7 +79,7 @@
                 <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/san-pham/hien-thi" role="tab">Thông
+                        <a class="nav-link" href="/san-pham/hien-thi" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông
                             tin
                             sản phẩm</a>
                     </li>
@@ -88,7 +88,7 @@
                            aria-controls="description" aria-selected="true">Danh sách chi tiết sản phẩm</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/san-pham/them-chi-tiet-san-pham" role="tab">Thêm chi
+                        <a class="nav-link" href="/san-pham/them-chi-tiet-san-pham" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm chi
                             tiết
                             sản phẩm</a>
                     </li>
@@ -221,6 +221,7 @@
                                            style="color: black;width: 2000px">
                                         <thead>
                                         <tr>
+                                            <th>STT</th>
                                             <th>Mã</th>
                                             <th>Ảnh Sản Phẩm</th>
                                             <th>Tên Sản Phẩm</th>
@@ -240,8 +241,9 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listCTSP}" var="ctsp">
+                                        <c:forEach items="${listCTSP}" var="ctsp" varStatus="index">
                                             <tr>
+                                                <td>${index.index+1}</td>
                                                 <td>${ctsp.ma}</td>
                                                 <td>
                                                     <img src="../../../uploads/${ctsp.hinhAnh.duongDan1}" width="40"

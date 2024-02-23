@@ -23,22 +23,22 @@
                        aria-controls="description" aria-selected="false">Tất cả</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/cho-xac-nhan" role="tab">Chờ xác nhận</a>
+                    <a class="nav-link" href="/hoa-don/cho-xac-nhan" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Chờ xác nhận</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/da-xac-nhan" role="tab">Đã xác nhận</a>
+                    <a class="nav-link" href="/hoa-don/da-xac-nhan" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Đã xác nhận</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/cho-giao-hang" role="tab">Chờ giao hàng</a>
+                    <a class="nav-link" href="/hoa-don/cho-giao-hang" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Chờ giao hàng</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/dang-van-chuyen" role="tab">Đang vận chuyển</a>
+                    <a class="nav-link" href="/hoa-don/dang-van-chuyen" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Đang vận chuyển</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/huy" role="tab">Huỷ</a>
+                    <a class="nav-link" href="/hoa-don/huy" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Huỷ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/hoan-thanh" role="tab">Hoàn thành</a>
+                    <a class="nav-link" href="/hoa-don/hoan-thanh" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Hoàn thành</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -83,7 +83,7 @@
                                                         <c:if test="${All.trangThaiGiaoHang == 6}"> Hoàn thành</c:if>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn mb-1  btn-outline-primary">
+                                                        <button type="button"  class="btn mb-1  btn-outline-primary" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
                                                             <a href="/hoa-don/detail/${All.id}">Xem</a></button>
                                                         <c:if test="${All.trangThaiGiaoHang == 6}">
                                                             <a href="/hoa-don/xuat-pdf-hoan-tat/${All.id}"

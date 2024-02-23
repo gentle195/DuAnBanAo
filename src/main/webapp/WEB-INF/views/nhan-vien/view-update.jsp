@@ -24,7 +24,7 @@
                 <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/hien-thi" role="tab">Thông
+                        <a class="nav-link" href="/nhan-vien/hien-thi" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông
                             tin
                             nhân viên</a>
                     </li>
@@ -33,7 +33,7 @@
                            aria-controls="description" aria-selected="true">Cập nhật thông tin nhân viên</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab">Nhân
+                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Nhân
                             viên ngừng hoạt động</a>
                     </li>
                 </ul>
@@ -58,6 +58,7 @@
                                 <form:label class="form-label" path="sdt">SĐT:</form:label>
                                 <form:input class="form-control" path="sdt"/>
                                 <form:errors path="sdt" cssStyle="color: red"></form:errors>
+                                <span style="color: red">${tbtrungsdt}</span>
                             </div>
                             <div class="form-group">
                                 <form:label class="form-label" path="CCCD">CCCD:</form:label>
@@ -84,6 +85,7 @@
                                 <form:label class="form-label" path="email">Email:</form:label>
                                 <form:input class="form-control" path="email"/>
                                 <form:errors path="email" cssStyle="color: red"></form:errors>
+                                <span style="color: red">${tbtrungemail}</span>
                             </div>
                             <div class="form-group">
                                 <form:label class="form-label" path="taiKhoan">Tài khoản:</form:label>
@@ -95,15 +97,15 @@
                                 <form:input class="form-control" path="matKhau"/>
                                 <form:errors path="matKhau" cssStyle="color: red"></form:errors>
                             </div>
-                            <div class="form-group">
-                                <form:label class="form-label" path="chucVu">Chức vụ:</form:label>
-                                <form:select path="chucVu" class="form-control" id="selectChucVu"
-                                             cssStyle="font-weight: bold; width: 100%">
-                                    <option selected disabled>Chức vụ</option>
-                                    <form:options items="${listChucVu}" itemValue="id" itemLabel="ten"/>
-                                </form:select>
-                                <form:errors path="chucVu"/>
-                            </div>
+<%--                            <div class="form-group">--%>
+<%--                                <form:label class="form-label" path="chucVu">Chức vụ:</form:label>--%>
+<%--                                <form:select path="chucVu" class="form-control" id="selectChucVu"--%>
+<%--                                             cssStyle="font-weight: bold; width: 100%">--%>
+<%--                                    <option selected disabled>Chức vụ</option>--%>
+<%--                                    <form:options items="${listChucVu}" itemValue="id" itemLabel="ten"/>--%>
+<%--                                </form:select>--%>
+<%--                                <form:errors path="chucVu"/>--%>
+<%--                            </div>--%>
                         </div>
                     </div>
                 </div>

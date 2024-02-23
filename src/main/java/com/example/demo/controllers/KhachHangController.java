@@ -1,7 +1,9 @@
 package com.example.demo.controllers;
 
 
+import com.example.demo.models.DiaChi;
 import com.example.demo.models.KhachHang;
+import com.example.demo.services.DiaChiService;
 import com.example.demo.services.KhachHangService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +30,13 @@ import java.util.UUID;
 public class KhachHangController {
     @Autowired
     private KhachHangService KhachHangService;
+    @Autowired
+    private DiaChiService diaChiService;
+    private KhachHang kh = null;
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model, @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("khachHang") KhachHang khachHang){
+                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("khachHang") KhachHang khachHang, @ModelAttribute("addDiaChi") DiaChi diaChi) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<KhachHang> page = KhachHangService.getAll(pageable);
         model.addAttribute("listKhachHang", page.getContent());
@@ -39,10 +44,25 @@ public class KhachHangController {
         model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
         return "home/layout";
     }
+    @GetMapping("/loc")
+    public String hienThiLoc(Model model,
+                             @RequestParam("gioiTinh1") String gioiTinh,@RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("khachHang") KhachHang khachHang, @ModelAttribute("addDiaChi") DiaChi diaChi) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+
+        Page<KhachHang> page=KhachHangService.locGT(Boolean.valueOf(gioiTinh),pageable);
+
+        model.addAttribute("listKhachHang", page.getContent());
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
+        return "home/layout";
+
+
+    }
 
     @GetMapping("/hien-thi-delete")
     public String hienThiNgungHoatDong(Model model, @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("khachHang") KhachHang khachHang){
+                                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("khachHang") KhachHang khachHang) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<KhachHang> page = KhachHangService.getAll1(pageable);
         model.addAttribute("listKhachHang", page.getContent());
@@ -54,7 +74,7 @@ public class KhachHangController {
     @GetMapping("/view-add")
     public String viewAdd(Model model, @ModelAttribute("khachHang") KhachHang KhachHang
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("addDiaChi") DiaChi diaChi) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<KhachHang> page = KhachHangService.getAll(pageable);
         model.addAttribute("listKhachHang", page.getContent());
@@ -68,7 +88,7 @@ public class KhachHangController {
     @PostMapping("/add")
     public String add(Model model, @Valid @ModelAttribute("khachHang") KhachHang KhachHang, BindingResult bindingResult
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("addDiaChi") DiaChi diaChi) {
         if (bindingResult.hasErrors()) {
 
             Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
@@ -78,6 +98,28 @@ public class KhachHangController {
             model.addAttribute("batmodalthemcoao", 0);
             model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
             return "home/layout";
+        }
+        if (KhachHangService.existKhachHangByEmail(KhachHang.getEmail())) {
+            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+            Page<KhachHang> page = KhachHangService.getAll(pageable);
+            model.addAttribute("listKhachHang", page.getContent());
+            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("batmodalthemcoao", 0);
+            model.addAttribute("tbtrungemail", "Email trùng!");
+            model.addAttribute("contentPage", "../khachhang/khach-hang-add.jsp");
+            return "home/layout";
+
+        }
+        if (KhachHangService.existKhachHangBySDT(KhachHang.getSoDienThoai())) {
+            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+            Page<KhachHang> page = KhachHangService.getAll(pageable);
+            model.addAttribute("listKhachHang", page.getContent());
+            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("batmodalthemcoao", 0);
+            model.addAttribute("tbtrungsdt", "Số điện thoại trùng!");
+            model.addAttribute("contentPage", "../khachhang/khach-hang-add.jsp");
+            return "home/layout";
+
         }
         String mhd = "";
         Integer sl = KhachHangService.findAllFullTT().size() + 1;
@@ -89,6 +131,7 @@ public class KhachHangController {
         KhachHang.setMa(mhd);
         KhachHang.setNgayTao(Date.valueOf(LocalDate.now()));
         KhachHang.setTrangThai(0);
+        KhachHang.setTaiKhoan(KhachHang.getEmail());
         KhachHangService.add(KhachHang);
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<KhachHang> page = KhachHangService.getAll(pageable);
@@ -103,7 +146,7 @@ public class KhachHangController {
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") UUID id, @ModelAttribute("khachHang") KhachHang KhachHang
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                         @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                         @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("addDiaChi") DiaChi diaChi) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<KhachHang> page = KhachHangService.getAll(pageable);
         model.addAttribute("listKhachHang", page.getContent());
@@ -131,7 +174,7 @@ public class KhachHangController {
     @GetMapping("/view-update/{id}")
     public String viewUpdate(Model model, @PathVariable("id") UUID id, @ModelAttribute("khachHang") KhachHang KhachHang
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("addDiaChi") DiaChi diaChi) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<KhachHang> page = KhachHangService.getAll(pageable);
         model.addAttribute("listKhachHang", page.getContent());
@@ -144,12 +187,13 @@ public class KhachHangController {
     @PostMapping("/update/{id}")
     public String add(Model model, @PathVariable("id") UUID id, @Valid @ModelAttribute("khachHang") KhachHang KhachHang, BindingResult bindingResult
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("addDiaChi") DiaChi diaChi) {
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("contentPage", "../khachhang/khach-hang-update.jsp");
             return "home/layout";
         }
+
         KhachHang cl = KhachHangService.findById(id);
         cl.setNgaySua(Date.valueOf(LocalDate.now()));
         cl.setTrangThai(KhachHang.getTrangThai());
@@ -174,7 +218,7 @@ public class KhachHangController {
     @GetMapping("/delete/{id}")
     public String updateTrangThai(Model model, @PathVariable("id") UUID id, @ModelAttribute("khachHang") KhachHang KhachHang
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("addDiaChi") DiaChi diaChi) {
         KhachHang cl = KhachHangService.findById(id);
         cl.setTrangThai(1);
         cl.setNgaySua(Date.valueOf(LocalDate.now()));
@@ -208,7 +252,7 @@ public class KhachHangController {
     @PostMapping("/search-con-hoat-dong")
     public String search0(Model model, @ModelAttribute("khachHang") KhachHang KhachHang, @RequestParam("search") String search
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("addDiaChi") DiaChi diaChi) {
         if (search.isEmpty()) {
             model.addAttribute("thongBao", "Không để trống thông tin");
             Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
@@ -247,5 +291,70 @@ public class KhachHangController {
             return "home/layout";
         }
 
+    }
+
+    @GetMapping("/danh-sach-dia-chi/{id}")
+    public String danhSachDiaChi(Model model, @ModelAttribute("khachHang") KhachHang KhachHang
+            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @PathVariable("id") UUID id, @ModelAttribute("addDiaChi") DiaChi diaChi) {
+        List<DiaChi> list = diaChiService.danhSachDiaChi(id);
+        model.addAttribute("listDiaChi", list);
+        model.addAttribute("batmodaldanhsachdiachi", 0);
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        Page<KhachHang> page = KhachHangService.getAll(pageable);
+        model.addAttribute("listKhachHang", page.getContent());
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
+        return "home/layout";
+    }
+
+    @GetMapping("/view-add-dia-chi/{id}")
+    public String viewAddDiaChi(Model model, @ModelAttribute("khachHang") KhachHang KhachHang
+            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize
+            , @ModelAttribute("addDiaChi") DiaChi diaChi, @PathVariable("id") UUID id) {
+        kh = KhachHangService.findById(id);
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        Page<KhachHang> page = KhachHangService.getAll(pageable);
+        model.addAttribute("listKhachHang", page.getContent());
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("batmodalthemdiachi", 0);
+        model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
+        return "home/layout";
+    }
+
+    @PostMapping("/add-dia-chi")
+    public String addDiaChi(Model model, @ModelAttribute("khachHang") KhachHang KhachHang
+            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @Valid @ModelAttribute("addDiaChi") DiaChi diaChi, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+            model.addAttribute("batmodalthemdiachi", 0);
+            Page<KhachHang> page = KhachHangService.getAll(pageable);
+            model.addAttribute("listKhachHang", page.getContent());
+            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
+            return "home/layout";
+        }
+        String mhd = "";
+        Integer sl = diaChiService.findAllFullTT().size() + 1;
+        if (sl < 9) {
+            mhd = "DC" + sl;
+        } else {
+            mhd = "DC" + sl;
+        }
+        diaChi.setMa(mhd);
+        diaChi.setKhachHang(kh);
+        diaChi.setNgayTao(Date.valueOf(LocalDate.now()));
+        diaChi.setTrangThai(0);
+        diaChiService.add(diaChi);
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        Page<KhachHang> page = KhachHangService.getAll(pageable);
+        model.addAttribute("listKhachHang", page.getContent());
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("batmodalthemdiachi", 1);
+        model.addAttribute("thongBaoThanhCong", "Thêm địa chỉ mới thành công");
+        model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
+        return "home/layout";
     }
 }

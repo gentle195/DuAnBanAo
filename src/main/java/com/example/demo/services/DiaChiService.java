@@ -28,4 +28,6 @@ public interface DiaChiService {
     public List<DiaChi> search0(String ten);
 
     public List<DiaChi> search1(String ten);
+
+    List<DiaChi> danhSachDiaChi(UUID id);
 }

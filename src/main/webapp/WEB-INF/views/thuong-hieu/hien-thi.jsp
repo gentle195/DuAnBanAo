@@ -81,12 +81,12 @@
                            aria-controls="description" aria-selected="true">Thông tin thương hiệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/thuong-hieu/view-add" role="tab">Thêm
+                        <a class="nav-link" href="/thuong-hieu/view-add" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
                             thông tin
                             thương hiệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/thuong-hieu/hien-thi-delete" role="tab">Thương hiệu ngừng sử dụng</a>
+                        <a class="nav-link" href="/thuong-hieu/hien-thi-delete" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thương hiệu ngừng sử dụng</a>
                     </li>
                 </ul>
             </div>
@@ -112,6 +112,7 @@
                                     <table class="table table-striped" style="color: black">
                                         <thead>
                                         <tr>
+                                            <th>STT</th>
                                             <th>Mã</th>
                                             <th>Tên</th>
                                             <th>Tình Trạng</th>
@@ -123,8 +124,9 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listThuongHieu}" var="thuongHieu">
+                                        <c:forEach items="${listThuongHieu}" var="thuongHieu" varStatus="index">
                                             <tr>
+                                                <td>${index.index+1}</td>
                                                 <td>${thuongHieu.ma}</td>
                                                 <td>${thuongHieu.ten}</td>
                                                 <td>

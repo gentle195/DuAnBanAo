@@ -81,13 +81,13 @@
                            aria-controls="description" aria-selected="true">Thông tin địa chỉ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/dia-chi/view-add" role="tab">Thêm
+                        <a class="nav-link" href="/dia-chi/view-add" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
                             thông
                             tin địa chỉ</a>
                     </li>
                     <li class="nav-item">
 
-                        <a class="nav-link" href="/dia-chi/hien-thi-delete" role="tab">Địa chỉ
+                        <a class="nav-link" href="/dia-chi/hien-thi-delete" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Địa chỉ
                             đã ngừng</a>
                     </li>
                 </ul>
@@ -114,6 +114,7 @@
                                     <table class="table table-striped" style="color: black">
                                         <thead>
                                         <tr>
+                                            <th>STT</th>
                                             <th>Mã</th>
                                             <th>Địa chỉ</th>
                                             <th>Thành phố</th>
@@ -128,8 +129,9 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listDiaChi}" var="diaChi">
+                                        <c:forEach items="${listDiaChi}" var="diaChi" varStatus="index">
                                             <tr>
+                                                <td>${index.index+1}</td>
                                                 <td>${diaChi.ma}</td>
                                                 <td>${diaChi.soDiaChi}</td>
                                                 <td>${diaChi.thanhPho}</td>

@@ -22,7 +22,7 @@
             <div>
                 <ul class="nav nav-pills mb-3" id="setting-panel" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link" href="/khach-hang/hien-thi" role="tab">Thêm
+                        <a class="nav-link" href="/khach-hang/hien-thi" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
                             thông tin
                             khách hàng</a>
                     </li>
@@ -31,7 +31,7 @@
                            aria-controls="description" aria-selected="true">Thêm thông tin khách hàng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/khach-hang/hien-thi-delete" role="tab">Khách
+                        <a class="nav-link" href="/khach-hang/hien-thi-delete" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Khách
                             hàng
                             đã ngừng</a>
                     </li>
@@ -63,22 +63,24 @@
                             <form:label class="form-label" path="soDienThoai">Số điện thoại:</form:label>
                             <form:input class="form-control" path="soDienThoai"/>
                             <form:errors path="soDienThoai" cssStyle="color: red"></form:errors>
+                            <span style="color: red">${tbtrungsdt}</span>
                         </div>
                         <div class="form-group">
                             <form:label class="form-label" path="email">Email:</form:label>
                             <form:input class="form-control" path="email"/>
                             <form:errors path="email" cssStyle="color: red"></form:errors>
+                            <span style="color: red">${tbtrungemail}</span>
                         </div>
-                        <div class="form-group">
-                            <form:label class="form-label" path="taiKhoan">Tài khoản:</form:label>
-                            <form:input class="form-control" path="taiKhoan"/>
-                            <form:errors path="taiKhoan" cssStyle="color: red"></form:errors>
-                        </div>
-                        <div class="form-group">
-                            <form:label class="form-label" path="matKhau">Mật khẩu:</form:label>
-                            <form:input class="form-control" path="matKhau"/>
-                            <form:errors path="matKhau" cssStyle="color: red"></form:errors>
-                        </div>
+<%--                        <div class="form-group">--%>
+<%--                            <form:label class="form-label" path="taiKhoan">Tài khoản:</form:label>--%>
+<%--                            <form:input class="form-control" path="taiKhoan"/>--%>
+<%--                            <form:errors path="taiKhoan" cssStyle="color: red"></form:errors>--%>
+<%--                        </div>--%>
+<%--                        <div class="form-group">--%>
+<%--                            <form:label class="form-label" path="matKhau">Mật khẩu:</form:label>--%>
+<%--                            <form:input class="form-control" path="matKhau"/>--%>
+<%--                            <form:errors path="matKhau" cssStyle="color: red"></form:errors>--%>
+<%--                        </div>--%>
                         <div class="col-12">
                             <div style="text-align: center">
                                 <button type="submit" class="btn btn-primary mr-2"

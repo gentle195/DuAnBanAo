@@ -27,4 +27,13 @@ public interface NhanVienService {
     public List<NhanVien> search0(String ten);
 
     public List<NhanVien> search1(String ten);
+
+    boolean existNhanVienByEmail(String email);
+    boolean existNhanVienBySDT(String sdt);
+    List<NhanVien> locTT(int tinhTrang);
+    Page<NhanVien> locGT(Boolean gioiTinh,Pageable pageable);
+    List<NhanVien> findAllByTinhTrangAndGioiTinh(int tinhTrang,Boolean gioiTinh);
+    Page<NhanVien> searchByTenChucVuAndGioiTinh(String tenChucVu,
+                                                Boolean gioiTinh,Pageable pageable);
+
 }

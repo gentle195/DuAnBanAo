@@ -27,4 +27,9 @@ public interface KhachHangService {
     public List<KhachHang> search0(String ten);
 
     public List<KhachHang> search1(String ten);
+    boolean existKhachHangByEmail(String email);
+    boolean existKhachHangBySDT(String sdt);
+    List<KhachHang> locTT(int trangThai);
+    Page<KhachHang> locGT(Boolean gioiTinh,Pageable pageable);
+    List<KhachHang> findAllByTinhTrangAndGioiTinh(int trangThai, Boolean gioiTinh);
 }

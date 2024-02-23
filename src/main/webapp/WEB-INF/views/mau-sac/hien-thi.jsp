@@ -81,12 +81,12 @@
                            aria-controls="description" aria-selected="true">Thông tin màu sắc</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/mau-sac/view-add" role="tab">Thêm
+                        <a class="nav-link" href="/mau-sac/view-add" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
                             thông tin
                             màu sắc</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/mau-sac/hien-thi-delete" role="tab">
+                        <a class="nav-link" href="/mau-sac/hien-thi-delete" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
                             Màu sắc ngừng sử dụng</a>
                     </li>
                 </ul>
@@ -113,6 +113,7 @@
                                     <table class="table table-striped" style="color: black">
                                         <thead>
                                         <tr>
+                                            <th>STT</th>
                                             <th>Mã</th>
                                             <th>Tên</th>
                                             <th>Tình Trạng</th>
@@ -124,8 +125,9 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listMauSac}" var="mauSac">
+                                        <c:forEach items="${listMauSac}" var="mauSac" varStatus="index">
                                             <tr>
+                                                <td>${index.index+1}</td>
                                                 <td>${mauSac.ma}</td>
                                                 <td>${mauSac.ten}</td>
                                                 <td>

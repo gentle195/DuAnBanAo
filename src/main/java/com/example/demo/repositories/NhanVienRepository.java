@@ -33,4 +33,16 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, UUID> {
     @Modifying
     @Query(value = "update NhanVien set tinhTrang=0, ngaySua=convert(date,getdate(),105)", nativeQuery = true)
     void updateTT();
+
+    boolean existsNhanVienBySdt(String sdt);
+    boolean existsNhanVienByEmail(String sdt);
+    List<NhanVien> findAllByTinhTrang(int tinhTrang);
+    Page<NhanVien> findAllByGioiTinh(Boolean gioiTinh,Pageable pageable);
+    List<NhanVien> findAllByTinhTrangAndGioiTinh(int tinhTrang,Boolean gioiTinh);
+    @Query("SELECT nv FROM NhanVien nv " +
+            "INNER JOIN nv.chucVu cv " +
+            "WHERE  cv.ten = :tenChucVu " +
+            "AND  nv.gioiTinh = :gioiTinh")
+    Page<NhanVien> searchByTenChucVuAndGioiTinh(String tenChucVu,
+                                                Boolean gioiTinh,Pageable pageable);
 }

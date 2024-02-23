@@ -82,12 +82,12 @@
                            aria-controls="description" aria-selected="true">Thông tin nhân viên</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/view-add" role="tab">Thêm
+                        <a class="nav-link" href="/nhan-vien/view-add" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
                             thông tin
                             nhân viên</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab">Nhân
+                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Nhân
                             viên ngừng hoạt động</a>
                     </li>
                 </ul>
@@ -98,8 +98,26 @@
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title" style="float: left">Danh sách nhân viên</h4>
+                                <h4 class="card-title" >Danh sách nhân viên</h4>
+                                <br>
                                 <%--            Tìm kiếm               --%>
+                                <form method="get" action="/nhan-vien/loc" style="color: black; float:left; ">
+                                    <label for="chucVu">Chức vụ:</label>
+                                    <select id="chucVu" name="ten1">
+                                        <option value="">Chọn chức vụ</option>
+                                        <c:forEach items="${listChucVu}" var="chucVu">
+                                            <option value="${chucVu.ten}">${chucVu.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <label for="gioiTinh">Giới tính:</label>
+                                    <select id="gioiTinh" name="gioiTinh1">
+                                        <%--                            <option value="">Tất cả</option>--%>
+                                        <option value="true">Nam</option>
+                                        <option value="false">Nữ</option>
+                                        <!-- Thêm các option cho giới tính khác -->
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Lọc</button>
+                                </form>
                                 <form action="/nhan-vien/search-con-hoat-dong" method="post">
                                     <div class="input-group" style="width: 30%; float: right">
                                         <input type="text" class="form-control" placeholder="Bạn tìm gì..."
@@ -114,6 +132,7 @@
                                     <table class="table table-striped" style="color: black; width: 1800px">
                                         <thead>
                                         <tr>
+                                            <th>STT</th>
                                             <th>Mã</th>
                                             <th>Tên</th>
                                             <th>Địa Chỉ</th>
@@ -124,7 +143,6 @@
                                             <th>Căn Cước</th>
                                             <th>Chức Vụ</th>
                                             <th>Tài Khoản</th>
-                                            <th>Mật Khẩu</th>
                                             <th>Tình Trạng</th>
                                             <th>Ngày Tạo</th>
                                             <th>Ngày Sửa</th>
@@ -134,8 +152,9 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listNhanVien}" var="nhanVien">
+                                        <c:forEach items="${listNhanVien}" var="nhanVien" varStatus="index">
                                             <tr>
+                                                <td>${index.index+1}</td>
                                                 <td>${nhanVien.ma}</td>
                                                 <td>${nhanVien.hoTen}</td>
                                                 <td>${nhanVien.diaChi}</td>
@@ -149,7 +168,6 @@
                                                 <td>${nhanVien.CCCD}</td>
                                                 <td>${nhanVien.chucVu.ten}</td>
                                                 <td>${nhanVien.taiKhoan}</td>
-                                                <td>${nhanVien.matKhau}</td>
                                                 <td>
                                                     <c:if test="${nhanVien.tinhTrang==0}">Còn hoạt động</c:if>
                                                     <c:if test="${nhanVien.tinhTrang==1}">Ngừng hoạt động</c:if>

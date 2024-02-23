@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -52,6 +53,7 @@ public class NhanVien {
     private Date ngaySinh;
 
     @NotBlank(message = "Không để trống thông tin")
+    @Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại không hợp lệ!")
     @Column(name = "SdtNhanVien")
     private String sdt;
 
@@ -59,10 +61,12 @@ public class NhanVien {
     private Boolean gioiTinh;
 
     @NotBlank(message = "Không để trống thông tin")
+    @Email(message = "Email không hợp lệ!")
     @Column(name = "Email")
+
     private String email;
 
-    @NotBlank(message = "Không để trống thông tin")
+//    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "TaiKhoan")
     private String taiKhoan;
 
@@ -70,7 +74,7 @@ public class NhanVien {
     @Column(name = "CCCD")
     private String CCCD;
 
-    @NotBlank(message = "Không để trống thông tin")
+//    @NotBlank(message = "Không để trống thông tin")
     @Column(name = "MatKhau")
     private String matKhau;
 

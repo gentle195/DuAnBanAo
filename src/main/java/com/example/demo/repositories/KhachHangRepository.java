@@ -34,4 +34,11 @@ public interface KhachHangRepository extends JpaRepository<KhachHang, UUID> {
     @Modifying
     @Query(value = "update KhachHang set trangThai=0, ngaySua=convert(date,getdate(),105)", nativeQuery = true)
     void updateTT();
+
+    boolean existsKhachHangByEmail(String email);
+    boolean existsKhachHangBySoDienThoai(String email);
+
+    List<KhachHang> findAllByTrangThai(int trangThai);
+    Page<KhachHang> findAllByGioiTinh(Boolean gioiTinh,Pageable pageable);
+    List<KhachHang> findAllByTrangThaiAndGioiTinh(int trangThai,Boolean gioiTinh);
 }

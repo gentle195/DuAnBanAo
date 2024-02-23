@@ -76,11 +76,11 @@
         <div class="card-body">
             <ul class="nav nav-pills mb-3" id="setting-panel" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link" href="/dia-chi/hien-thi" role="tab">Thông tin
+                    <a class="nav-link" href="/dia-chi/hien-thi" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông tin
                         địa chỉ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/dia-chi/view-add" role="tab">Thêm thông
+                    <a class="nav-link" href="/dia-chi/view-add" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm thông
                         tin địa chỉ</a>
                 </li>
                 <li class="nav-item">
@@ -113,6 +113,7 @@
                         <table class="table table-striped" style="color: black">
                             <thead>
                             <tr>
+                                <th>STT</th>
                                 <th>Mã</th>
                                 <th>Địa chỉ</th>
                                 <th>Thành phố</th>
@@ -127,8 +128,9 @@
                             <tbody>
                             <br>
                             <br>
-                            <c:forEach items="${listDiaChi}" var="diaChi">
+                            <c:forEach items="${listDiaChi}" var="diaChi" varStatus="index">
                                 <tr>
+                                    <td>${index.index+1}</td>
                                     <td>${diaChi.ma}</td>
                                     <td>${diaChi.soDiaChi}</td>
                                     <td>${diaChi.thanhPho}</td>

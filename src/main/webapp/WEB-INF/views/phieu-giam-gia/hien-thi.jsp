@@ -81,7 +81,7 @@
                            aria-controls="description" aria-selected="true">Thông tin phiếu giảm giá</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/phieu-giam-gia/view-add" role="tab">Thêm
+                        <a class="nav-link" href="/phieu-giam-gia/view-add" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
                             thông tin
                             phiếu giảm giá</a>
                     </li>
@@ -109,6 +109,7 @@
                                     <table class="table table-striped" style="color: black;width: 1600px">
                                         <thead>
                                         <tr>
+                                            <th>STT</th>
                                             <th>Mã</th>
                                             <th>Tên</th>
                                             <th>Hình thức giảm giá</th>
@@ -117,8 +118,7 @@
                                             <th>Ngày Sửa</th>
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
-                                            <th>Người tạo</th>
-                                            <th>Người sửa</th>
+
                                             <th>Số lượng</th>
                                             <th>Tình Trạng</th>
                                             <th>Action</th>
@@ -127,8 +127,9 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listPhieuGiamGia}" var="phieuGiamGia">
+                                        <c:forEach items="${listPhieuGiamGia}" var="phieuGiamGia" varStatus="index">
                                             <tr>
+                                                <td>${index.index+1}</td>
                                                 <td>${phieuGiamGia.ma}</td>
                                                 <td>${phieuGiamGia.ten}</td>
                                                 <td><c:if test="${phieuGiamGia.hinhThucGiam== true}"> Giảm theo %</c:if></td>
@@ -137,8 +138,7 @@
                                                 <td>${phieuGiamGia.ngaySua}</td>
                                                 <td>${phieuGiamGia.ngayBatDau}</td>
                                                 <td>${phieuGiamGia.ngayketThuc}</td>
-                                                <td>${phieuGiamGia.nguoiTao}</td>
-                                                <td>${phieuGiamGia.nguoiSua}</td>
+
                                                 <td>${phieuGiamGia.soLuong}</td>
                                                 <td>
                                                     <c:if test="${phieuGiamGia.trangThai==0}">Còn hạn sử dụng</c:if>

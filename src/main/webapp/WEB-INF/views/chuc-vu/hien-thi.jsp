@@ -81,12 +81,12 @@
                            aria-controls="description" aria-selected="true">Thông tin chức vụ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/chuc-vu/view-add" role="tab">Thêm
+                        <a class="nav-link" href="/chuc-vu/view-add" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
                             thông tin
                             chức vụ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/chuc-vu/hien-thi-delete" role="tab">Chức vụ ngừng sử dụng</a>
+                        <a class="nav-link" href="/chuc-vu/hien-thi-delete" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Chức vụ ngừng sử dụng</a>
                     </li>
                 </ul>
             </div>
@@ -112,6 +112,7 @@
                                     <table class="table table-striped" style="color: black">
                                         <thead>
                                         <tr>
+                                            <th>STT</th>
                                             <th>Mã</th>
                                             <th>Tên</th>
                                             <th>Tình Trạng</th>
@@ -123,8 +124,9 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listChucVu}" var="chucVu">
+                                        <c:forEach items="${listChucVu}" var="chucVu" varStatus="index">
                                             <tr>
+                                                <td>${index.index+1}</td>
                                                 <td>${chucVu.ma}</td>
                                                 <td>${chucVu.ten}</td>
                                                 <td>

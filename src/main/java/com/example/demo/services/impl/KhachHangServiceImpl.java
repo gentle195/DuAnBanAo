@@ -74,4 +74,29 @@ public class KhachHangServiceImpl implements KhachHangService {
     public List<KhachHang> search1(String ten) {
         return khachHangRepository.search1(ten);
     }
+
+    @Override
+    public boolean existKhachHangByEmail(String email) {
+        return khachHangRepository.existsKhachHangByEmail(email);
+    }
+
+    @Override
+    public boolean existKhachHangBySDT(String sdt) {
+        return khachHangRepository.existsKhachHangBySoDienThoai(sdt);
+    }
+
+    @Override
+    public List<KhachHang> locTT(int trangThai) {
+        return khachHangRepository.findAllByTrangThai(trangThai);
+    }
+
+    @Override
+    public Page<KhachHang> locGT(Boolean gioiTinh,Pageable pageable) {
+        return khachHangRepository.findAllByGioiTinh(gioiTinh,pageable);
+    }
+
+    @Override
+    public List<KhachHang> findAllByTinhTrangAndGioiTinh(int trangThai, Boolean gioiTinh) {
+        return khachHangRepository.findAllByTrangThaiAndGioiTinh(trangThai,gioiTinh);
+    }
 }

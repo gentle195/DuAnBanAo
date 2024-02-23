@@ -49,7 +49,7 @@ public class DiaChiServiceImpl implements DiaChiService {
     }
 
     @Override
-    public DiaChi update(UUID id,DiaChi diaChi) {
+    public DiaChi update(UUID id, DiaChi diaChi) {
         if (id != null) {
             DiaChi diaChiUpdate = diaChiRepository.findById(id).orElse(null);
             if (diaChiUpdate != null) {
@@ -73,5 +73,10 @@ public class DiaChiServiceImpl implements DiaChiService {
     @Override
     public List<DiaChi> search1(String ten) {
         return diaChiRepository.search1(ten);
+    }
+
+    @Override
+    public List<DiaChi> danhSachDiaChi(UUID id) {
+        return diaChiRepository.danhSachDiaChi(id);
     }
 }

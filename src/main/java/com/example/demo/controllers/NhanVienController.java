@@ -4,6 +4,7 @@ package com.example.demo.controllers;
 import com.example.demo.models.ChucVu;
 import com.example.demo.models.NhanVien;
 import com.example.demo.services.ChucVuService;
+import com.example.demo.services.MailerService;
 import com.example.demo.services.NhanVienService;
 import com.example.demo.services.NhanVienService;
 import jakarta.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.SecureRandom;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,6 +31,9 @@ public class NhanVienController {
     @Autowired
     private ChucVuService chucVuService;
 
+    @Autowired
+    private MailerService mailerService;
+
     @GetMapping("/hien-thi")
     public String hienThi(Model model, @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                           @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("nhanVien") NhanVien nhanVien) {
@@ -36,8 +41,26 @@ public class NhanVienController {
         Page<NhanVien> page = nhanVienService.getAll(pageable);
         model.addAttribute("listNhanVien", page.getContent());
         model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("listChucVu", chucVuService.findAll());
+
         model.addAttribute("contentPage", "../nhan-vien/hien-thi.jsp");
         return "home/layout";
+    }
+    @GetMapping("/loc")
+    public String hienThiLoc(Model model,@RequestParam("ten1") String chucVu,
+                             @RequestParam("gioiTinh1") String gioiTinh,@RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("nhanVien") NhanVien nhanVien) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+
+        Page<NhanVien> page=nhanVienService.searchByTenChucVuAndGioiTinh(chucVu,Boolean.valueOf(gioiTinh),pageable);
+        model.addAttribute("listChucVu", chucVuService.findAll());
+
+        model.addAttribute("listNhanVien", page.getContent());
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("contentPage", "../nhan-vien/hien-thi.jsp");
+        return "home/layout";
+
+
     }
 
     @GetMapping("/hien-thi-delete")
@@ -66,6 +89,18 @@ public class NhanVienController {
         model.addAttribute("contentPage", "../nhan-vien/view-add.jsp");
         return "home/layout";
     }
+    private String generateRandomPassword(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            password.append(characters.charAt(randomIndex));
+        }
+
+        return password.toString();
+    }
 
     @PostMapping("/add")
     public String add(Model model, @Valid @ModelAttribute("nhanVien") NhanVien nhanVien, @ModelAttribute("chucVu") ChucVu chucVu, BindingResult bindingResult
@@ -82,6 +117,32 @@ public class NhanVienController {
             model.addAttribute("contentPage", "../nhan-vien/view-add.jsp");
             return "home/layout";
         }
+        if (nhanVienService.existNhanVienByEmail(nhanVien.getEmail())) {
+
+            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+            Page<NhanVien> page = nhanVienService.getAll(pageable);
+            model.addAttribute("listNhanVien", page.getContent());
+            model.addAttribute("listChucVu", chucVuService.findAll());
+            model.addAttribute("chucVu", new ChucVu());
+            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("tbtrungemail","Email trùng!");
+            model.addAttribute("contentPage", "../nhan-vien/view-add.jsp");
+            return "home/layout";
+        }
+        if (nhanVienService.existNhanVienBySDT(nhanVien.getSdt())) {
+
+            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+            Page<NhanVien> page = nhanVienService.getAll(pageable);
+            model.addAttribute("listNhanVien", page.getContent());
+            model.addAttribute("listChucVu", chucVuService.findAll());
+            model.addAttribute("chucVu", new ChucVu());
+            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("tbtrungsdt","Số điện thoại  trùng!");
+            model.addAttribute("contentPage", "../nhan-vien/view-add.jsp");
+            return "home/layout";
+        }
+        String mk=generateRandomPassword(8);
+
         String mhd = "";
         Integer sl = nhanVienService.findAllFullTT().size() + 1;
         if (sl < 9) {
@@ -92,7 +153,10 @@ public class NhanVienController {
         nhanVien.setMa(mhd);
         nhanVien.setNgayTao(Date.valueOf(LocalDate.now()));
         nhanVien.setTinhTrang(0);
+        nhanVien.setTaiKhoan(nhanVien.getEmail());
+        nhanVien.setMatKhau(mk);
         nhanVienService.add(nhanVien);
+        mailerService.queue(nhanVien.getEmail(),"Chúc mừng bạn đã đăng kí thành công!" ,"Tài khoản : " +nhanVien.getTaiKhoan() +"\n Mật khẩu: " +nhanVien.getMatKhau());
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<NhanVien> page = nhanVienService.getAll(pageable);
         model.addAttribute("listNhanVien", page.getContent());
@@ -102,6 +166,7 @@ public class NhanVienController {
         model.addAttribute("contentPage", "../nhan-vien/hien-thi.jsp");
         return "home/layout";
     }
+
 
     @PostMapping("/add-chuc-vu")
     public String addChucVu(Model model,@ModelAttribute("chucVu") ChucVu chucVu, @ModelAttribute("nhanVien") NhanVien nhanVien
@@ -179,6 +244,7 @@ public class NhanVienController {
             model.addAttribute("contentPage", "../nhan-vien/view-update.jsp");
             return "home/layout";
         }
+
         NhanVien cl = nhanVienService.findById(id);
         nhanVien.setNgaySua(Date.valueOf(LocalDate.now()));
         nhanVien.setTinhTrang(cl.getTinhTrang());

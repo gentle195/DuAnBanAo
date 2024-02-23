@@ -81,12 +81,12 @@
                            aria-controls="description" aria-selected="true">Thông tin chất liệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/chat-lieu/view-add" role="tab">Thêm
+                        <a class="nav-link" href="/chat-lieu/view-add" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;" >Thêm
                             thông tin
                             chất liệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/chat-lieu/hien-thi-delete" role="tab">Chất
+                        <a class="nav-link" href="/chat-lieu/hien-thi-delete" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Chất
                             liệu ngừng sử dụng</a>
                     </li>
                 </ul>
@@ -113,6 +113,7 @@
                                     <table class="table table-striped" style="color: black">
                                         <thead>
                                         <tr>
+                                            <th>STT</th>
                                             <th>Mã</th>
                                             <th>Tên</th>
                                             <th>Tình Trạng</th>
@@ -124,8 +125,9 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listChatLieu}" var="chatLieu">
+                                        <c:forEach items="${listChatLieu}" var="chatLieu" varStatus="index">
                                             <tr>
+                                                <td>${index.index+1}</td>
                                                 <td>${chatLieu.ma}</td>
                                                 <td>${chatLieu.ten}</td>
                                                 <td>

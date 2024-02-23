@@ -76,11 +76,11 @@
         <div class="card-body">
             <ul class="nav nav-pills mb-3" id="setting-panel" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link" href="/khach-hang/hien-thi" role="tab">Thông tin
+                    <a class="nav-link" href="/khach-hang/hien-thi" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông tin
                         khách hàng</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/khach-hang/view-add" role="tab">Thêm thông
+                    <a class="nav-link" href="/khach-hang/view-add" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm thông
                         tin khách hàng</a>
                 </li>
                 <li class="nav-item">
@@ -113,6 +113,7 @@
                         <table class="table table-striped" style="color: black; width: 1500px;">
                             <thead>
                             <tr>
+                                <th>STT</th>
                                 <th>Mã</th>
                                 <th>Tên</th>
                                 <th>Ngày sinh</th>
@@ -120,7 +121,6 @@
                                 <th>Email</th>
                                 <th>SĐT</th>
                                 <th>Tài khoản</th>
-                                <th>Mật khẩu</th>
                                 <th>Tình Trạng</th>
                                 <th>Ngày Tạo</th>
                                 <th>Ngày Sửa</th>
@@ -130,8 +130,9 @@
                             <tbody>
                             <br>
                             <br>
-                            <c:forEach items="${listKhachHang}" var="khachHang">
+                            <c:forEach items="${listKhachHang}" var="khachHang" varStatus="index">
                                 <tr>
+                                    <td>${index.index+1}</td>
                                     <td>${khachHang.ma}</td>
                                     <td>${khachHang.hoTen}</td>
                                     <td>${khachHang.ngaySinh}</td>
@@ -142,7 +143,6 @@
                                     <td>${khachHang.email}</td>
                                     <td>${khachHang.soDienThoai}</td>
                                     <td>${khachHang.taiKhoan}</td>
-                                    <td>${khachHang.matKhau}</td>
                                     <td>
                                         <c:if test="${khachHang.trangThai==0}">Đang hoạt động</c:if>
                                         <c:if test="${khachHang.trangThai==1}">Ngừng hoạt động</c:if>

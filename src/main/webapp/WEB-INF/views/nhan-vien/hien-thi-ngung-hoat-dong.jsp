@@ -77,7 +77,7 @@
             <div>
                 <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/hien-thi" role="tab">Thông
+                        <a class="nav-link" href="/nhan-vien/hien-thi" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông
                             tin nhân viên</a>
                     </li>
                     <li class="nav-item">
@@ -108,6 +108,7 @@
                                     <table class="table table-striped" style="color: black; width: 1800px">
                                         <thead>
                                         <tr>
+                                            <th>STT</th>
                                             <th>Mã</th>
                                             <th>Tên</th>
                                             <th>Địa Chỉ</th>
@@ -118,7 +119,6 @@
                                             <th>Căn Cước</th>
                                             <th>Chức Vụ</th>
                                             <th>Tài Khoản</th>
-                                            <th>Mật Khẩu</th>
                                             <th>Tình Trạng</th>
                                             <th>Ngày Tạo</th>
                                             <th>Ngày Sửa</th>
@@ -128,8 +128,9 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listNhanVien}" var="nhanVien">
+                                        <c:forEach items="${listNhanVien}" var="nhanVien" varStatus="index">
                                             <tr>
+                                                <td>${index.index+1}</td>
                                                 <td>${nhanVien.ma}</td>
                                                 <td>${nhanVien.hoTen}</td>
                                                 <td>${nhanVien.diaChi}</td>
@@ -143,7 +144,6 @@
                                                 <td>${nhanVien.CCCD}</td>
                                                 <td>${nhanVien.chucVu.ten}</td>
                                                 <td>${nhanVien.taiKhoan}</td>
-                                                <td>${nhanVien.matKhau}</td>
                                                 <td>
                                                     <c:if test="${nhanVien.tinhTrang==0}">Còn hoạt động</c:if>
                                                     <c:if test="${nhanVien.tinhTrang==1}">Ngừng hoạt động</c:if>

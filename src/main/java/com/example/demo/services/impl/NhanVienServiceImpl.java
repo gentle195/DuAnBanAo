@@ -76,4 +76,34 @@ public class NhanVienServiceImpl implements NhanVienService {
     public List<NhanVien> search1(String ten) {
         return nhanVienRepo.search1(ten);
     }
+
+    @Override
+    public boolean existNhanVienByEmail(String email) {
+        return nhanVienRepo.existsNhanVienByEmail(email);
+    }
+
+    @Override
+    public boolean existNhanVienBySDT(String sdt) {
+        return nhanVienRepo.existsNhanVienBySdt(sdt);
+    }
+
+    @Override
+    public List<NhanVien> locTT(int tinhTrang) {
+        return nhanVienRepo.findAllByTinhTrang(tinhTrang);
+    }
+
+    @Override
+    public Page<NhanVien> locGT(Boolean gioiTinh,Pageable pageable) {
+        return nhanVienRepo.findAllByGioiTinh(gioiTinh,pageable);
+    }
+
+    @Override
+    public List<NhanVien> findAllByTinhTrangAndGioiTinh(int tinhTrang, Boolean gioiTinh) {
+        return nhanVienRepo.findAllByTinhTrangAndGioiTinh(tinhTrang, gioiTinh);
+    }
+
+    @Override
+    public Page<NhanVien> searchByTenChucVuAndGioiTinh(String tenChucVu, Boolean gioiTinh, Pageable pageable) {
+        return nhanVienRepo.searchByTenChucVuAndGioiTinh(tenChucVu, gioiTinh, pageable);
+    }
 }

@@ -30,6 +30,9 @@ public interface DiaChiRepository extends JpaRepository<DiaChi, UUID> {
     @Query("select c from DiaChi c  where  c.trangThai = 1 and (c.ma like %:ten% or c.thanhPho like %:ten%)")
     List<DiaChi> search1(String ten);
 
+    @Query("select c from DiaChi c  where  c.trangThai = 0 and c.khachHang.id=:id")
+    List<DiaChi> danhSachDiaChi(UUID id);
+
     @Transactional
     @Modifying
     @Query(value = "update DiaChi set trangThai=0, ngaySua=convert(date,getdate(),105)", nativeQuery = true)
