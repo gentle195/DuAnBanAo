@@ -261,7 +261,7 @@
                                         </c:if>
 
                                         <%--                                        trạng thái chờ xác nhận--%>
-                                        <c:if test="${hoaDon.trangThaiHoaDon == 0}">
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 0 && not listHoaDonChiTiet.isEmpty()}">
                                             <a href="/hoa-don/update-tt-1/${hoaDon.id}" class="btn btn-warning">Xác nhận
                                                 hóa đơn
                                             </a>
