@@ -35,8 +35,8 @@ public class HoaDonSericeImpl implements HoaDonSerice {
     private HoaDonChiTietRepository hoaDonChiTietRepository;
 
     @Override
-    public Page<HoaDon> hoaDonAll(Pageable pageable) {
-        return hoaDonRepository.hoaDonAll(pageable);
+    public List<HoaDon> hoaDonAll() {
+        return hoaDonRepository.hoaDonAll();
     }
 
     @Override
@@ -45,33 +45,33 @@ public class HoaDonSericeImpl implements HoaDonSerice {
     }
 
     @Override
-    public Page<HoaDon> hoaDonHuy(Pageable pageable) {
-        return hoaDonRepository.hoaDonHuy(pageable);
+    public List<HoaDon> hoaDonHuy() {
+        return hoaDonRepository.hoaDonHuy();
     }
 
     @Override
-    public Page<HoaDon> hoaDonChoXacNhan(Pageable pageable) {
-        return hoaDonRepository.hoaDonChoXacNhan(pageable);
+    public List<HoaDon> hoaDonChoXacNhan() {
+        return hoaDonRepository.hoaDonChoXacNhan();
     }
 
     @Override
-    public Page<HoaDon> hoaDonDaXacNhan(Pageable pageable) {
-        return hoaDonRepository.hoaDonDaXacNhan(pageable);
+    public List<HoaDon> hoaDonDaXacNhan() {
+        return hoaDonRepository.hoaDonDaXacNhan();
     }
 
     @Override
-    public Page<HoaDon> hoaDonChoGiaoHang(Pageable pageable) {
-        return hoaDonRepository.hoaDonChoGiaoHang(pageable);
+    public List<HoaDon> hoaDonChoGiaoHang() {
+        return hoaDonRepository.hoaDonChoGiaoHang();
     }
 
     @Override
-    public Page<HoaDon> hoaDonDangVanChuyen(Pageable pageable) {
-        return hoaDonRepository.hoaDonDangVanChuyen(pageable);
+    public List<HoaDon> hoaDonDangVanChuyen() {
+        return hoaDonRepository.hoaDonDangVanChuyen();
     }
 
     @Override
-    public Page<HoaDon> hoaDonHoanThanh(Pageable pageable) {
-        return hoaDonRepository.hoaDonHoanThanh(pageable);
+    public List<HoaDon> hoaDonHoanThanh() {
+        return hoaDonRepository.hoaDonHoanThanh();
     }
 
     @Override
@@ -103,7 +103,7 @@ public class HoaDonSericeImpl implements HoaDonSerice {
 
 
 //    @Override
-//    public Page<HoaDon> hoaDonDaGiaoHang(Pageable pageable) {
+//    public Page<HoaDon> hoaDonDaGiaoHang() {
 //        return hoaDonRepository.hoaDonDaGiaoHang(pageable);
 //    }
 
@@ -311,6 +311,11 @@ public class HoaDonSericeImpl implements HoaDonSerice {
             return ResponseEntity.ok().headers(headers).body(pdfBytes);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @Override
+    public List<HoaDon> locTong(UUID idKH, UUID idNV, Integer loai, Integer giaoHang, Integer hoaDon, Date startDate, Date endDate, Date startSua, Date endSua) {
+        return hoaDonRepository.locTong(idKH, idNV, loai, giaoHang, hoaDon, startDate, endDate, startSua, endSua);
     }
 
     private byte[] createPdfFromHtml(StringBuilder htmlContent) {

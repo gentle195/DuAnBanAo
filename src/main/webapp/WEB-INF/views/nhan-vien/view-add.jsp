@@ -96,11 +96,6 @@
                                     <form:input class="form-control" path="CCCD"/>
                                     <form:errors path="CCCD" cssStyle="color: red"></form:errors>
                                 </div>
-                                <div class="form-group">
-                                    <form:label class="form-label" path="ngaySinh">Ngày sinh:</form:label>
-                                    <form:input class="form-control" path="ngaySinh" type="date" required="true"/>
-                                    <form:errors path="ngaySinh" cssStyle="color: red"></form:errors>
-                                </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
@@ -118,6 +113,11 @@
                                     <form:errors path="email" cssStyle="color: red"></form:errors>
                                     <span style="color: red">${tbtrungemail}</span>
                                 </div>
+                                <div class="form-group">
+                                    <form:label class="form-label" path="ngaySinh">Ngày sinh:</form:label>
+                                    <form:input class="form-control" path="ngaySinh" type="date" required="true"/>
+                                    <form:errors path="ngaySinh" cssStyle="color: red"></form:errors>
+                                </div>
 <%--                                <div class="form-group">--%>
 <%--                                    <form:label class="form-label" path="taiKhoan">Tài khoản:</form:label>--%>
 <%--                                    <form:input class="form-control" path="taiKhoan"/>--%>
@@ -128,27 +128,19 @@
 <%--                                    <form:input class="form-control" path="matKhau"/>--%>
 <%--                                    <form:errors path="matKhau" cssStyle="color: red"></form:errors>--%>
 <%--                                </div>--%>
-<%--                                <div class="form-group">--%>
-<%--                                    <div class="row">--%>
-<%--                                        <div class="col-10">--%>
-<%--                                            <form:label class="form-label" path="chucVu">Chức vụ:</form:label>--%>
-<%--                                            <form:select path="chucVu" class="form-control" id="selectChucVu"--%>
-<%--                                                         cssStyle="font-weight: bold; width: 100%">--%>
-<%--                                                <option selected disabled>Chức vụ</option>--%>
-<%--                                                <form:options items="${listChucVu}" itemValue="id" itemLabel="ten"/>--%>
-<%--                                            </form:select>--%>
-<%--                                            <form:errors path="chucVu"/>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="col-2">--%>
-<%--                                            <br>--%>
-<%--                                            <br>--%>
-<%--                                            <a type="button" data-bs-toggle="modal"--%>
-<%--                                               data-bs-target="#addChatLieu">--%>
-<%--                                                <img src="../../../images/plus.png">--%>
-<%--                                            </a>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <form:label class="form-label" path="chucVu">Chức vụ:</form:label>
+                                            <form:select path="chucVu" class="form-control" id="selectChucVu"
+                                                         cssStyle="font-weight: bold; width: 100%">
+                                                <option selected disabled>Chức vụ</option>
+                                                <form:options items="${listChucVu}" itemValue="id" itemLabel="ten"/>
+                                            </form:select>
+                                            <form:errors path="chucVu"/>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

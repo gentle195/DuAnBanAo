@@ -22,25 +22,25 @@ import java.util.UUID;
 public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
 
     @Query("select hd from HoaDon hd order by hd.ngayTao desc")
-    Page<HoaDon> hoaDonAll(Pageable pageable);
+    List<HoaDon> hoaDonAll();
 
     @Query("select hd from HoaDon hd where hd.trangThaiGiaoHang = 1 order by hd.ngayTao desc")
-    Page<HoaDon> hoaDonChoXacNhan(Pageable pageable);
+    List<HoaDon> hoaDonChoXacNhan();
 
     @Query("select hd from HoaDon hd where hd.trangThaiGiaoHang = 2 order by hd.ngayTao desc")
-    Page<HoaDon> hoaDonDaXacNhan(Pageable pageable);
+    List<HoaDon> hoaDonDaXacNhan();
 
     @Query("select hd from HoaDon hd where hd.trangThaiGiaoHang = 3 order by hd.ngayTao desc")
-    Page<HoaDon> hoaDonChoGiaoHang(Pageable pageable);
+    List<HoaDon> hoaDonChoGiaoHang();
 
     @Query("select hd from HoaDon hd where hd.trangThaiGiaoHang = 4 order by hd.ngayTao desc")
-    Page<HoaDon> hoaDonDangVanChuyen(Pageable pageable);
+    List<HoaDon> hoaDonDangVanChuyen();
 
     @Query("select hd from HoaDon hd where hd.trangThaiGiaoHang = 5 order by hd.ngayTao desc")
-    Page<HoaDon> hoaDonHuy(Pageable pageable);
+    List<HoaDon> hoaDonHuy();
 
     @Query("select hd from HoaDon hd where hd.trangThaiGiaoHang = 6 order by hd.ngayTao desc")
-    Page<HoaDon> hoaDonHoanThanh(Pageable pageable);
+    List<HoaDon> hoaDonHoanThanh();
 
     //    @Query("select hd from HoaDon hd where hd.trangThaiGiaoHang = 5 order by hd.ngayTao desc")
 //    Page<HoaDon> hoaDonDaGiaoHang(Pageable pageable);
@@ -70,4 +70,20 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     @Query("select hd from HoaDon hd")
     List<HoaDon> findAllHoaDon();
 
+    @Query("select hd from HoaDon hd left join NhanVien nv on hd.nhanVien.id=nv.id " +
+            "left join KhachHang kh on hd.khachHang.id=kh.id " +
+            "where (:idKH is null or kh.id=:idKH)" +
+            "and (:idNV is null or nv.id=:idNV) " +
+            "and (:loai is null or hd.loaiHoaDon= :loai) " +
+            "and (:giaoHang is null or hd.trangThaiGiaoHang= :giaoHang) " +
+            "and (:hoaDon is null or hd.trangThaiHoaDon= :hoaDon) " +
+            "and ((:startDate is null or :endDate is null) or hd.ngayTao >= coalesce(:startDate, hd.ngayTao) " +
+            "and hd.ngayTao <= coalesce(hd.ngayTao,:endDate))" +
+            "and ((:startSua is null or :endSua is null) or hd.ngaySua>= coalesce(:startSua,hd.ngaySua)" +
+            "and hd.ngaySua <= coalesce(hd.ngaySua,:endSua))")
+    List<HoaDon> locTong(UUID idKH, UUID idNV, Integer loai, Integer giaoHang, Integer hoaDon,
+                         @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                         @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+                         @RequestParam(value = "startSua", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startSua,
+                         @RequestParam(value = "endSua", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endSua);
 }

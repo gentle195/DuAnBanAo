@@ -150,25 +150,37 @@
                        aria-controls="description" aria-selected="true">Thông tin hóa đơn</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/hien-thi" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Tất cả</a>
+                    <a class="nav-link" href="/hoa-don/hien-thi" role="tab"
+                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Tất cả</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/cho-xac-nhan" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Chờ xác nhận</a>
+                    <a class="nav-link" href="/hoa-don/cho-xac-nhan" role="tab"
+                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Chờ xác
+                        nhận</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/da-xac-nhan" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Đã xác nhận</a>
+                    <a class="nav-link" href="/hoa-don/da-xac-nhan" role="tab"
+                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Đã xác
+                        nhận</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/cho-giao-hang" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Chờ giao hàng</a>
+                    <a class="nav-link" href="/hoa-don/cho-giao-hang" role="tab"
+                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Chờ giao
+                        hàng</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/dang-van-chuyen" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Đang vận chuyển</a>
+                    <a class="nav-link" href="/hoa-don/dang-van-chuyen" role="tab"
+                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Đang vận
+                        chuyển</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/huy" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Huỷ</a>
+                    <a class="nav-link" href="/hoa-don/huy" role="tab"
+                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Huỷ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/hoan-thanh" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Hoàn thành</a>
+                    <a class="nav-link" href="/hoa-don/hoan-thanh" role="tab"
+                       onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Hoàn
+                        thành</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -261,7 +273,7 @@
                                         </c:if>
 
                                         <%--                                        trạng thái chờ xác nhận--%>
-                                        <c:if test="${hoaDon.trangThaiHoaDon == 0 && not listHoaDonChiTiet.isEmpty()}">
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 0 && listHoaDonChiTiet.size()>=1}">
                                             <a href="/hoa-don/update-tt-1/${hoaDon.id}" class="btn btn-warning">Xác nhận
                                                 hóa đơn
                                             </a>
@@ -298,11 +310,11 @@
                                         </c:if>
 
                                         <%--                                        trạng thái huỷ--%>
-                                        <c:if test="${hoaDon.trangThaiHoaDon == 8}">
-                                            <a href="/hoa-don/update-tt-0/${hoaDon.id}" class="btn btn-outline-warning">
-                                                Khôi phục
-                                            </a>
-                                        </c:if>
+<%--                                        <c:if test="${hoaDon.trangThaiHoaDon == 8}">--%>
+<%--                                            <a href="/hoa-don/khoi-phuc/${hoaDon.id}" class="btn btn-outline-warning">--%>
+<%--                                                Khôi phục--%>
+<%--                                            </a>--%>
+<%--                                        </c:if>--%>
                                     </h4>
                                     <div class="basic-form">
                                         <form>
@@ -364,6 +376,24 @@
                                                            data-bs-target="#newSanPham"
                                                            style="float: right; height: 45px;color: black">Thêm sản
                                                             phẩm</a>
+                                                    </c:if>
+                                                    <c:if test="${hoaDon.phieuGiamGia == null && listHoaDonChiTiet.size()>=1}">
+
+                                                        <a class="btn btn-secondary"
+                                                           data-bs-toggle="modal"
+                                                           data-bs-target="#phieuGiamGia" style="height: 45px; color: black">Chọn
+                                                            PGG</a>
+                                                    </c:if>
+                                                    <c:if test="${hoaDon.phieuGiamGia != null && listHoaDonChiTiet.size()>=1}">
+
+                                                        <a class="btn btn-secondary"
+                                                           data-bs-toggle="modal"
+                                                           data-bs-target="#phieuGiamGia" style="height: 45px; color: black">Chọn
+                                                            PGG</a>
+
+                                                        <a class="btn btn-secondary"
+                                                           href="/ban-hang/bo-phieu/${HoaDonCho.id}"
+                                                           style="height: 45px; color: black">Bỏ PGG</a>
                                                     </c:if>
                                                 </div>
 
@@ -503,6 +533,76 @@
                 <button type="button" class="btn btn-secondary"
                         data-bs-dismiss="modal">Close
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="phieuGiamGia" tabindex="-1" aria-labelledby="modal-1-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div>
+                            <div class="card-body">
+                                <div></div>
+                                <h4 class="card-title" style="float: left">Phiếu giảm giá</h4>
+                                <div class="table-responsive">
+                                    <div>
+                                        <table class="table table-striped table-bordered zero-configuration"
+                                               style="min-width: 1200px; color: black;text-align: center">
+                                            <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Mã</th>
+                                                <th>Tên phiếu</th>
+                                                <th>Giá trị giảm</th>
+                                                <th>Hóa đơn tối thiểu</th>
+                                                <th>Giảm tối đa</th>
+                                                <th>Ngày bắt đầu</th>
+                                                <th>Ngày kết thúc</th>
+                                                <th>Số Lượng Tồn</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody style="text-align: center">
+                                            <c:forEach items="${listPGG}" var="pgg" varStatus="i">
+                                                <tr>
+                                                    <td>${i.index+1}</td>
+                                                    <td>${pgg.ma}</td>
+                                                    <td>${pgg.ten}</td>
+                                                    <td>${pgg.tienGiam} %</td>
+                                                    <td>
+                                                        <script>
+                                                            var donGia = ${pgg.giamToiThieu};
+                                                            document.write(donGia.toLocaleString('vi-VN'));
+                                                        </script>
+                                                        VND
+                                                    </td>
+                                                    <td>
+                                                        <script>
+                                                            var donGia1 = ${pgg.giamToiDa};
+                                                            document.write(donGia1.toLocaleString('vi-VN'));
+                                                        </script>
+                                                        VND
+                                                    </td>
+                                                    <td>${pgg.ngayBatDau}</td>
+                                                    <td>${pgg.ngayketThuc}</td>
+                                                    <td>${pgg.soLuong}</td>
+                                                    <td>
+                                                        <a href="/hoa-don/chon-phieu-giam-gia/${pgg.id}"
+                                                           class="btn btn-warning btn-icon-text">Chọn</a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

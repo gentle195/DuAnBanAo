@@ -24,7 +24,8 @@
                 <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/hien-thi" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông
+                        <a class="nav-link" href="/nhan-vien/hien-thi" role="tab"
+                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thông
                             tin
                             nhân viên</a>
                     </li>
@@ -33,7 +34,8 @@
                            aria-controls="description" aria-selected="true">Cập nhật thông tin nhân viên</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Nhân
+                        <a class="nav-link" href="/nhan-vien/hien-thi-delete" role="tab"
+                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Nhân
                             viên ngừng hoạt động</a>
                     </li>
                 </ul>
@@ -43,6 +45,10 @@
                      aria-labelledby="description-tab">
                     <form:form action="/nhan-vien/update/${nhanVien.id}" method="post" modelAttribute="nhanVien">
                     <div class="row">
+                        <div style="display: none">
+                            <form:input class="form-control" path="taiKhoan"/>
+                            <form:input class="form-control" path="matKhau"/>
+                        </div>
                         <div class="col-6">
                             <div class="form-group">
                                 <form:label class="form-label" path="hoTen">Họ tên:</form:label>
@@ -65,11 +71,6 @@
                                 <form:input class="form-control" path="CCCD"/>
                                 <form:errors path="CCCD" cssStyle="color: red"></form:errors>
                             </div>
-                            <div class="form-group">
-                                <form:label class="form-label" path="ngaySinh">Ngày sinh:</form:label>
-                                <form:input class="form-control" path="ngaySinh" type="date" required="true"/>
-                                <form:errors path="ngaySinh" cssStyle="color: red"></form:errors>
-                            </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
@@ -88,24 +89,29 @@
                                 <span style="color: red">${tbtrungemail}</span>
                             </div>
                             <div class="form-group">
-                                <form:label class="form-label" path="taiKhoan">Tài khoản:</form:label>
-                                <form:input class="form-control" path="taiKhoan"/>
-                                <form:errors path="taiKhoan" cssStyle="color: red"></form:errors>
+                                <form:label class="form-label" path="ngaySinh">Ngày sinh:</form:label>
+                                <form:input class="form-control" path="ngaySinh" type="date" required="true"/>
+                                <form:errors path="ngaySinh" cssStyle="color: red"></form:errors>
                             </div>
+                                <%--                            <div class="form-group">--%>
+                                <%--                                <form:label class="form-label" path="taiKhoan">Tài khoản:</form:label>--%>
+                                <%--                                <form:input class="form-control" path="taiKhoan"/>--%>
+                                <%--                                <form:errors path="taiKhoan" cssStyle="color: red"></form:errors>--%>
+                                <%--                            </div>--%>
+                                <%--                            <div class="form-group">--%>
+                                <%--                                <form:label class="form-label" path="matKhau">Mật khẩu:</form:label>--%>
+                                <%--                                <form:input class="form-control" path="matKhau"/>--%>
+                                <%--                                <form:errors path="matKhau" cssStyle="color: red"></form:errors>--%>
+                                <%--                            </div>--%>
                             <div class="form-group">
-                                <form:label class="form-label" path="matKhau">Mật khẩu:</form:label>
-                                <form:input class="form-control" path="matKhau"/>
-                                <form:errors path="matKhau" cssStyle="color: red"></form:errors>
+                                <form:label class="form-label" path="chucVu">Chức vụ:</form:label>
+                                <form:select path="chucVu" class="form-control" id="selectChucVu"
+                                             cssStyle="font-weight: bold; width: 100%">
+                                    <option selected disabled>Chức vụ</option>
+                                    <form:options items="${listChucVu}" itemValue="id" itemLabel="ten"/>
+                                </form:select>
+                                <form:errors path="chucVu"/>
                             </div>
-<%--                            <div class="form-group">--%>
-<%--                                <form:label class="form-label" path="chucVu">Chức vụ:</form:label>--%>
-<%--                                <form:select path="chucVu" class="form-control" id="selectChucVu"--%>
-<%--                                             cssStyle="font-weight: bold; width: 100%">--%>
-<%--                                    <option selected disabled>Chức vụ</option>--%>
-<%--                                    <form:options items="${listChucVu}" itemValue="id" itemLabel="ten"/>--%>
-<%--                                </form:select>--%>
-<%--                                <form:errors path="chucVu"/>--%>
-<%--                            </div>--%>
                         </div>
                     </div>
                 </div>

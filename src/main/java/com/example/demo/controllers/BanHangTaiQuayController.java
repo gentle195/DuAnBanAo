@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -248,6 +251,7 @@ public class BanHangTaiQuayController {
             return "home/layout";
         } else {
             BigDecimal total = BigDecimal.ZERO;
+            BigDecimal giaGoc = BigDecimal.ZERO;
             List<HoaDonChiTiet> listHDCT = hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon);
             if (listHDCT.isEmpty()) {
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
@@ -268,18 +272,28 @@ public class BanHangTaiQuayController {
                     chiTiet.setTrangThai(0);
                     sanPhamService.updateCTSP(chiTiet.getId(), chiTiet);
                 }
-                if (hoaDonnn.getPhieuGiamGia() != null) {
-                    PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hoaDonnn.getPhieuGiamGia().getId());
-                    phieuGiamGia.setSoLuong(phieuGiamGia.getSoLuong() + 1);
-                    phieuGiamGia.setTrangThai(0);
-                    phieuGiamGia.setNgaySua(Date.valueOf(LocalDate.now()));
-                    phieuGiamGiaService.update(phieuGiamGia.getId(), phieuGiamGia);
+                for (HoaDonChiTiet hdctt : hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon)
+                ) {
+                    giaGoc = giaGoc.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
                 }
-                total = total.add(BigDecimal.valueOf(hoaDonChiTiet.getDonGia().intValue() * hoaDonChiTiet.getSoLuong()));
-                hoaDonnn.setTongTien(total);
+                if (hoaDonnn.getPhieuGiamGia() != null) {
+                    PhieuGiamGia pgg = hoaDonnn.getPhieuGiamGia();
+                    double giam = giaGoc.doubleValue() * pgg.getTienGiam() / 100;
+                    double giaMoi = giaGoc.doubleValue() - giam;
+                    double giamMax = giaGoc.doubleValue() - pgg.getGiamToiDa().doubleValue();
+                    if (giam * 2 <= pgg.getGiamToiDa().doubleValue()) {
+                        hoaDonnn.setTongTien(BigDecimal.valueOf(giaMoi));
+                        total = BigDecimal.valueOf(giaMoi);
+                    }else{
+                        hoaDonnn.setTongTien(BigDecimal.valueOf(giamMax));
+                        total = BigDecimal.valueOf(giamMax);
+                    }
+                } else {
+                    total = total.add(BigDecimal.valueOf(hoaDonChiTiet.getDonGia().intValue() * hoaDonChiTiet.getSoLuong()));
+                    hoaDonnn.setTongTien(total);
+                }
 //                hoaDonnn.setNguoiSua();
                 hoaDonnn.setNgaySua(Date.valueOf(LocalDate.now()));
-                hoaDonnn.setPhieuGiamGia(null);
                 hoaDonSerice.update(hoaDonnn.getId(), hoaDonnn);
                 System.out.println(total);
                 model.addAttribute("tong", String.valueOf(total));
@@ -310,13 +324,8 @@ public class BanHangTaiQuayController {
                         ChiTietSanPham chiTiet = sanPhamService.findCTSPById(ct.getId());
                         chiTiet.setSoLuongTon(ct.getSoLuongTon() - Integer.valueOf(soLuongChon));
                         chiTiet.setNgaySua(Date.valueOf(LocalDate.now()));
-                        if (hoaDonnn.getPhieuGiamGia() != null) {
-                            PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hoaDonnn.getPhieuGiamGia().getId());
-                            phieuGiamGia.setSoLuong(phieuGiamGia.getSoLuong() + 1);
-                            phieuGiamGia.setTrangThai(0);
-                            phieuGiamGia.setNgaySua(Date.valueOf(LocalDate.now()));
-                            phieuGiamGiaService.update(phieuGiamGia.getId(), phieuGiamGia);
-                        }
+
+
                         if (ct.getSoLuongTon() - Integer.valueOf(soLuongChon) == 0) {
                             chiTiet.setTrangThai(1);
                             sanPhamService.updateCTSP(chiTiet.getId(), chiTiet);
@@ -326,9 +335,25 @@ public class BanHangTaiQuayController {
                         }
                         for (HoaDonChiTiet hdctt : hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon)
                         ) {
-                            total = total.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
-                            hoaDonnn.setPhieuGiamGia(null);
-                            hoaDonnn.setTongTien(total);
+                            giaGoc = giaGoc.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
+                            System.out.println(giaGoc);
+                            if (hoaDonnn.getPhieuGiamGia() != null) {
+                                PhieuGiamGia pgg = hoaDonnn.getPhieuGiamGia();
+                                double giam = giaGoc.doubleValue() * pgg.getTienGiam() / 100;
+                                double giaMoi = giaGoc.doubleValue() - giam;
+                                double giamMax = giaGoc.doubleValue() - pgg.getGiamToiDa().doubleValue();
+                                if (giam * 2 <= pgg.getGiamToiDa().doubleValue()) {
+                                    hoaDonnn.setTongTien(BigDecimal.valueOf(giaMoi));
+                                    total = BigDecimal.valueOf(giaMoi);
+                                }else{
+                                    hoaDonnn.setTongTien(BigDecimal.valueOf(giamMax));
+                                    total = BigDecimal.valueOf(giamMax);
+                                }
+                            } else {
+                                total = total.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
+                                hoaDonnn.setTongTien(total);
+
+                            }
                             hoaDonnn.setNgaySua(Date.valueOf(LocalDate.now()));
                             hoaDonSerice.update(hoaDonnn.getId(), hoaDonnn);
                         }
@@ -372,18 +397,26 @@ public class BanHangTaiQuayController {
                     chiTiet.setTrangThai(0);
                     sanPhamService.updateCTSP(chiTiet.getId(), chiTiet);
                 }
-                if (hoaDonnn.getPhieuGiamGia() != null) {
-                    PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hoaDonnn.getPhieuGiamGia().getId());
-                    phieuGiamGia.setSoLuong(phieuGiamGia.getSoLuong() + 1);
-                    phieuGiamGia.setTrangThai(0);
-                    phieuGiamGia.setNgaySua(Date.valueOf(LocalDate.now()));
-                    phieuGiamGiaService.update(phieuGiamGia.getId(), phieuGiamGia);
-                }
+
                 for (HoaDonChiTiet hdctt : hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon)
                 ) {
-                    total = total.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
-                    hoaDonnn.setTongTien(total);
-                    hoaDonnn.setPhieuGiamGia(null);
+                    giaGoc = giaGoc.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
+                    if (hoaDonnn.getPhieuGiamGia() != null) {
+                        PhieuGiamGia pgg = hoaDonnn.getPhieuGiamGia();
+                        double giam = giaGoc.doubleValue() * pgg.getTienGiam() / 100;
+                        double giaMoi = giaGoc.doubleValue() - giam;
+                        double giamMax = giaGoc.doubleValue() - pgg.getGiamToiDa().doubleValue();
+                        if (giam * 2 <= pgg.getGiamToiDa().doubleValue()) {
+                            hoaDonnn.setTongTien(BigDecimal.valueOf(giaMoi));
+                            total = BigDecimal.valueOf(giaMoi);
+                        }else{
+                            hoaDonnn.setTongTien(BigDecimal.valueOf(giamMax));
+                            total = BigDecimal.valueOf(giamMax);
+                        }
+                    } else {
+                        total = total.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
+                        hoaDonnn.setTongTien(total);
+                    }
                     hoaDonnn.setNgaySua(Date.valueOf(LocalDate.now()));
                     hoaDonSerice.update(hoaDonnn.getId(), hoaDonnn);
                 }
@@ -480,6 +513,7 @@ public class BanHangTaiQuayController {
     public String deteteHoaDonChiTiet(Model model, @ModelAttribute("HoaDonCho") HoaDon hoaDon,
                                       @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @PathVariable("id") UUID id) {
         BigDecimal total = BigDecimal.ZERO;
+        BigDecimal giaGoc = BigDecimal.ZERO;
         HoaDonChiTiet hdct = hoaDonChiTietSerice.findHoaDonChiTiet(id);
         ChiTietSanPham ctsp = sanPhamService.findCTSPById(hdct.getIdCTSP().getId());
         ctsp.setSoLuongTon(ctsp.getSoLuongTon() + hdct.getSoLuong());
@@ -489,30 +523,51 @@ public class BanHangTaiQuayController {
         hoaDonChiTietSerice.delete(id);
         List<HoaDonChiTiet> list = hoaDonChiTietSerice.hoaDonChiTietAll(hdct.getIdHoaDon().getId());
         HoaDon hd = hoaDonSerice.findById(hdct.getIdHoaDon().getId());
-        if (hoaDonnn.getPhieuGiamGia() != null) {
-            PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hoaDonnn.getPhieuGiamGia().getId());
-            phieuGiamGia.setSoLuong(phieuGiamGia.getSoLuong() + 1);
-            phieuGiamGia.setTrangThai(0);
-            phieuGiamGia.setNgaySua(Date.valueOf(LocalDate.now()));
-            phieuGiamGiaService.update(phieuGiamGia.getId(), phieuGiamGia);
-        }
         if (list.isEmpty()) {
+            if (hd.getPhieuGiamGia() != null) {
+                PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hd.getPhieuGiamGia().getId());
+                phieuGiamGia.setSoLuong(phieuGiamGia.getSoLuong() + 1);
+                phieuGiamGia.setTrangThai(0);
+                phieuGiamGia.setNgaySua(Date.valueOf(LocalDate.now()));
+                phieuGiamGiaService.update(phieuGiamGia.getId(), phieuGiamGia);
+            }
             hd.setTongTien(BigDecimal.ZERO);
             hd.setNgaySua(Date.valueOf(LocalDate.now()));
             total = hd.getTongTien();
+            hd.setPhieuGiamGia(null);
 //        hd.setNguoiSua();
+            hoaDonSerice.update(hd.getId(), hd);
         } else {
-            BigDecimal subTotal = list.stream()
-                    .map(hdd -> (BigDecimal.valueOf(hdd.getDonGia().intValue() * hdd.getSoLuong())))
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-            total = subTotal;
-            hd.setTongTien(subTotal);
-            hd.setNgaySua(Date.valueOf(LocalDate.now()));
-//        hd.setNguoiSua();
+            for (HoaDonChiTiet hdctt : hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon)
+            ) {
+                giaGoc = giaGoc.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
+                if (hd.getPhieuGiamGia() != null) {
+                    PhieuGiamGia pgg = hd.getPhieuGiamGia();
+                    double giam = giaGoc.doubleValue() * pgg.getTienGiam() / 100;
+                    double giaMoi = giaGoc.doubleValue() - giam;
+                    double giamMax = giaGoc.doubleValue() - pgg.getGiamToiDa().doubleValue();
+                    if (giam * 2 <= pgg.getGiamToiDa().doubleValue()) {
+                        hd.setTongTien(BigDecimal.valueOf(giaMoi));
+                        total = BigDecimal.valueOf(giaMoi);
+                    }else{
+                        hd.setTongTien(BigDecimal.valueOf(giamMax));
+                        total = BigDecimal.valueOf(giamMax);
+                    }
+                } else {
+                    BigDecimal subTotal = list.stream()
+                            .map(hdd -> (BigDecimal.valueOf(hdd.getDonGia().intValue() * hdd.getSoLuong())))
+                            .reduce(BigDecimal.ZERO, BigDecimal::add);
+                    total = subTotal;
+                    hd.setTongTien(subTotal);
+                }
 
+                hd.setNgaySua(Date.valueOf(LocalDate.now()));
+//        hd.setNguoiSua();
+                hoaDonSerice.update(hd.getId(), hd);
+            }
         }
-        hd.setPhieuGiamGia(null);
-        hoaDonSerice.update(hd.getId(), hd);
+
+        hoaDonnn = hoaDonSerice.findById(hdct.getIdHoaDon().getId());
         model.addAttribute("tong", String.valueOf(total));
         model.addAttribute("HoaDonCho", hoaDonnn);
         List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
@@ -640,29 +695,16 @@ public class BanHangTaiQuayController {
         ) {
             giaGoc = giaGoc.add(BigDecimal.valueOf(hdctt.getDonGia().intValue() * hdctt.getSoLuong()));
         }
-        if (hoaDonnn.getPhieuGiamGia() == null) {
-            PhieuGiamGia pgg = phieuGiamGiaService.findById(id);
-            double giam = hoaDonnn.getTongTien().doubleValue() * pgg.getTienGiam() / 100;
-            double giaMoi = hoaDonnn.getTongTien().doubleValue() - giam;
-            hoaDonnn.setTongTien(BigDecimal.valueOf(giaMoi));
-//            hoaDonnn.setNguoiSua();
-            hoaDonnn.setNgaySua(Date.valueOf(LocalDate.now()));
-            hoaDonnn.setPhieuGiamGia(pgg);
-            hoaDonSerice.update(hoaDonnn.getId(), hoaDonnn);
-            pgg.setSoLuong(pgg.getSoLuong() - 1);
-            pgg.setNgaySua(Date.valueOf(LocalDate.now()));
-            if (pgg.getSoLuong() == 0) {
-                pgg.setTrangThai(2);
-            }
-//            pgg.setNguoiSua(Date.valueOf(LocalDate.now()));
-            phieuGiamGiaService.update(pgg.getId(), pgg);
+        if(giaGoc.compareTo(phieuGiamGiaService.findById(id).getGiamToiThieu())<0){
             model.addAttribute("tong", String.valueOf(hoaDonnn.getTongTien()));
             model.addAttribute("HoaDonCho", hoaDonnn);
             List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
             model.addAttribute("listHoaDon", listHD);
             model.addAttribute("listNhanVien", nhanVienService.findAll());
             model.addAttribute("listPGG", phieuGiamGiaService.findAll());
-            model.addAttribute("thongBaoThanhCong", "Thêm phiếu giảm giá thành công");
+            NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+            String giaTien = nf.format(phieuGiamGiaService.findById(id).getGiamToiThieu());
+            model.addAttribute("thongBao", "Tổng tiền hóa đơn chưa đủ để sử dụng phiếu giảm giá này, tổng tiền tối thiều: "+giaTien);
             model.addAttribute("listKhachHang", khachHangService.findAll());
             model.addAttribute("listHDCT", hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon));
             model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
@@ -674,46 +716,92 @@ public class BanHangTaiQuayController {
             model.addAttribute("listSanPham", sanPhamService.findAll());
             model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
             return "home/layout";
-        } else {
-            PhieuGiamGia pgg = phieuGiamGiaService.findById(id);
-            PhieuGiamGia pggc = hoaDonnn.getPhieuGiamGia();
-            pggc.setSoLuong(hoaDonnn.getPhieuGiamGia().getSoLuong() + 1);
-            pggc.setTrangThai(0);
-            pggc.setNgaySua(Date.valueOf(LocalDate.now()));
+        }else{
+            if (hoaDonnn.getPhieuGiamGia() == null) {
+                PhieuGiamGia pgg = phieuGiamGiaService.findById(id);
+                double giam = giaGoc.doubleValue() * pgg.getTienGiam() / 100;
+                double giaMoi = giaGoc.doubleValue() - giam;
+                double giamMax = giaGoc.doubleValue() - pgg.getGiamToiDa().doubleValue();
+                if (giam * 2 <= pgg.getGiamToiDa().doubleValue()) {
+                    hoaDonnn.setTongTien(BigDecimal.valueOf(giaMoi));
+                }else{
+                    hoaDonnn.setTongTien(BigDecimal.valueOf(giamMax));
+                }
+//            hoaDonnn.setNguoiSua();
+                hoaDonnn.setNgaySua(Date.valueOf(LocalDate.now()));
+                hoaDonnn.setPhieuGiamGia(pgg);
+                hoaDonSerice.update(hoaDonnn.getId(), hoaDonnn);
+                pgg.setSoLuong(pgg.getSoLuong() - 1);
+                pgg.setNgaySua(Date.valueOf(LocalDate.now()));
+                if (pgg.getSoLuong() == 0) {
+                    pgg.setTrangThai(2);
+                }
+//            pgg.setNguoiSua(Date.valueOf(LocalDate.now()));
+                phieuGiamGiaService.update(pgg.getId(), pgg);
+                model.addAttribute("tong", String.valueOf(hoaDonnn.getTongTien()));
+                model.addAttribute("HoaDonCho", hoaDonnn);
+                List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
+                model.addAttribute("listHoaDon", listHD);
+                model.addAttribute("listNhanVien", nhanVienService.findAll());
+                model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+                model.addAttribute("thongBaoThanhCong", "Thêm phiếu giảm giá thành công");
+                model.addAttribute("listKhachHang", khachHangService.findAll());
+                model.addAttribute("listHDCT", hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon));
+                model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+                model.addAttribute("listChatLieu", chatLieuService.findAll());
+                model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+                model.addAttribute("listCoAo", coAoService.findAll());
+                model.addAttribute("listMauSac", mauSacService.findAll());
+                model.addAttribute("listKichCo", kichCoService.findAll());
+                model.addAttribute("listSanPham", sanPhamService.findAll());
+                model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
+                return "home/layout";
+            } else {
+                PhieuGiamGia pgg = phieuGiamGiaService.findById(id);
+                PhieuGiamGia pggc = hoaDonnn.getPhieuGiamGia();
+                pggc.setSoLuong(hoaDonnn.getPhieuGiamGia().getSoLuong() + 1);
+                pggc.setTrangThai(0);
+                pggc.setNgaySua(Date.valueOf(LocalDate.now()));
 //            pggc.setNguoiSua(Date.valueOf(LocalDate.now()));
-            phieuGiamGiaService.update(pggc.getId(), pggc);
-            double giamMoi = giaGoc.doubleValue() * pgg.getTienGiam() / 100;
-            double giaMoi = giaGoc.doubleValue() - giamMoi;
-            hoaDonnn.setTongTien(BigDecimal.valueOf(giaMoi));
+                phieuGiamGiaService.update(pggc.getId(), pggc);
+                double giamMoi = giaGoc.doubleValue() * pgg.getTienGiam() / 100;
+                double giaMoi = giaGoc.doubleValue() - giamMoi;
+                double giamMax = giaGoc.doubleValue() - pgg.getGiamToiDa().doubleValue();
+                if (giamMoi * 2 <= pgg.getGiamToiDa().doubleValue()) {
+                    hoaDonnn.setTongTien(BigDecimal.valueOf(giaMoi));
+                }else{
+                    hoaDonnn.setTongTien(BigDecimal.valueOf(giamMax));
+                }
 //            hoaDonnn.setNguoiSua();
-            hoaDonnn.setNgaySua(Date.valueOf(LocalDate.now()));
-            hoaDonnn.setPhieuGiamGia(pgg);
-            hoaDonSerice.update(hoaDonnn.getId(), hoaDonnn);
-            pgg.setSoLuong(pgg.getSoLuong() - 1);
-            pgg.setNgaySua(Date.valueOf(LocalDate.now()));
+                hoaDonnn.setNgaySua(Date.valueOf(LocalDate.now()));
+                hoaDonnn.setPhieuGiamGia(pgg);
+                hoaDonSerice.update(hoaDonnn.getId(), hoaDonnn);
+                pgg.setSoLuong(pgg.getSoLuong() - 1);
+                pgg.setNgaySua(Date.valueOf(LocalDate.now()));
 //            pgg.setNguoiSua(Date.valueOf(LocalDate.now()));
-            if (pgg.getSoLuong() == 0) {
-                pgg.setTrangThai(2);
+                if (pgg.getSoLuong() == 0) {
+                    pgg.setTrangThai(2);
+                }
+                phieuGiamGiaService.update(pgg.getId(), pgg);
+                model.addAttribute("tong", String.valueOf(hoaDonnn.getTongTien()));
+                model.addAttribute("HoaDonCho", hoaDonnn);
+                List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
+                model.addAttribute("listHoaDon", listHD);
+                model.addAttribute("thongBaoThanhCong", "Đổi phiếu giảm giá thành công");
+                model.addAttribute("listNhanVien", nhanVienService.findAll());
+                model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+                model.addAttribute("listKhachHang", khachHangService.findAll());
+                model.addAttribute("listHDCT", hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon));
+                model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+                model.addAttribute("listChatLieu", chatLieuService.findAll());
+                model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+                model.addAttribute("listCoAo", coAoService.findAll());
+                model.addAttribute("listMauSac", mauSacService.findAll());
+                model.addAttribute("listKichCo", kichCoService.findAll());
+                model.addAttribute("listSanPham", sanPhamService.findAll());
+                model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
+                return "home/layout";
             }
-            phieuGiamGiaService.update(pgg.getId(), pgg);
-            model.addAttribute("tong", String.valueOf(hoaDonnn.getTongTien()));
-            model.addAttribute("HoaDonCho", hoaDonnn);
-            List<HoaDon> listHD = hoaDonSerice.hoaDonCho();
-            model.addAttribute("listHoaDon", listHD);
-            model.addAttribute("thongBaoThanhCong", "Đổi phiếu giảm giá thành công");
-            model.addAttribute("listNhanVien", nhanVienService.findAll());
-            model.addAttribute("listPGG", phieuGiamGiaService.findAll());
-            model.addAttribute("listKhachHang", khachHangService.findAll());
-            model.addAttribute("listHDCT", hoaDonChiTietSerice.hoaDonChiTietAll(idHoaDon));
-            model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
-            model.addAttribute("listChatLieu", chatLieuService.findAll());
-            model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-            model.addAttribute("listCoAo", coAoService.findAll());
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            model.addAttribute("listSanPham", sanPhamService.findAll());
-            model.addAttribute("contentPage", "../ban-hang/hien-thi.jsp");
-            return "home/layout";
         }
     }
 
@@ -765,6 +853,14 @@ public class BanHangTaiQuayController {
                                @RequestParam("hoTen") String hoten, @RequestParam("gioiTinh") String gioiTinh,
                                @RequestParam("sđt") String sđt, @RequestParam("ngaySinh") String ngaySinh) {
         KhachHang kh = new KhachHang();
+        String mhd = "";
+        Integer sl = khachHangService.findAllFullTT().size() + 1;
+        if (sl < 9) {
+            mhd = "KH" + sl;
+        } else {
+            mhd = "KH" + sl;
+        }
+        kh.setMa(mhd);
         kh.setHoTen(hoten);
         kh.setGioiTinh(Boolean.valueOf(gioiTinh));
         kh.setSoDienThoai(sđt);

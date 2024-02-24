@@ -45,7 +45,7 @@ public class KhachHang {
     private Date ngaySinh;
 
     @NotBlank(message = "Không để trống thông tin")
-    @Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại không hợp lệ!")
+    @Pattern(regexp = "^0[0-9]{9}$", message = "Số điện thoại không hợp lệ!")
     @Column(name = "SoDienThoai")
     private String soDienThoai;
 

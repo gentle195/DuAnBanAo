@@ -145,6 +145,7 @@
                                     <table class="table table-striped" style="color: black;width: 1000px">
                                         <thead>
                                         <tr>
+                                            <th>STT</th>
                                             <th>Ảnh</th>
                                             <th>Tên sản phẩm</th>
                                             <th colspan="5">Thông tin sản phẩm</th>
@@ -155,8 +156,9 @@
                                         </tr>
                                         </thead>
                                         <tbody id="table-search-hoa-don-chi-tiet">
-                                        <c:forEach items="${listHDCT}" var="hdct">
+                                        <c:forEach items="${listHDCT}" var="hdct" varStatus="i">
                                             <tr>
+                                                <td>${i.index+1}</td>
                                                 <td><img src="../../../uploads/${hdct.idCTSP.hinhAnh.duongDan1}"
                                                          width="40"
                                                          height="40"
@@ -278,7 +280,16 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <c:if test="${HoaDonCho.phieuGiamGia == null}">
+                                        <c:if test="${listHDCT.size()==0}">
+                                            <form:label class="col-sm-12 col-form-label" path="tongTien"
+                                                        for="tienCanThanhToan">Tổng tiền:</form:label>
+                                            <div class="col-sm-12">
+                                                <form:input class="form-control" path="tongTien" readonly="true"
+                                                            value="${tong}"
+                                                            id="tienCanThanhToan"/>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${HoaDonCho.phieuGiamGia == null && listHDCT.size()>=1}">
                                             <form:label class="col-sm-12 col-form-label" path="tongTien"
                                                         for="tienCanThanhToan">Tổng tiền:</form:label>
                                             <div class="col-sm-8">
@@ -292,7 +303,7 @@
                                                    data-bs-target="#phieuGiamGia" style="height: 45px">Chọn PGG</a>
                                             </div>
                                         </c:if>
-                                        <c:if test="${HoaDonCho.phieuGiamGia != null}">
+                                        <c:if test="${HoaDonCho.phieuGiamGia != null && listHDCT.size()>=1}">
                                             <form:label class="col-sm-12 col-form-label" path="tongTien"
                                                         for="tienCanThanhToan">Tổng tiền:</form:label>
                                             <div class="col-sm-5">
@@ -342,7 +353,7 @@
                                         <form:label class="col-sm-12 col-form-label"
                                                     path="ghiChu">Ghi chú:</form:label>
                                         <div class="col-sm-12">
-                                            <form:input class="form-control" path="ghiChu" />
+                                            <form:input class="form-control" path="ghiChu"/>
                                         </div>
                                     </div>
                                     <c:if test="${not listHDCT.isEmpty()}">
@@ -487,6 +498,7 @@
                                                style="min-width: 1200px; color: black;text-align: center">
                                             <thead>
                                             <tr>
+                                                <th>STT</th>
                                                 <th>Mã</th>
                                                 <th>Ảnh Sản Phẩm</th>
                                                 <th>Tên Sản Phẩm</th>
@@ -502,8 +514,9 @@
                                             </thead>
                                             <tbody class="san_pham_search" style="text-align: center"
                                                    id="banglocthaydoi">
-                                            <c:forEach items="${listCTSP}" var="ctsp">
+                                            <c:forEach items="${listCTSP}" var="ctsp" varStatus="i">
                                                 <tr>
+                                                    <td>${i.index+1}</td>
                                                     <td>${ctsp.ma}</td>
                                                     <td>
                                                         <img src="../../../uploads/${ctsp.hinhAnh.duongDan1}" width="40"
@@ -558,9 +571,12 @@
                                                style="min-width: 1200px; color: black;text-align: center">
                                             <thead>
                                             <tr>
+                                                <th>STT</th>
                                                 <th>Mã</th>
                                                 <th>Tên phiếu</th>
                                                 <th>Giá trị giảm</th>
+                                                <th>Hóa đơn tối thiểu</th>
+                                                <th>Giảm tối đa</th>
                                                 <th>Ngày bắt đầu</th>
                                                 <th>Ngày kết thúc</th>
                                                 <th>Số Lượng Tồn</th>
@@ -568,11 +584,26 @@
                                             </tr>
                                             </thead>
                                             <tbody style="text-align: center">
-                                            <c:forEach items="${listPGG}" var="pgg">
+                                            <c:forEach items="${listPGG}" var="pgg" varStatus="i">
                                                 <tr>
+                                                    <td>${i.index+1}</td>
                                                     <td>${pgg.ma}</td>
                                                     <td>${pgg.ten}</td>
                                                     <td>${pgg.tienGiam} %</td>
+                                                    <td>
+                                                        <script>
+                                                            var donGia = ${pgg.giamToiThieu};
+                                                            document.write(donGia.toLocaleString('vi-VN'));
+                                                        </script>
+                                                        VND
+                                                    </td>
+                                                    <td>
+                                                        <script>
+                                                            var donGia1 = ${pgg.giamToiDa};
+                                                            document.write(donGia1.toLocaleString('vi-VN'));
+                                                        </script>
+                                                        VND
+                                                    </td>
                                                     <td>${pgg.ngayBatDau}</td>
                                                     <td>${pgg.ngayketThuc}</td>
                                                     <td>${pgg.soLuong}</td>
@@ -696,8 +727,10 @@
                                                 <label class="col-sm-3 col-form-label">Giới Tính:</label>
                                                 <div class="col-sm-9">
                                                     <div class="form-control">
-                                                        <input type="radio" name="gioiTinh" value="true" checked="true"> Nam
-                                                        <input type="radio" name="gioiTinh" value="false" cssStyle="margin-left: 2cm"> Nữ
+                                                        <input type="radio" name="gioiTinh" value="true" checked="true">
+                                                        Nam
+                                                        <input type="radio" name="gioiTinh" value="false"
+                                                               cssStyle="margin-left: 2cm"> Nữ
                                                     </div>
                                                 </div>
                                             </div>
@@ -707,10 +740,10 @@
                                         <div class="col-md-6">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label"
-                                                            >SĐT:</label>
+                                                >SĐT:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control" placeholder=""
-                                                                id="sdtkh" name="sđt"/>
+                                                           id="sdtkh" name="sđt"/>
                                                     <label id="sdtkh1" style="color: red"></label>
                                                 </div>
                                             </div>
@@ -719,7 +752,8 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Ngày sinh:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control" name="ngaySinh" placeholder="" type="date" required/>
+                                                    <input class="form-control" name="ngaySinh" placeholder=""
+                                                           type="date" required/>
                                                 </div>
                                             </div>
                                         </div>

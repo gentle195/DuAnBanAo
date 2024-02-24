@@ -73,6 +73,16 @@ public class PhieuGiamGia {
     @Column(name = "NguoiSua")
     private String nguoiSua;
 
+    @DecimalMin(value = "0.01", message = "Tổng tiền hóa đơn giảm lớn hơn 0")
+    @NotNull(message = "Không để trống dữ liệu")
+    @Column(name = "GiamToiDa")
+    private BigDecimal giamToiDa;
+
+    @DecimalMin(value = "0.01", message = "Số tiền giảm tối đa lớn hơn 0")
+    @NotNull(message = "Không để trống dữ liệu")
+    @Column(name = "GiamToiThieu")
+    private BigDecimal giamToiThieu;
+
     @NotNull(message = "Không để trống thông tin")
     @DecimalMin(value = "1", message = "Số lượng phải lớn hơn 0")
     @DecimalMax(value = "100", message = "Số lượng tối đa 100")

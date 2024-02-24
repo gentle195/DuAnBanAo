@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,9 +19,10 @@ public class PhieuGiamGiaServiceImpl implements PhieuGiamGiaService {
     @Autowired
     private PhieuGiamGiaRepository phieuRepo;
 
+
     @Override
-    public Page<PhieuGiamGia> getAll(Pageable pageable) {
-        return phieuRepo.getAll(pageable);
+    public List<PhieuGiamGia> getAll() {
+        return phieuRepo.getAll();
     }
 
     @Override
@@ -73,5 +75,10 @@ public class PhieuGiamGiaServiceImpl implements PhieuGiamGiaService {
     @Override
     public List<PhieuGiamGia> search1(String ten) {
         return phieuRepo.search1(ten);
+    }
+
+    @Override
+    public List<PhieuGiamGia> loc(Integer tt, Date startDate, Date endDate) {
+        return phieuRepo.loc(tt, startDate, endDate);
     }
 }

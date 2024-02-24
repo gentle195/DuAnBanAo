@@ -25,6 +25,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -189,35 +190,22 @@ public class PhieuGiamGiaController {
     }
 
     @GetMapping("/hien-thi")
-    public String hienThi(Model model, @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-        model.addAttribute("listPhieuGiamGia", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
+    public String hienThi(Model model, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia) {
+        model.addAttribute("listPhieuGiamGia", phieuService.getAll());
         model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
         return "home/layout";
     }
 
     @GetMapping("/hien-thi-delete")
-    public String hienThiNgungHoatDong(Model model, @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<PhieuGiamGia> page = phieuService.getAll1(pageable);
-        model.addAttribute("listPhieuGiamGia", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
+    public String hienThiNgungHoatDong(Model model, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia) {
+        model.addAttribute("listPhieuGiamGia", phieuService.getAll());
         model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi-ngung-hoat-dong.jsp");
         return "home/layout";
     }
 
     @GetMapping("/view-add")
-    public String viewAdd(Model model, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-        model.addAttribute("listPhieuGiamGia", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
+    public String viewAdd(Model model, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia) {
+        model.addAttribute("listPhieuGiamGia", phieuService.getAll());
         model.addAttribute("phieuGiamGia", new PhieuGiamGia());
         model.addAttribute("batmodalthemphieu", 0);
         model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
@@ -226,24 +214,17 @@ public class PhieuGiamGiaController {
 
     @PostMapping("/add")
     public String add(Model model, @Valid @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia, BindingResult bindingResult
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+    ) {
         if (bindingResult.hasErrors()) {
 
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-            model.addAttribute("listPhieuGiamGia", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("listPhieuGiamGia", phieuService.getAll());
             model.addAttribute("batmodalthemphieu", 0);
             model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
             return "home/layout";
         }
         if (isNgayKetThucAfterNgayBatDau(phieuGiamGia.getNgayBatDau(), phieuGiamGia.getNgayketThuc()) == false) {
 
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-            model.addAttribute("listPhieuGiamGia", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("listPhieuGiamGia", phieuService.getAll());
             model.addAttribute("thongBaoPhieu", "Ngày kết thúc phải sau ngày bắt đầu");
             model.addAttribute("batmodalthemphieu", 0);
             model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
@@ -251,10 +232,7 @@ public class PhieuGiamGiaController {
         }
         if (isNgayKetThucAfterNgayHienTai(phieuGiamGia.getNgayketThuc()) == false) {
 
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-            model.addAttribute("listPhieuGiamGia", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("listPhieuGiamGia", phieuService.getAll());
             model.addAttribute("thongBaoPhieu", "Ngày kết thúc phải sau ngày hiện tại");
             model.addAttribute("batmodalthemphieu", 0);
             model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
@@ -276,10 +254,7 @@ public class PhieuGiamGiaController {
 //        phieuGiamGia.setNguoiSua(Date.valueOf(LocalDate.now()));
         phieuGiamGia.setTrangThai(0);
         phieuService.add(phieuGiamGia);
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-        model.addAttribute("listPhieuGiamGia", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("listPhieuGiamGia", phieuService.getAll());
         model.addAttribute("batmodalthemphieu", 1);
         model.addAttribute("thongBaoThanhCong", "Thêm dữ liệu thành công");
         model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
@@ -287,47 +262,24 @@ public class PhieuGiamGiaController {
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") UUID id, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                         @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-        model.addAttribute("listPhieuGiamGia", page.getContent());
+    public String detail(Model model, @PathVariable("id") UUID id, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia) {
         model.addAttribute("phieuGiamGia", phieuService.findById(id));
-        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("listPhieuGiamGia", phieuService.getAll());
         model.addAttribute("batmodaldetailphieu", 0);
         model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
         return "home/layout";
     }
 
-    @GetMapping("/detail-ngung-hoat-dong/{id}")
-    public String detailNgungHoatDong(Model model, @PathVariable("id") UUID id, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<PhieuGiamGia> page = phieuService.getAll1(pageable);
-        model.addAttribute("listPhieuGiamGia", page.getContent());
-        model.addAttribute("phieuGiamGia", phieuService.findById(id));
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodaldetailphieu", 0);
-        model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi-ngung-hoat-dong.jsp");
-        return "home/layout";
-    }
-
     @GetMapping("/view-update/{id}")
     public String viewUpdate(Model model, @PathVariable("id") UUID id, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<PhieuGiamGia> page = phieuService.getAll(pageable);
+    ) {
         String NBTCC = phieuService.findById(id).getNgayBatDau();
         String NKTCC = phieuService.findById(id).getNgayketThuc();
 
         model.addAttribute("NBTCC", dinhangCHUOIsangJSP(NBTCC));
         model.addAttribute("NKTCC", dinhangCHUOIsangJSP(NKTCC));
-        model.addAttribute("listPhieuGiamGia", page.getContent());
         model.addAttribute("phieuGiamGia", phieuService.findById(id));
-        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("listPhieuGiamGia", phieuService.getAll());
         model.addAttribute("batmodalupdatephieu", 0);
         model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
         return "home/layout";
@@ -335,8 +287,7 @@ public class PhieuGiamGiaController {
 
     @PostMapping("/update/{id}")
     public String add(Model model, @PathVariable("id") UUID id, @Valid @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia, BindingResult bindingResult
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+    ) {
         if (bindingResult.hasErrors()) {
             if (phieuGiamGia.getNgayBatDau().isEmpty() == true && phieuGiamGia.getNgayketThuc().isEmpty() == false) {
                 model.addAttribute("NKTCC", dinhangCHUOIsangJSP(phieuGiamGia.getNgayketThuc()));
@@ -347,31 +298,22 @@ public class PhieuGiamGiaController {
                 model.addAttribute("NKTCC", dinhangCHUOIsangJSP(phieuGiamGia.getNgayketThuc()));
             } else {
             }
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-            model.addAttribute("listPhieuGiamGia", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("listPhieuGiamGia", phieuService.getAll());
             model.addAttribute("batmodalupdatephieu", 0);
             model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
             return "home/layout";
         }
         if (isNgayKetThucAfterNgayBatDauupdate(phieuGiamGia.getNgayBatDau(), phieuGiamGia.getNgayketThuc()) == false) {
 
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-            model.addAttribute("listPhieuGiamGia", page.getContent());
+            model.addAttribute("listPhieuGiamGia", phieuService.getAll());
             model.addAttribute("thongBaoPhieu", "Ngày kết thúc phải sau ngày bắt đầu");
-            model.addAttribute("totalPage", page.getTotalPages());
             model.addAttribute("batmodalupdatephieu", 0);
             model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
             return "home/layout";
         }
         if (isNgayKetThucAfterNgayHienTaiupdate(phieuGiamGia.getNgayketThuc()) == false) {
 
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-            model.addAttribute("listPhieuGiamGia", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("listPhieuGiamGia", phieuService.getAll());
             model.addAttribute("batmodalupdatephieu", 0);
             model.addAttribute("thongBaoPhieu", "Ngày kết thúc phải sau ngày hiện tại");
             model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
@@ -387,10 +329,7 @@ public class PhieuGiamGiaController {
             phieuGiamGia.setTrangThai(1);
         }
         phieuService.update(id, phieuGiamGia);
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-        model.addAttribute("listPhieuGiamGia", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("listPhieuGiamGia", phieuService.getAll());
         model.addAttribute("batmodalupdatephieu", 1);
         model.addAttribute("thongBaoThanhCong", "Cập nhật dữ liệu thành công");
         model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
@@ -399,16 +338,12 @@ public class PhieuGiamGiaController {
 
     @GetMapping("/delete/{id}")
     public String updateTrangThai(Model model, @PathVariable("id") UUID id, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+    ) {
         PhieuGiamGia cl = phieuService.findById(id);
         cl.setTrangThai(1);
         cl.setNgaySua(Date.valueOf(LocalDate.now()));
         phieuService.update(id, cl);
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-        model.addAttribute("listPhieuGiamGia", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("listPhieuGiamGia", phieuService.getAll());
         model.addAttribute("thongBaoThanhCong", "Cập nhật trạng thái thành công");
         model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
         return "home/layout";
@@ -416,31 +351,22 @@ public class PhieuGiamGiaController {
 
     @GetMapping("/khoi-phuc/{id}")
     public String updateTrangThaiNgung(Model model, @PathVariable("id") UUID id, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+    ) {
         PhieuGiamGia cl = phieuService.findById(id);
         cl.setTrangThai(0);
         cl.setNgaySua(Date.valueOf(LocalDate.now()));
         phieuService.update(id, cl);
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<PhieuGiamGia> page = phieuService.getAll1(pageable);
-        model.addAttribute("listPhieuGiamGia", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("listPhieuGiamGia", phieuService.getAll());
         model.addAttribute("thongBaoThanhCong", "Cập nhật trạng thái thành công");
         model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi-ngung-hoat-dong.jsp");
         return "home/layout";
     }
 
     @PostMapping("/search-con-hoat-dong")
-    public String search0(Model model, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia, @RequestParam("search") String search
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+    public String search0(Model model, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia, @RequestParam("search") String search) {
         if (search.isEmpty()) {
             model.addAttribute("thongBao", "Không để trống thông tin");
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<PhieuGiamGia> page = phieuService.getAll(pageable);
-            model.addAttribute("listPhieuGiamGia", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("listPhieuGiamGia", phieuService.getAll());
             model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
             return "home/layout";
         } else {
@@ -454,15 +380,10 @@ public class PhieuGiamGiaController {
     }
 
     @PostMapping("/search-ngung-hoat-dong")
-    public String search1(Model model, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia, @RequestParam("search") String search
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+    public String search1(Model model, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia, @RequestParam("search") String search) {
         if (search.isEmpty()) {
             model.addAttribute("thongBao", "Không để trống thông tin");
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<PhieuGiamGia> page = phieuService.getAll1(pageable);
-            model.addAttribute("listPhieuGiamGia", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("listPhieuGiamGia", phieuService.getAll());
             model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi-ngung-hoat-dong.jsp");
             return "home/layout";
         } else {
@@ -473,5 +394,49 @@ public class PhieuGiamGiaController {
             return "home/layout";
         }
 
+    }
+
+    @PostMapping("/loc")
+    public String loc(Model model, @ModelAttribute("phieuGiamGia") PhieuGiamGia phieuGiamGia
+                    , @RequestParam(value = "startDate", required = false) String startDate,
+                      @RequestParam(value = "endDate", required = false) String endDate,
+                      @RequestParam(value = "trangThaiPhieu", required = false) Integer trangThaiPhieu){
+        List<PhieuGiamGia> list=new ArrayList<>();
+        if(startDate.isEmpty() && endDate.isEmpty()){
+            list = phieuService.loc(trangThaiPhieu,null,null);
+            model.addAttribute("listPhieuGiamGia", list);
+            model.addAttribute("thongBaoThanhCong", "Lọc dữ liệu thành công");
+            model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
+            return "home/layout";
+        }else if(endDate.isEmpty()){
+            list = phieuService.loc(trangThaiPhieu,Date.valueOf(startDate),Date.valueOf(LocalDate.now()));
+            model.addAttribute("listPhieuGiamGia", list);
+            model.addAttribute("thongBaoThanhCong", "Lọc dữ liệu thành công");
+            model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
+            return "home/layout";
+        }else if(startDate.isEmpty()){
+            list = phieuService.loc(trangThaiPhieu,Date.valueOf(LocalDate.now()),Date.valueOf(endDate));
+            model.addAttribute("listPhieuGiamGia", list);
+            model.addAttribute("thongBaoThanhCong", "Lọc dữ liệu thành công");
+            model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
+            return "home/layout";
+        }else{
+            LocalDate start = Date.valueOf(startDate).toLocalDate();
+            LocalDate end = Date.valueOf(endDate).toLocalDate();
+            int check = start.compareTo(end);
+            System.out.println(check);
+            if (check > 0) {
+                model.addAttribute("listPhieuGiamGia", phieuService.getAll());
+                model.addAttribute("thongBao", "Ngày kết thúc phải lớn hơn ngày bắt đầu");
+                model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
+                return "home/layout";
+            } else {
+                list = phieuService.loc(trangThaiPhieu,Date.valueOf(startDate),Date.valueOf(endDate));
+                model.addAttribute("listPhieuGiamGia", list);
+                model.addAttribute("thongBaoThanhCong", "Lọc dữ liệu thành công");
+                model.addAttribute("contentPage", "../phieu-giam-gia/hien-thi.jsp");
+                return "home/layout";
+            }
+        }
     }
 }

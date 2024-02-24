@@ -156,7 +156,7 @@ public class NhanVienController {
         nhanVien.setTaiKhoan(nhanVien.getEmail());
         nhanVien.setMatKhau(mk);
         nhanVienService.add(nhanVien);
-        mailerService.queue(nhanVien.getEmail(),"Chúc mừng bạn đã đăng kí thành công!" ,"Tài khoản : " +nhanVien.getTaiKhoan() +"\n Mật khẩu: " +nhanVien.getMatKhau());
+        mailerService.queue(nhanVien.getEmail(),"Chúc mừng bạn đã đăng kí thành công!" ,"Tài khoản : " +nhanVien.getTaiKhoan() +"\n Mật khẩu: " +mk);
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<NhanVien> page = nhanVienService.getAll(pageable);
         model.addAttribute("listNhanVien", page.getContent());

@@ -5,6 +5,7 @@ import com.example.demo.models.DiaChi;
 import com.example.demo.models.KhachHang;
 import com.example.demo.services.DiaChiService;
 import com.example.demo.services.KhachHangService;
+import com.example.demo.services.MailerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.SecureRandom;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +34,8 @@ public class KhachHangController {
     private KhachHangService KhachHangService;
     @Autowired
     private DiaChiService diaChiService;
+    @Autowired
+    private MailerService mailerService;
     private KhachHang kh = null;
 
     @GetMapping("/hien-thi")
@@ -44,13 +48,14 @@ public class KhachHangController {
         model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
         return "home/layout";
     }
+
     @GetMapping("/loc")
     public String hienThiLoc(Model model,
-                             @RequestParam("gioiTinh1") String gioiTinh,@RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                             @RequestParam("gioiTinh1") String gioiTinh, @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                              @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("khachHang") KhachHang khachHang, @ModelAttribute("addDiaChi") DiaChi diaChi) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
 
-        Page<KhachHang> page=KhachHangService.locGT(Boolean.valueOf(gioiTinh),pageable);
+        Page<KhachHang> page = KhachHangService.locGT(Boolean.valueOf(gioiTinh), pageable);
 
         model.addAttribute("listKhachHang", page.getContent());
         model.addAttribute("totalPage", page.getTotalPages());
@@ -85,6 +90,19 @@ public class KhachHangController {
         return "home/layout";
     }
 
+    private String generateRandomPassword(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            password.append(characters.charAt(randomIndex));
+        }
+
+        return password.toString();
+    }
+
     @PostMapping("/add")
     public String add(Model model, @Valid @ModelAttribute("khachHang") KhachHang KhachHang, BindingResult bindingResult
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
@@ -95,7 +113,6 @@ public class KhachHangController {
             Page<KhachHang> page = KhachHangService.getAll(pageable);
             model.addAttribute("listKhachHang", page.getContent());
             model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("batmodalthemcoao", 0);
             model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
             return "home/layout";
         }
@@ -104,7 +121,6 @@ public class KhachHangController {
             Page<KhachHang> page = KhachHangService.getAll(pageable);
             model.addAttribute("listKhachHang", page.getContent());
             model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("batmodalthemcoao", 0);
             model.addAttribute("tbtrungemail", "Email trùng!");
             model.addAttribute("contentPage", "../khachhang/khach-hang-add.jsp");
             return "home/layout";
@@ -115,16 +131,16 @@ public class KhachHangController {
             Page<KhachHang> page = KhachHangService.getAll(pageable);
             model.addAttribute("listKhachHang", page.getContent());
             model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("batmodalthemcoao", 0);
             model.addAttribute("tbtrungsdt", "Số điện thoại trùng!");
             model.addAttribute("contentPage", "../khachhang/khach-hang-add.jsp");
             return "home/layout";
 
         }
+        String mk=generateRandomPassword(8);
         String mhd = "";
         Integer sl = KhachHangService.findAllFullTT().size() + 1;
         if (sl < 9) {
-            mhd = "KH" + sl;
+            mhd = "KH0" + sl;
         } else {
             mhd = "KH" + sl;
         }
@@ -132,12 +148,13 @@ public class KhachHangController {
         KhachHang.setNgayTao(Date.valueOf(LocalDate.now()));
         KhachHang.setTrangThai(0);
         KhachHang.setTaiKhoan(KhachHang.getEmail());
+        KhachHang.setMatKhau(mk);
         KhachHangService.add(KhachHang);
+        mailerService.queue(KhachHang.getEmail(),"Chúc mừng bạn đã đăng kí thành công!" ,"Tài khoản : " +KhachHang.getTaiKhoan() +"\n Mật khẩu: " +mk);
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<KhachHang> page = KhachHangService.getAll(pageable);
         model.addAttribute("listKhachHang", page.getContent());
         model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodalthemcoao", 1);
         model.addAttribute("thongBaoThanhCong", "Thêm dữ liệu thành công");
         model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
         return "home/layout";

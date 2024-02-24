@@ -81,7 +81,7 @@
                            aria-controls="description" aria-selected="true">Thông tin phiếu giảm giá</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/phieu-giam-gia/view-add" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                        <a class="nav-link" href="/phieu-giam-gia/view-add" role="tab">Thêm
                             thông tin
                             phiếu giảm giá</a>
                     </li>
@@ -92,21 +92,68 @@
                      aria-labelledby="description-tab">
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card">
+
                             <div class="card-body">
-                                <h4 class="card-title" style="float: left">Danh sách phiếu giảm giá</h4>
-                                <%--            Tìm kiếm               --%>
-                                <form action="/phieu-giam-gia/search-con-hoat-dong" method="post">
-                                    <div class="input-group" style="width: 30%; float: right">
-                                        <input type="text" class="form-control" placeholder="Bạn tìm gì..."
-                                               aria-label="Bạn tìm gì..." name="search">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-sm btn-primary" type="submit">Search</button>
+                                <div>
+                                    <form:form action="/phieu-giam-gia/loc" method="post" modelAttribute="phieuGiamGia">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4 col-form-label">Từ ngày tạo:</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="date" id="ngayTao" name="startDate" class="form-control"
+                                                               placeholder="Từ ngày">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-5 col-form-label">Đến ngày tạo:</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="date" id="ngayNhan" name="endDate"
+                                                               class="form-control"
+                                                               placeholder="Đến ngày">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <select name="trangThaiPhieu" class="form-control select2"
+                                                                style="font-weight: bold; width: 100%" id="selectPhieu">
+                                                            <option selected disabled>Trạng thái phiếu</option>
+                                                            <option value="0">Còn hạn sử dụng</option>
+                                                            <option value="1">Hết hạn sử dụng</option>
+                                                            <option value="2">Hết phiếu</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" align="center">
+                                                <BUTTON type="submit" class="btn btn-warning" style="" id="bt">
+                                                    Lọc phiếu
+                                                </BUTTON>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form:form>
+                                </div>
+                                <%--                                <h4 class="card-title" style="float: left">Danh sách phiếu giảm giá</h4>--%>
+                                <%--                                &lt;%&ndash;            Tìm kiếm               &ndash;%&gt;--%>
+                                <%--                                <form action="/phieu-giam-gia/search-con-hoat-dong" method="post">--%>
+                                <%--                                    <div class="input-group" style="width: 30%; float: right">--%>
+                                <%--                                        <input type="text" class="form-control" placeholder="Bạn tìm gì..."--%>
+                                <%--                                               aria-label="Bạn tìm gì..." name="search">--%>
+                                <%--                                        <div class="input-group-append">--%>
+                                <%--                                            <button class="btn btn-sm btn-primary" type="submit">Search</button>--%>
+                                <%--                                        </div>--%>
+                                <%--                                    </div>--%>
+                                <%--                                </form>--%>
                                 <%--           kết thúc tìm kiếm         --%>
                                 <div class="table-responsive">
-                                    <table class="table table-striped" style="color: black;width: 1600px">
+                                    <table class="table table-striped table-bordered zero-configuration"
+                                           style="color: black;width: 1600px">
                                         <thead>
                                         <tr>
                                             <th>STT</th>
@@ -114,11 +161,12 @@
                                             <th>Tên</th>
                                             <th>Hình thức giảm giá</th>
                                             <th>Giá trị giảm</th>
+                                            <th>Hóa đơn tối thiểu</th>
+                                            <th>Số tiền giảm tối đa</th>
                                             <th>Ngày Tạo</th>
                                             <th>Ngày Sửa</th>
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
-
                                             <th>Số lượng</th>
                                             <th>Tình Trạng</th>
                                             <th>Action</th>
@@ -127,18 +175,32 @@
                                         <tbody>
                                         <br>
                                         <br>
-                                        <c:forEach items="${listPhieuGiamGia}" var="phieuGiamGia" varStatus="index">
+                                        <c:forEach items="${listPhieuGiamGia}" var="phieuGiamGia" varStatus="i">
                                             <tr>
-                                                <td>${index.index+1}</td>
+                                                <td>${i.index+1}</td>
                                                 <td>${phieuGiamGia.ma}</td>
                                                 <td>${phieuGiamGia.ten}</td>
-                                                <td><c:if test="${phieuGiamGia.hinhThucGiam== true}"> Giảm theo %</c:if></td>
+                                                <td><c:if
+                                                        test="${phieuGiamGia.hinhThucGiam== true}"> Giảm theo %</c:if></td>
                                                 <td>${phieuGiamGia.tienGiam}%</td>
+                                                <td>
+                                                    <script>
+                                                        var donGia = ${phieuGiamGia.giamToiThieu};
+                                                        document.write(donGia.toLocaleString('vi-VN'));
+                                                    </script>
+                                                    VND
+                                                </td>
+                                                <td>
+                                                    <script>
+                                                        var donGia1 = ${phieuGiamGia.giamToiDa};
+                                                        document.write(donGia1.toLocaleString('vi-VN'));
+                                                    </script>
+                                                    VND
+                                                </td>
                                                 <td>${phieuGiamGia.ngayTao}</td>
                                                 <td>${phieuGiamGia.ngaySua}</td>
                                                 <td>${phieuGiamGia.ngayBatDau}</td>
                                                 <td>${phieuGiamGia.ngayketThuc}</td>
-
                                                 <td>${phieuGiamGia.soLuong}</td>
                                                 <td>
                                                     <c:if test="${phieuGiamGia.trangThai==0}">Còn hạn sử dụng</c:if>
@@ -165,24 +227,6 @@
                                         </c:forEach>
                                         </tbody>
                                     </table>
-                                    <c:if test="${not listPhieuGiamGia.isEmpty()}">
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination justify-content-center pagination-lg">
-                                                <li class="page-item"><a class="page-link"
-                                                                         href="/phieu-giam-gia/hien-thi?pageNum=0"><<</a>
-                                                </li>
-                                                <c:forEach begin="1" end="${totalPage}" varStatus="status">
-                                                    <li class="page-item">
-                                                        <a href="/phieu-giam-gia/hien-thi?pageNum=${status.index -1}"
-                                                           class="page-link">${status.index}</a>
-                                                    </li>
-                                                </c:forEach>
-                                                <li class="page-item"><a class="page-link"
-                                                                         href="/phieu-giam-gia/hien-thi?pageNum=${total-1}">>></a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </c:if>
                                 </div>
                             </div>
                         </div>
@@ -210,6 +254,16 @@
                         <form:label class="form-label" path="tienGiam">% giảm( tối đa 20% ):</form:label>
                         <form:input class="form-control" path="tienGiam" type="number"/>
                         <form:errors path="tienGiam" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="giamToiThieu">Hóa đơn tối thiểu:</form:label>
+                        <form:input class="form-control" path="giamToiThieu" type="number"/>
+                        <form:errors path="giamToiThieu" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="giamToiDa">Giảm tối đa:</form:label>
+                        <form:input class="form-control" path="giamToiDa" type="number"/>
+                        <form:errors path="giamToiDa" cssStyle="color: red"></form:errors>
                     </div>
                     <div class="form-group">
                         <form:label class="form-label" path="ngayBatDau">Ngày bắt đầu:</form:label>
@@ -266,6 +320,16 @@
                         <form:label class="form-label" path="tienGiam">% giảm( tối đa 20% ):</form:label>
                         <form:input class="form-control" path="tienGiam" type="number" readonly="true"/>
                         <form:errors path="tienGiam" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="giamToiThieu">Hóa đơn tối thiểu:</form:label>
+                        <form:input class="form-control" path="giamToiThieu" type="number"/>
+                        <form:errors path="giamToiThieu" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="giamToiDa">Giảm tối đa:</form:label>
+                        <form:input class="form-control" path="giamToiDa" type="number"/>
+                        <form:errors path="giamToiDa" cssStyle="color: red"></form:errors>
                     </div>
                     <div class="form-group">
                         <form:label class="form-label" path="ngayBatDau">Ngày bắt đầu:</form:label>
@@ -340,6 +404,16 @@
                         <form:label class="form-label" path="tienGiam">% giảm( tối đa 20% ):</form:label>
                         <form:input class="form-control" path="tienGiam" type="number"/>
                         <form:errors path="tienGiam" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="giamToiThieu">Hóa đơn tối thiểu:</form:label>
+                        <form:input class="form-control" path="giamToiThieu" type="number"/>
+                        <form:errors path="giamToiThieu" cssStyle="color: red"></form:errors>
+                    </div>
+                    <div class="form-group">
+                        <form:label class="form-label" path="giamToiDa">Giảm tối đa:</form:label>
+                        <form:input class="form-control" path="giamToiDa" type="number"/>
+                        <form:errors path="giamToiDa" cssStyle="color: red"></form:errors>
                     </div>
                     <div class="form-group">
                         <form:label class="form-label" path="ngayBatDau">Ngày bắt đầu:</form:label>

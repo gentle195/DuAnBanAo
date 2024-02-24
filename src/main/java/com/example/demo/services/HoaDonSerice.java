@@ -3,29 +3,32 @@ package com.example.demo.services;
 import com.example.demo.models.HoaDon;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
 public interface HoaDonSerice {
 
 
-    Page<HoaDon> hoaDonAll(Pageable pageable);
+    List<HoaDon> hoaDonAll();
 
     HoaDon findById(UUID id);
 
-    Page<HoaDon> hoaDonHuy(Pageable pageable);
+    List<HoaDon> hoaDonHuy();
 
-    Page<HoaDon> hoaDonChoXacNhan(Pageable pageable);
+    List<HoaDon> hoaDonChoXacNhan();
 
-    Page<HoaDon> hoaDonDaXacNhan(Pageable pageable);
+    List<HoaDon> hoaDonDaXacNhan();
 
-    Page<HoaDon> hoaDonChoGiaoHang(Pageable pageable);
+    List<HoaDon> hoaDonChoGiaoHang();
 
-    Page<HoaDon> hoaDonDangVanChuyen(Pageable pageable);
+    List<HoaDon> hoaDonDangVanChuyen();
 
-    Page<HoaDon> hoaDonHoanThanh(Pageable pageable);
+    List<HoaDon> hoaDonHoanThanh();
 
     List<HoaDon> hoaDonCho();
 
@@ -41,5 +44,7 @@ public interface HoaDonSerice {
 
     //     Page<HoaDon> hoaDonChoThanhToan(Pageable pageable);
     ResponseEntity<byte[]> generatePdfDonTaiQuay(UUID hoaDonId);
+
+    List<HoaDon> locTong(UUID idKH, UUID idNV, Integer loai, Integer giaoHang, Integer hoaDon, Date startDate, Date endDate, Date startSua, Date endSua);
 
 }
