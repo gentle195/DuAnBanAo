@@ -685,12 +685,17 @@ public class HoaDonController {
         hd.setTrangThaiHoaDon(1);
         hd.setTrangThaiGiaoHang(2);
         hoaDonSerice.update(id, hd);
-        HoaDon hoaDons = hoaDonSerice.findById(id);
-        List<KhachHang> khachHang = khachHangService.findAll();
-        List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);
-        model.addAttribute("listKhachHang", khachHang);
-        model.addAttribute("listHoaDonChiTiet", page);
-        model.addAttribute("hoaDon", hoaDons);
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
         model.addAttribute("thongBaoThanhCong", "Xác nhận hóa đơn thành công");
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return "home/layout";
@@ -703,12 +708,17 @@ public class HoaDonController {
         hd.setTrangThaiHoaDon(3);
         hd.setTrangThaiGiaoHang(6);
         hoaDonSerice.update(id, hd);
-        HoaDon hoaDons = hoaDonSerice.findById(id);
-        List<KhachHang> khachHang = khachHangService.findAll();
-        List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);
-        model.addAttribute("listKhachHang", khachHang);
-        model.addAttribute("listHoaDonChiTiet", page);
-        model.addAttribute("hoaDon", hoaDons);
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
         model.addAttribute("thongBaoThanhCong", "Thanh toán hóa đơn thành công");
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return "home/layout";
@@ -721,12 +731,17 @@ public class HoaDonController {
         hd.setTrangThaiHoaDon(0);
         hd.setTrangThaiGiaoHang(1);
         hoaDonSerice.update(id, hd);
-        HoaDon hoaDons = hoaDonSerice.findById(id);
-        List<KhachHang> khachHang = khachHangService.findAll();
-        List<HoaDonChiTiet> page = hoaDonChiTietSerice.hoaDonChiTietAll(id);
-        model.addAttribute("listKhachHang", khachHang);
-        model.addAttribute("listHoaDonChiTiet", page);
-        model.addAttribute("hoaDon", hoaDons);
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
         model.addAttribute("thongBaoThanhCong", "Hóa đơn đã quay về trạng thái chờ xác nhận");
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return "home/layout";
@@ -2647,5 +2662,189 @@ public class HoaDonController {
                 return "home/layout";
             }
         }
+    }
+
+    @GetMapping("/hoa-don/update-cho-giao-hang/{id}")
+    public String UpdateChoGiaoHang(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                                    @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hd.setTrangThaiGiaoHang(3);
+        hoaDonSerice.update(id, hd);
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã cập nhật thành công");
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
+
+    @GetMapping("/hoa-don/update-ve-cho-giao-hang/{id}")
+    public String UpdateVeChoGiaoHang(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                                      @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hd.setTrangThaiGiaoHang(3);
+        hoaDonSerice.update(id, hd);
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã cập nhật thành công");
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
+
+    @GetMapping("/hoa-don/update-dang-van-chuyen/{id}")
+    public String UpdateDangVanChuyen(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                                      @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hd.setTrangThaiGiaoHang(4);
+        hoaDonSerice.update(id, hd);
+        HoaDon hoaDons = hoaDonSerice.findById(id);
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã cập nhật thành công");
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
+
+    @GetMapping("/hoa-don/update-giao-hang-hoan-tat/{id}")
+    public String UpdateGiaoHangHoanTat(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                                        @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hd.setTrangThaiGiaoHang(6);
+        hoaDonSerice.update(id, hd);
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã cập nhật thành công");
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
+
+    @GetMapping("/hoa-don/update-huy-hoa-don-online/{id}")
+    public String UpdateHuyHoaDonOnl(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                                        @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hoaDonnn = hd;
+        if (hoaDonnn.getPhieuGiamGia() != null) {
+            PhieuGiamGia phieuGiamGia = phieuGiamGiaService.findById(hoaDonnn.getPhieuGiamGia().getId());
+            phieuGiamGia.setSoLuong(phieuGiamGia.getSoLuong() + 1);
+            phieuGiamGia.setTrangThai(0);
+            phieuGiamGia.setNgaySua(Date.valueOf(LocalDate.now()));
+            phieuGiamGiaService.update(phieuGiamGia.getId(), phieuGiamGia);
+        }
+        LocalDate capNhat = LocalDate.now();
+        List<HoaDonChiTiet> list = hoaDonChiTietSerice.hoaDonChiTietAll(id);
+        if (!list.isEmpty()) {
+            for (HoaDonChiTiet hdct : list
+            ) {
+                ChiTietSanPham ctsp = sanPhamService.findCTSPById(hdct.getIdCTSP().getId());
+                ctsp.setSoLuongTon(ctsp.getSoLuongTon() + hdct.getSoLuong());
+                ctsp.setNgaySua(Date.valueOf(capNhat));
+                ctsp.setTrangThai(0);
+                sanPhamService.updateCTSP(ctsp.getId(), ctsp);
+                hdct.setTrangThai(8);
+                hoaDonChiTietSerice.update(hdct.getId(), hdct);
+            }
+            hd.setTrangThaiHoaDon(8);
+            hd.setTrangThaiGiaoHang(5);
+            hd.setNgaySua(Date.valueOf(capNhat));
+//            hd.setNguoiSua();
+            hoaDonSerice.update(id, hd);
+        } else {
+            hd.setTrangThaiHoaDon(8);
+            hd.setTrangThaiGiaoHang(5);
+            hd.setNgaySua(Date.valueOf(capNhat));
+//            hd.setNguoiSua();
+            hoaDonSerice.update(id, hd);
+        }
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã chuyển sang trạng thái hủy");
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
+    @GetMapping("/hoa-don/update-tt-1-online/{id}")
+    public String UpdateTTOnline(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                           @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hd.setTrangThaiGiaoHang(2);
+        hoaDonSerice.update(id, hd);
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("thongBaoThanhCong", "Xác nhận hóa đơn thành công");
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
+    @GetMapping("/hoa-don/update-ve-cho-xac-nhan/{id}")
+    public String UpdateVeChoXacNhan(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                           @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hd.setTrangThaiGiaoHang(1);
+        hoaDonSerice.update(id, hd);
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("thongBaoThanhCong", "Quay về trạng thái chờ xác nhận thành công");
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
     }
 }

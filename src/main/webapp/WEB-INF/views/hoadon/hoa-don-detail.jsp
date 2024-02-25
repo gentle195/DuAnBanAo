@@ -237,14 +237,19 @@
                                         </c:if>
 
                                         <%--                                        trạng thái chờ xác nhận--%>
-                                        <c:if test="${hoaDon.trangThaiHoaDon == 0 && listHoaDonChiTiet.size()>=1}">
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 0 && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==0}">
                                             <a href="/hoa-don/update-tt-1/${hoaDon.id}" class="btn btn-warning">Xác nhận
                                                 hóa đơn
                                             </a>
                                         </c:if>
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3) && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1}">
+                                            <a href="/hoa-don/update-tt-1-online/${hoaDon.id}" class="btn btn-warning">Xác
+                                                nhận hóa đơn online
+                                            </a>
+                                        </c:if>
                                         <c:if test="${hoaDon.trangThaiHoaDon == 0}">
                                             <a href="/hoa-don/update-tt-8/${hoaDon.id}" class="btn btn-danger">Huỷ hóa
-                                                đơn
+                                                đơn tại quầy
                                             </a>
                                         </c:if>
 
@@ -262,16 +267,55 @@
                                         </c:if>
                                         <c:if test="${hoaDon.trangThaiHoaDon == 1}">
                                             <a href="/hoa-don/update-tt-8/${hoaDon.id}" class="btn btn-danger">Huỷ hoá
-                                                đơn
+                                                đơn tại quầy
                                             </a>
                                         </c:if>
-
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1 && hoaDon.trangThaiGiaoHang== 2}">
+                                            <a href="/hoa-don/update-cho-giao-hang/${hoaDon.id}" class="btn btn-danger">
+                                                Chờ giao hàng
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1 && hoaDon.trangThaiGiaoHang== 2}">
+                                            <a href="/hoa-don/update-ve-cho-xac-nhan/${hoaDon.id}" class="btn btn-danger">
+                                                Quay về chờ xác nhận
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1 && hoaDon.trangThaiGiaoHang== 3}">
+                                            <a href="/hoa-don/update-dang-van-chuyen/${hoaDon.id}"
+                                               class="btn btn-danger">
+                                                Đang vận chuyển
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1 && hoaDon.trangThaiGiaoHang== 3}">
+                                            <a href="/hoa-don/update-ve-cho-giao-hang/${hoaDon.id}"
+                                               class="btn btn-danger">
+                                                Quay về chờ giao hàng
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1 && hoaDon.trangThaiGiaoHang== 4}">
+                                            <a href="/hoa-don/update-giao-hang-hoan-tat/${hoaDon.id}"
+                                               class="btn btn-danger">
+                                                Giao hàng hoàn tất
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1}">
+                                            <a href="/hoa-don/update-huy-hoa-don-online/${hoaDon.id}"
+                                               class="btn btn-danger">
+                                                Hủy hóa đơn online
+                                            </a>
+                                        </c:if>
                                         <%--                                        trạng thái thanh toán--%>
-                                        <c:if test="${hoaDon.trangThaiHoaDon == 3}">
-                                            <a href="/hoa-don/update-tt-0/${hoaDon.id}" class="btn btn-outline-warning">
-                                                <-Quay lại trạng thái ban đầu
-                                            </a>
-                                        </c:if>
+                                        <%--                                        <c:if test="${hoaDon.trangThaiHoaDon == 3}">--%>
+                                        <%--                                            <a href="/hoa-don/update-tt-0/${hoaDon.id}" class="btn btn-outline-warning">--%>
+                                        <%--                                                <-Quay lại trạng thái ban đầu--%>
+                                        <%--                                            </a>--%>
+                                        <%--                                        </c:if>--%>
 
                                         <%--                                        trạng thái huỷ--%>
                                         <%--                                        <c:if test="${hoaDon.trangThaiHoaDon == 8}">--%>
@@ -304,6 +348,7 @@
                                                         <c:if test="${hoaDon.trangThaiHoaDon == 1}"> Đã xác nhận</c:if>
                                                         <c:if test="${hoaDon.trangThaiHoaDon == 2}"> Chờ thanh toán</c:if>
                                                         <c:if test="${hoaDon.trangThaiHoaDon == 3}"> Đã thanh toán</c:if>
+                                                        <c:if test="${hoaDon.trangThaiHoaDon == 3 && hoaDon.trangThaiGiaoHang==6}"> Hoàn tất</c:if>
                                                         <c:if test="${hoaDon.trangThaiHoaDon == 8}"> Đã hủy</c:if>
                                                     </label>
                                                 </div>
@@ -329,7 +374,9 @@
 
                                                 <div class="col-6 btn-group" role="group"
                                                      aria-label="Basic example" style="float: right">
-                                                    <c:if test="${hoaDon.trangThaiHoaDon==0}">
+                                                    <c:if test="${(hoaDon.trangThaiHoaDon==0 || hoaDon.trangThaiHoaDon==1 )
+                                                    || ((hoaDon.trangThaiHoaDon==2 || hoaDon.trangThaiHoaDon==3)
+                                                    && hoaDon.loaiHoaDon==1 && (hoaDon.trangThaiGiaoHang == 1 ||hoaDon.trangThaiGiaoHang == 2 ||hoaDon.trangThaiGiaoHang == 3))}">
                                                         <a class="btn btn-secondary"
                                                            data-bs-toggle="modal"
                                                            data-bs-target="#QRScan"
