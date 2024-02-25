@@ -209,6 +209,7 @@ public class HoaDonController {
         model.addAttribute("listKhachHang", khachHang);
         model.addAttribute("listHoaDonChiTiet", page);
         model.addAttribute("hoaDon", hoaDons);
+        model.addAttribute("thongBaoThanhCong", "Cập nhật thông tin hóa đơn thành công");
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return "home/layout";
     }
@@ -682,6 +683,7 @@ public class HoaDonController {
                            @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         HoaDon hd = hoaDonSerice.findById(id);
         hd.setTrangThaiHoaDon(1);
+        hd.setTrangThaiGiaoHang(2);
         hoaDonSerice.update(id, hd);
         HoaDon hoaDons = hoaDonSerice.findById(id);
         List<KhachHang> khachHang = khachHangService.findAll();
@@ -689,6 +691,7 @@ public class HoaDonController {
         model.addAttribute("listKhachHang", khachHang);
         model.addAttribute("listHoaDonChiTiet", page);
         model.addAttribute("hoaDon", hoaDons);
+        model.addAttribute("thongBaoThanhCong", "Xác nhận hóa đơn thành công");
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return "home/layout";
     }
@@ -698,6 +701,7 @@ public class HoaDonController {
                             @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         HoaDon hd = hoaDonSerice.findById(id);
         hd.setTrangThaiHoaDon(3);
+        hd.setTrangThaiGiaoHang(6);
         hoaDonSerice.update(id, hd);
         HoaDon hoaDons = hoaDonSerice.findById(id);
         List<KhachHang> khachHang = khachHangService.findAll();
@@ -705,6 +709,7 @@ public class HoaDonController {
         model.addAttribute("listKhachHang", khachHang);
         model.addAttribute("listHoaDonChiTiet", page);
         model.addAttribute("hoaDon", hoaDons);
+        model.addAttribute("thongBaoThanhCong", "Thanh toán hóa đơn thành công");
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return "home/layout";
     }
@@ -714,6 +719,7 @@ public class HoaDonController {
                             @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         HoaDon hd = hoaDonSerice.findById(id);
         hd.setTrangThaiHoaDon(0);
+        hd.setTrangThaiGiaoHang(1);
         hoaDonSerice.update(id, hd);
         HoaDon hoaDons = hoaDonSerice.findById(id);
         List<KhachHang> khachHang = khachHangService.findAll();
@@ -721,6 +727,7 @@ public class HoaDonController {
         model.addAttribute("listKhachHang", khachHang);
         model.addAttribute("listHoaDonChiTiet", page);
         model.addAttribute("hoaDon", hoaDons);
+        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã quay về trạng thái chờ xác nhận");
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return "home/layout";
     }
@@ -773,7 +780,7 @@ public class HoaDonController {
         model.addAttribute("listMauSac", mauSacService.findAll());
         model.addAttribute("listKichCo", kichCoService.findAll());
         model.addAttribute("listSanPham", sanPhamService.findAll());
-//        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã chuyển sang trạng thái hủy, có thể vào trang hóa đơn hủy để xem lại thông tin hóa đơn");
+        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã chuyển sang trạng thái hủy");
         model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
         return "home/layout";
     }

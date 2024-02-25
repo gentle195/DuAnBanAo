@@ -193,74 +193,38 @@
                                     <br>
                                     <br>
                                     <div>
-                                        <c:if test="${hoaDon.loaiHoaDon==0}">
-                                            <div class="status-bar">
-                                                <div class="status">
-                                                    <div class="pill ${hoaDon.trangThaiHoaDon == 0 ? 'pending' : 'default'}">
-                                                        Đang
-                                                        chờ
-                                                    </div>
-                                                </div>
-                                                <div class="status">
-                                                    <div class="pill ${hoaDon.trangThaiHoaDon == 1 ? 'confirmed' : 'default'}">
-                                                        Đã xác
-                                                        nhận
-                                                    </div>
-                                                </div>
-                                                <div class="status">
-                                                    <div class="pill ${hoaDon.trangThaiHoaDon == 2 ? 'waiting' : 'default'}">
-                                                        Chờ thanh
-                                                        toán
-                                                    </div>
-                                                </div>
-                                                <div class="status">
-                                                    <div class="pill ${hoaDon.trangThaiHoaDon == 3 ? 'paid' : 'default'}">
-                                                        Đã thanh
-                                                        toán
-                                                    </div>
-                                                </div>
-                                                <div class="status">
-                                                    <div class="pill ${hoaDon.trangThaiHoaDon == 8 ? 'canceled' : 'default'}">
-                                                        Đã hủy
-                                                    </div>
+                                        <div class="status-bar">
+                                            <div class="status">
+                                                <div class="pill ${hoaDon.trangThaiGiaoHang==1 ? 'waiting' : 'default'}">
+                                                    Chờ xác nhận
                                                 </div>
                                             </div>
-                                        </c:if>
-                                        <c:if test="${hoaDon.loaiHoaDon==1}">
-                                            <div class="status-bar">
-                                                <div class="status">
-                                                    <div class="pill ${hoaDon.trangThaiHoaDon == 2 && hoaDon.trangThaiGiaoHang==1 ? 'waiting' : 'default'}">
-                                                        Chờ thanh
-                                                        toán
-                                                    </div>
-                                                </div>
-                                                <div class="status">
-                                                    <div class="pill ${hoaDon.trangThaiHoaDon == 2&& hoaDon.trangThaiGiaoHang==1 ? 'paid' : 'default'}">
-                                                        Đã thanh toán
-                                                    </div>
-                                                </div>
-                                                <div class="status">
-                                                    <div class="pill ${(hoaDon.trangThaiHoaDon == 2|| hoaDon.trangThaiHoaDon==3) && hoaDon.trangThaiGiaoHang==3 ? 'pending' : 'default'}">
-                                                        Chờ giao hàng
-                                                    </div>
-                                                </div>
-                                                <div class="status">
-                                                    <div class="pill ${(hoaDon.trangThaiHoaDon == 2|| hoaDon.trangThaiHoaDon==3) && hoaDon.trangThaiGiaoHang==4 ? 'confirmed' : 'default'}">
-                                                        Đang giao hàng
-                                                    </div>
-                                                </div>
-                                                <div class="status">
-                                                    <div class="pill ${(hoaDon.trangThaiHoaDon == 2|| hoaDon.trangThaiHoaDon==3) && hoaDon.trangThaiGiaoHang==6 ? 'paid' : 'default'}">
-                                                        Giao hàng hoàn tất
-                                                    </div>
-                                                </div>
-                                                <div class="status">
-                                                    <div class="pill ${hoaDon.trangThaiHoaDon == 8 || hoaDon.trangThaiGiaoHang==5? 'canceled' : 'default'}">
-                                                        Đã hủy
-                                                    </div>
+                                            <div class="status">
+                                                <div class="pill ${hoaDon.trangThaiGiaoHang==2 ? 'waiting' : 'default'}">
+                                                    Đã xác nhận
                                                 </div>
                                             </div>
-                                        </c:if>
+                                            <div class="status">
+                                                <div class="pill ${(hoaDon.trangThaiHoaDon == 2|| hoaDon.trangThaiHoaDon==3) && hoaDon.trangThaiGiaoHang==3 ? 'pending' : 'default'}">
+                                                    Chờ giao hàng
+                                                </div>
+                                            </div>
+                                            <div class="status">
+                                                <div class="pill ${(hoaDon.trangThaiHoaDon == 2|| hoaDon.trangThaiHoaDon==3) && hoaDon.trangThaiGiaoHang==4 ? 'confirmed' : 'default'}">
+                                                    Đang giao hàng
+                                                </div>
+                                            </div>
+                                            <div class="status">
+                                                <div class="pill ${(hoaDon.trangThaiHoaDon == 2|| hoaDon.trangThaiHoaDon==3) && hoaDon.trangThaiGiaoHang==6 ? 'paid' : 'default'}">
+                                                    Giao hàng hoàn tất
+                                                </div>
+                                            </div>
+                                            <div class="status">
+                                                <div class="pill ${hoaDon.trangThaiHoaDon == 8 || hoaDon.trangThaiGiaoHang==5? 'canceled' : 'default'}">
+                                                    Đã hủy
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <br>
                                     <br>
@@ -310,11 +274,11 @@
                                         </c:if>
 
                                         <%--                                        trạng thái huỷ--%>
-<%--                                        <c:if test="${hoaDon.trangThaiHoaDon == 8}">--%>
-<%--                                            <a href="/hoa-don/khoi-phuc/${hoaDon.id}" class="btn btn-outline-warning">--%>
-<%--                                                Khôi phục--%>
-<%--                                            </a>--%>
-<%--                                        </c:if>--%>
+                                        <%--                                        <c:if test="${hoaDon.trangThaiHoaDon == 8}">--%>
+                                        <%--                                            <a href="/hoa-don/khoi-phuc/${hoaDon.id}" class="btn btn-outline-warning">--%>
+                                        <%--                                                Khôi phục--%>
+                                        <%--                                            </a>--%>
+                                        <%--                                        </c:if>--%>
                                     </h4>
                                     <div class="basic-form">
                                         <form>
@@ -381,14 +345,16 @@
 
                                                         <a class="btn btn-secondary"
                                                            data-bs-toggle="modal"
-                                                           data-bs-target="#phieuGiamGia" style="height: 45px; color: black">Chọn
+                                                           data-bs-target="#phieuGiamGia"
+                                                           style="height: 45px; color: black">Chọn
                                                             PGG</a>
                                                     </c:if>
                                                     <c:if test="${hoaDon.phieuGiamGia != null && listHoaDonChiTiet.size()>=1}">
 
                                                         <a class="btn btn-secondary"
                                                            data-bs-toggle="modal"
-                                                           data-bs-target="#phieuGiamGia" style="height: 45px; color: black">Chọn
+                                                           data-bs-target="#phieuGiamGia"
+                                                           style="height: 45px; color: black">Chọn
                                                             PGG</a>
 
                                                         <a class="btn btn-secondary"
