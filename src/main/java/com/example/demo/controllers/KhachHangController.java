@@ -113,7 +113,7 @@ public class KhachHangController {
             Page<KhachHang> page = KhachHangService.getAll(pageable);
             model.addAttribute("listKhachHang", page.getContent());
             model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("contentPage", "../khachhang/hien-thi.jsp");
+            model.addAttribute("contentPage", "../khachhang/khach-hang-add.jsp");
             return "home/layout";
         }
         if (KhachHangService.existKhachHangByEmail(KhachHang.getEmail())) {

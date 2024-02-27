@@ -16,6 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
     <!-- Favicon icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <title>Document</title>
 </head>
 <body>
@@ -246,7 +247,11 @@
                                     <BUTTON type="submit" class="btn btn-warning" style="" id="bt">
                                         Lọc hóa đơn
                                     </BUTTON>
+                                    <a href="/hoa-don/hien-thi" class=" btn btn-secondary" style="margin-left: 10px">
+                                        <i class="bi bi-arrow-clockwise"></i></i>
+                                    </a>
                                 </div>
+
                                 </form:form>
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered zero-configuration">
@@ -255,11 +260,12 @@
                                             <th>STT</th>
                                             <th>Mã</th>
                                             <th>Tên người nhận</th>
+<%--                                            <th>Số lượng</th>--%>
                                             <th>Tổng tiền</th>
                                             <th>Ngày tạo</th>
                                             <th>Loại hoá đơn</th>
                                             <th>Trạng thái hóa đơn</th>
-                                            <th>Trạng thái giao hàng</th>
+<%--                                            <th>Trạng thái giao hàng</th>--%>
                                             <th>Hành động</th>
                                         </tr>
                                         </thead>
@@ -269,41 +275,49 @@
                                                 <td>${i.index+1}</td>
                                                 <td>${All.ma}</td>
                                                 <td>${All.tenNguoiNhan}</td>
-                                                <td>${All.tongTien}</td>
+                                                <td> <script>
+                                                    var donGia = ${All.tongTien};
+                                                    document.write(donGia.toLocaleString('vi-VN'));
+                                                </script>
+                                                    VNĐ
+                                                </td>
                                                 <td>${All.ngayTao}</td>
                                                 <td>
                                                     <c:if test="${All.loaiHoaDon == 0}">Tại quầy</c:if>
                                                     <c:if test="${All.loaiHoaDon == 1}">Online</c:if>
                                                 </td>
                                                 <td>
-                                                    <c:if test="${All.trangThaiHoaDon == 0}"> Chờ xác nhân</c:if>
-                                                    <c:if test="${All.trangThaiHoaDon == 1}"> Đã xác nhận</c:if>
-                                                    <c:if test="${All.trangThaiHoaDon == 2}"> Chờ thanh toán</c:if>
-                                                    <c:if test="${All.trangThaiHoaDon == 3}"> Đã thanh toán</c:if>
+                                                    <c:if test="${All.trangThaiHoaDon == 0}"> Tạo đơn hàng</c:if>
+                                                    <c:if test="${All.trangThaiHoaDon == 1}"> Chờ xác nhân</c:if>
+                                                    <c:if test="${All.trangThaiHoaDon == 2}"> Chờ giao hàng</c:if>
+                                                    <c:if test="${All.trangThaiHoaDon == 3}"> Đang vận chuyển</c:if>
+                                                    <c:if test="${All.trangThaiHoaDon == 4}"> Đã thanh toán</c:if>
+                                                    <c:if test="${All.trangThaiHoaDon == 5}"> Thành công</c:if>
                                                     <c:if test="${All.trangThaiHoaDon == 8}"> Đã hủy</c:if>
                                                 </td>
-                                                <td>
-                                                    <c:if test="${All.trangThaiGiaoHang == 1}"> Chờ xác nhân</c:if>
-                                                    <c:if test="${All.trangThaiGiaoHang == 2}"> Đã xác nhận</c:if>
-                                                    <c:if test="${All.trangThaiGiaoHang == 3}"> Chờ giao hàng</c:if>
-                                                    <c:if test="${All.trangThaiGiaoHang == 4}"> Đang vận chuyển</c:if>
-                                                    <c:if test="${All.trangThaiGiaoHang == 5}"> Đã huỷ</c:if>
-                                                    <c:if test="${All.trangThaiGiaoHang == 6}"> Hoàn thành</c:if>
                                                 </td>
+<%--                                                <td>--%>
+<%--                                                    <c:if test="${All.trangThaiGiaoHang == 1}"> Chờ xác nhân</c:if>--%>
+<%--                                                    <c:if test="${All.trangThaiGiaoHang == 2}"> Đã xác nhận</c:if>--%>
+<%--                                                    <c:if test="${All.trangThaiGiaoHang == 3}"> Chờ giao hàng</c:if>--%>
+<%--                                                    <c:if test="${All.trangThaiGiaoHang == 4}"> Đang vận chuyển</c:if>--%>
+<%--                                                    <c:if test="${All.trangThaiGiaoHang == 5}"> Đã huỷ</c:if>--%>
+<%--                                                    <c:if test="${All.trangThaiGiaoHang == 6}"> Hoàn thành</c:if>--%>
+<%--                                                </td>--%>
                                                 <td>
                                                     <button type="button" class="btn mb-1  btn-outline-primary"
-                                                            onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
+                                                            onclick="if((confirm('Bạn có muốn thực hiện thao tác này không ? ')))return true;">
                                                         <a href="/hoa-don/detail/${All.id}">Xem</a></button>
-                                                    <c:if test="${All.trangThaiGiaoHang == 6}">
-                                                        <a href="/hoa-don/xuat-pdf-hoan-tat/${All.id}"
-                                                           id="toastr-success-top-right-hoa-don-hoan-tat"
-                                                           class="btn btn-outline-success btn-icon-text"
-                                                           tabindex="-1"
-                                                           role="button"
-                                                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
-                                                            <i class="ti-file btn-icon-prepend"></i>
-                                                            Xuất PDF</a>
-                                                    </c:if>
+<%--                                                    <c:if test="${All.trangThaiHoaDon == 5}">--%>
+<%--                                                        <a href="/hoa-don/xuat-pdf-hoan-tat/${All.id}"--%>
+<%--                                                           id="toastr-success-top-right-hoa-don-hoan-tat"--%>
+<%--                                                           class="btn btn-outline-success btn-icon-text"--%>
+<%--                                                           tabindex="-1"--%>
+<%--                                                           role="button"--%>
+<%--                                                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">--%>
+<%--                                                            <i class="ti-file btn-icon-prepend"></i>--%>
+<%--                                                            Xuất PDF</a>--%>
+<%--                                                    </c:if>--%>
                                                 </td>
                                             </tr>
                                         </c:forEach>

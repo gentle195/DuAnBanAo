@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
-import com.example.demo.models.*;
+
+import com.example.demo.models.ChiTietSanPham;
+import com.example.demo.models.SanPham;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -8,47 +10,30 @@ import java.util.List;
 import java.util.UUID;
 
 public interface SanPhamService {
-    public Page<SanPham> getAll(Pageable pageable);
 
-    public Page<SanPham> getAll1(Pageable pageable);
+    List<SanPham> getList();
+    List<SanPham> findAll();
+    Page<SanPham> findAllSP(Pageable pageable);
 
-    public List<SanPham> findAll();
+    Page<SanPham> findByKeyword(String key,Pageable pageable);
 
-    public List<SanPham> findAllFullTT();
+    SanPham addSanPham(SanPham sanPham);
 
-    public List<ChiTietSanPham> findAllCTSPFullTT();
+    SanPham udpateSanPham(SanPham sanPham);
 
-    public SanPham findById(UUID id);
+    SanPham getOne(UUID id);
 
-    public ChiTietSanPham findCTSPById(UUID id);
+    SanPham getByMa(String ma);
 
-    public SanPham add(SanPham sanPham);
-
-    public ChiTietSanPham addCTSP(ChiTietSanPham chiTietSanPham);
-
-    public SanPham update(UUID id, SanPham sanPham);
-
-    public ChiTietSanPham updateCTSP(UUID id, ChiTietSanPham chiTietSanPham);
-
-    public void updateTT();
-
-    public List<SanPham> search0(String ten);
-
-    public List<SanPham> search1(String ten);
+    List<SanPham> searchSanPham(String keyword);
 
     List<ChiTietSanPham> findAllCTSP();
 
-    List<ChiTietSanPham> findChiTietSanPhamBySanPham(SanPham sanPham);
+    public ChiTietSanPham findCTSPById(UUID id);
 
-    SanPham findByMa(String ma);
-
-    SanPham findByTen(String ten);
-
-    List<ChiTietSanPham> showQR(UUID id);
-
-    boolean existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieuAndSanPham(ChatLieu chatLieu, CoAo coAo, KichCo kichCo, MauSac mauSac, ThuongHieu thuongHieu, SanPham sanPham);
+    public ChiTietSanPham updateCTSP(UUID id, ChiTietSanPham chiTietSanPham);
 
     List<ChiTietSanPham> loc(UUID idSanPham, UUID idChatLieu, UUID idCoAo, UUID idKichCo, UUID idMauSac, UUID idThuongHieu);
-
     ChiTietSanPham scan(String ma);
+    List<ChiTietSanPham> showQR(UUID id);
 }

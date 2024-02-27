@@ -22,7 +22,8 @@
             <div>
                 <ul class="nav nav-pills mb-3" id="setting-panel" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link" href="/khach-hang/hien-thi" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
+                        <a class="nav-link" href="/khach-hang/hien-thi" role="tab"
+                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Thêm
                             thông tin
                             khách hàng</a>
                     </li>
@@ -31,7 +32,8 @@
                            aria-controls="description" aria-selected="true">Thêm thông tin khách hàng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/khach-hang/hien-thi-delete" role="tab" onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Khách
+                        <a class="nav-link" href="/khach-hang/hien-thi-delete" role="tab"
+                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">Khách
                             hàng
                             đã ngừng</a>
                     </li>
@@ -46,17 +48,15 @@
                             <form:input class="form-control" path="hoTen"/>
                             <form:errors path="hoTen" cssStyle="color: red"></form:errors>
                         </div>
-                        <div class="form-group">
-                            <div class="form-control">
-                                <form:label class="form-label" path="gioiTinh">Giới tính:</form:label>
-                                <form:radiobutton path="gioiTinh" value="true" checked="true"/>Nam
-                                <form:radiobutton path="gioiTinh" value="false"/> Nữ
-                                <form:errors path="gioiTinh" cssStyle="color: red"></form:errors>
-                            </div>
+                        <div class="form-control">
+                            <form:label class="form-label" path="gioiTinh">Giới tính:</form:label>
+                            <form:radiobutton path="gioiTinh" value="true" checked="true"/>Nam
+                            <form:radiobutton path="gioiTinh" value="false"/> Nữ
+                            <form:errors path="gioiTinh" cssStyle="color: red"></form:errors>
                         </div>
                         <div class="form-group">
                             <form:label class="form-label" path="ngaySinh">Ngày sinh:</form:label>
-                            <form:input class="form-control" path="ngaySinh" type="date"/>
+                            <form:input class="form-control" path="ngaySinh" type="date" required="true"/>
                             <form:errors path="ngaySinh" cssStyle="color: red"></form:errors>
                         </div>
                         <div class="form-group">
@@ -71,16 +71,16 @@
                             <form:errors path="email" cssStyle="color: red"></form:errors>
                             <span style="color: red">${tbtrungemail}</span>
                         </div>
-<%--                        <div class="form-group">--%>
-<%--                            <form:label class="form-label" path="taiKhoan">Tài khoản:</form:label>--%>
-<%--                            <form:input class="form-control" path="taiKhoan"/>--%>
-<%--                            <form:errors path="taiKhoan" cssStyle="color: red"></form:errors>--%>
-<%--                        </div>--%>
-<%--                        <div class="form-group">--%>
-<%--                            <form:label class="form-label" path="matKhau">Mật khẩu:</form:label>--%>
-<%--                            <form:input class="form-control" path="matKhau"/>--%>
-<%--                            <form:errors path="matKhau" cssStyle="color: red"></form:errors>--%>
-<%--                        </div>--%>
+                        <%--                        <div class="form-group">--%>
+                        <%--                            <form:label class="form-label" path="taiKhoan">Tài khoản:</form:label>--%>
+                        <%--                            <form:input class="form-control" path="taiKhoan"/>--%>
+                        <%--                            <form:errors path="taiKhoan" cssStyle="color: red"></form:errors>--%>
+                        <%--                        </div>--%>
+                        <%--                        <div class="form-group">--%>
+                        <%--                            <form:label class="form-label" path="matKhau">Mật khẩu:</form:label>--%>
+                        <%--                            <form:input class="form-control" path="matKhau"/>--%>
+                        <%--                            <form:errors path="matKhau" cssStyle="color: red"></form:errors>--%>
+                        <%--                        </div>--%>
                         <div class="col-12">
                             <div style="text-align: center">
                                 <button type="submit" class="btn btn-primary mr-2"

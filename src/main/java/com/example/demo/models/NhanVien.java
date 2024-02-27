@@ -19,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -52,8 +53,9 @@ public class NhanVien {
     @Column(name = "NgaySinh")
     private Date ngaySinh;
 
-    @NotBlank(message = "Không để trống thông tin")
+    @NotBlank(message = "* không để trống")
     @Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại không hợp lệ!")
+    @Length(min = 10,max = 10, message = "* Không dưới 10 kí tự và quá 10 kí tự")
     @Column(name = "SdtNhanVien")
     private String sdt;
 

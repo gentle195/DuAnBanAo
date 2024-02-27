@@ -36,6 +36,7 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, UUID> {
 
     boolean existsNhanVienBySdt(String sdt);
     boolean existsNhanVienByEmail(String sdt);
+    boolean existsNhanVienByCCCD(String cccd);
     List<NhanVien> findAllByTinhTrang(int tinhTrang);
     Page<NhanVien> findAllByGioiTinh(Boolean gioiTinh,Pageable pageable);
     List<NhanVien> findAllByTinhTrangAndGioiTinh(int tinhTrang,Boolean gioiTinh);

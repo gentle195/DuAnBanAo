@@ -1,32 +1,28 @@
 package com.example.demo.models;
 
+
 import com.example.demo.models.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "ChiTietSanPham")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class ChiTietSanPham {
+@NoArgsConstructor
+@AllArgsConstructor
+public class QLSanPham {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "Id")
     UUID id;
-
-    @Column(name = "Ma")
-    private String ma;
-
-    private String maQR;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdSanPham")
@@ -58,16 +54,12 @@ public class ChiTietSanPham {
     @NotNull(message = "* Mời chọn thương hiệu")
     ThuongHieu thuongHieu;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdHinhAnh")
-    HinhAnh hinhAnh;
 
     @Column(name = "GiaBan")
     @DecimalMin(value = "79999", inclusive = false, message = "* Giá bán không hợp lệ, nhập giá nhỏ nhất là 80000")
     @DecimalMax(value = "9999999999.99", inclusive = false, message = "* Giá bán không hợp lệ")
     @NotNull(message = "* không để trống giá bán !")
     Double giaBan;
-
 
     @Column(name = "SoLuongTon")
     @Min(value = 1, message = "* Số lượng không hợp lệ, số lượng phải lớn hơn 0")
@@ -76,12 +68,8 @@ public class ChiTietSanPham {
     Integer soLuongTon;
 
 
-
-    private String nguoiTao;
-    private String nguoiSua;
-
     @Column(name = "MoTa")
-//    @NotBlank(message = "* không để trống mô tả !")
+    @NotBlank(message = "* không để trống mô tả !")
     String moTaCT;
 
     @Column(name = "NgayTao")
@@ -97,19 +85,24 @@ public class ChiTietSanPham {
     @NotNull(message = "* Mời chọn trạng thái !")
     Integer trangThai;
 
+    @Override
+    public String toString() {
+        return sanPham.getTen();
+    }
 
+    public void loadFromDomainModel(ChiTietSanPham domain) {
 
-    public void loadFromViewModel(QLSanPham vm) {
-        this.setChatLieu(vm.getChatLieu());
-        this.setCoAo(vm.getCoAo());
-        this.setGiaBan(vm.getGiaBan());
-        this.setKichCo(vm.getKichCo());
-        this.setSanPham(vm.getSanPham());
-        this.setTrangThai(vm.getTrangThai());
-        this.setMoTaCT(vm.getMoTaCT());
-        this.setSoLuongTon(vm.getSoLuongTon());
-        this.setNgayTao(vm.getNgayTao());
-        this.setThuongHieu(vm.getThuongHieu());
-        this.setMauSac(vm.getMauSac());
+        this.setChatLieu(domain.getChatLieu());
+        this.setCoAo(domain.getCoAo());
+        this.setGiaBan(domain.getGiaBan());
+        this.setKichCo(domain.getKichCo());
+        this.setSanPham(domain.getSanPham());
+        this.setTrangThai(domain.getTrangThai());
+        this.setMoTaCT(domain.getMoTaCT());
+        this.setNgayTao(domain.getNgayTao());
+        this.setNgaySua(domain.getNgaySua());
+        this.setSoLuongTon(domain.getSoLuongTon());
+        this.setThuongHieu(domain.getThuongHieu());
+        this.setMauSac(domain.getMauSac());
     }
 }

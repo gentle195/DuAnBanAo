@@ -37,7 +37,7 @@ public class HoaDonChiTiet {
     private int soLuong;
 
     @Column(name = "DonGia")
-    private BigDecimal donGia;
+    private Double donGia;
 
     @Column(name = "TrangThai")
     private int trangThai;

@@ -15,6 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
     <!-- Favicon icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
 <c:if test="${thongBao != null}">
@@ -118,6 +119,10 @@
                                     </select>
                                     <button type="submit" class="btn btn-primary">Lọc</button>
                                 </form>
+
+                                <a href="/nhan-vien/hien-thi" class=" btn btn-secondary" style="margin-left: 10px">
+                                    <i class="bi bi-arrow-clockwise"></i></i>
+                                </a>
                                 <form action="/nhan-vien/search-con-hoat-dong" method="post">
                                     <div class="input-group" style="width: 30%; float: right">
                                         <input type="text" class="form-control" placeholder="Bạn tìm gì..."
@@ -144,8 +149,8 @@
                                             <th>Chức Vụ</th>
                                             <th>Tài Khoản</th>
                                             <th>Tình Trạng</th>
-                                            <th>Ngày Tạo</th>
-                                            <th>Ngày Sửa</th>
+<%--                                            <th>Ngày Tạo</th>--%>
+<%--                                            <th>Ngày Sửa</th>--%>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -172,8 +177,8 @@
                                                     <c:if test="${nhanVien.tinhTrang==0}">Còn hoạt động</c:if>
                                                     <c:if test="${nhanVien.tinhTrang==1}">Ngừng hoạt động</c:if>
                                                 </td>
-                                                <td>${nhanVien.ngayTao}</td>
-                                                <td>${nhanVien.ngaySua}</td>
+<%--                                                <td>${nhanVien.ngayTao}</td>--%>
+<%--                                                <td>${nhanVien.ngaySua}</td>--%>
                                                 <td>
                                                     <a href="/nhan-vien/detail/${nhanVien.id}"
                                                        class="btn btn-warning btn-icon-text"

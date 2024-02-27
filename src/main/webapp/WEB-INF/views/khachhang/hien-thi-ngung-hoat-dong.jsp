@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
     <!-- Favicon icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
 <c:if test="${thongBao != null}">
@@ -99,7 +100,10 @@
                 <div class="card-body">
                     <h4 class="card-title" style="float: left">Danh sách khách hàng</h4>
                     <%--            Tìm kiếm               --%>
-                    <form action="/khach-hang/search-con-hoat-dong" method="post">
+<%--                    <a href="/khach-hang/hien-thi" class=" btn btn-secondary" style="margin-left: 10px">--%>
+<%--                        <i class="bi bi-arrow-clockwise"></i></i>--%>
+<%--                    </a>--%>
+                    <form action="/khach-hang/search-ngung-hoat-dong" method="post">
                         <div class="input-group" style="width: 30%; float: right">
                             <input type="text" class="form-control" placeholder="Bạn tìm gì..."
                                    aria-label="Bạn tìm gì..." name="search">
@@ -122,8 +126,8 @@
                                 <th>SĐT</th>
                                 <th>Tài khoản</th>
                                 <th>Tình Trạng</th>
-                                <th>Ngày Tạo</th>
-                                <th>Ngày Sửa</th>
+<%--                                <th>Ngày Tạo</th>--%>
+<%--                                <th>Ngày Sửa</th>--%>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -147,8 +151,8 @@
                                         <c:if test="${khachHang.trangThai==0}">Đang hoạt động</c:if>
                                         <c:if test="${khachHang.trangThai==1}">Ngừng hoạt động</c:if>
                                     </td>
-                                    <td>${khachHang.ngayTao}</td>
-                                    <td>${khachHang.ngaySua}</td>
+<%--                                    <td>${khachHang.ngayTao}</td>--%>
+<%--                                    <td>${khachHang.ngaySua}</td>--%>
                                     <td>
                                         <a href="/khach-hang/detail/${khachHang.id}"
                                            class="btn btn-warning btn-icon-text"

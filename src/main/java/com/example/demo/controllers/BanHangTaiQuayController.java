@@ -896,7 +896,7 @@ public class BanHangTaiQuayController {
         hoaDon.setTenNguoiNhan(hoaDon.getKhachHang().getHoTen());
         hoaDon.setEmailNguoiNhan(hoaDon.getKhachHang().getEmail());
         hoaDon.setNgaySua(Date.valueOf(LocalDate.now()));
-        hoaDon.setTrangThaiHoaDon(3);
+        hoaDon.setTrangThaiHoaDon(5);
         hoaDon.setTrangThaiGiaoHang(6);
         hoaDon.setPhiShip(BigDecimal.ZERO);
         hoaDonSerice.update(id, hoaDon);

@@ -1,7 +1,9 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.models.*;
-import com.example.demo.repositories.ChiTietSanPhamRepository;
+
+import com.example.demo.models.ChiTietSanPham;
+import com.example.demo.models.SanPham;
+import com.example.demo.repositories.ChiTietSanPhamRepo;
 import com.example.demo.repositories.SanPhamRepository;
 import com.example.demo.services.SanPhamService;
 import org.springframework.beans.BeanUtils;
@@ -17,65 +19,62 @@ import java.util.UUID;
 public class SanPhamServiceImpl implements SanPhamService {
 
     @Autowired
-    private SanPhamRepository sanPhamRepo;
+    SanPhamRepository sanPhamRepository;
     @Autowired
-    private ChiTietSanPhamRepository chiTietSanPhamRepository;
-
+    private ChiTietSanPhamRepo chiTietSanPhamRepository;
     @Override
-    public Page<SanPham> getAll(Pageable pageable) {
-        return sanPhamRepo.getAll(pageable);
-    }
-
-    @Override
-    public Page<SanPham> getAll1(Pageable pageable) {
-        return sanPhamRepo.getAll1(pageable);
+    public List<SanPham> getList() {
+        return sanPhamRepository.findAll();
     }
 
     @Override
     public List<SanPham> findAll() {
-        return sanPhamRepo.findAll0();
+        return sanPhamRepository.findAll0();
     }
 
     @Override
-    public List<SanPham> findAllFullTT() {
-        return sanPhamRepo.findAll();
+    public Page<SanPham> findAllSP(Pageable pageable) {
+        return sanPhamRepository.findALlSP(pageable);
     }
 
     @Override
-    public List<ChiTietSanPham> findAllCTSPFullTT() {
-        return chiTietSanPhamRepository.findAll();
+    public Page<SanPham> findByKeyword(String key, Pageable pageable) {
+        return sanPhamRepository.findAllByKeWord(key,pageable);
     }
 
     @Override
-    public SanPham findById(UUID id) {
-        return sanPhamRepo.findById(id).orElse(null);
+    public SanPham addSanPham(SanPham sanPham) {
+        return sanPhamRepository.save(sanPham) ;
+    }
+
+    @Override
+    public SanPham udpateSanPham(SanPham sanPham) {
+        return sanPhamRepository.save(sanPham);
+    }
+
+    @Override
+    public SanPham getOne(UUID id) {
+        return sanPhamRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public SanPham getByMa(String ma) {
+        return sanPhamRepository.getSanPhamByMaSP(ma);
+    }
+
+    @Override
+    public List<SanPham> searchSanPham(String keyword) {
+        return sanPhamRepository.searchSanPham(keyword);
+    }
+
+    @Override
+    public List<ChiTietSanPham> findAllCTSP() {
+        return chiTietSanPhamRepository.findAllCTSP();
     }
 
     @Override
     public ChiTietSanPham findCTSPById(UUID id) {
         return chiTietSanPhamRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public SanPham add(SanPham sanPham) {
-        return sanPhamRepo.save(sanPham);
-    }
-
-    @Override
-    public ChiTietSanPham addCTSP(ChiTietSanPham chiTietSanPham) {
-        return chiTietSanPhamRepository.save(chiTietSanPham);
-    }
-
-    @Override
-    public SanPham update(UUID id, SanPham sanPham) {
-        if (id != null) {
-            SanPham sanPhamUpdate = sanPhamRepo.findById(id).orElse(null);
-            if (sanPhamUpdate != null) {
-                BeanUtils.copyProperties(sanPham, sanPhamUpdate);
-                sanPhamRepo.save(sanPhamUpdate);
-            }
-        }
-        return null;
     }
 
     @Override
@@ -91,51 +90,6 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
-    public void updateTT() {
-
-    }
-
-    @Override
-    public List<SanPham> search0(String ten) {
-        return sanPhamRepo.search0(ten);
-    }
-
-    @Override
-    public List<SanPham> search1(String ten) {
-        return sanPhamRepo.search1(ten);
-    }
-
-    @Override
-    public List<ChiTietSanPham> findAllCTSP() {
-        return chiTietSanPhamRepository.findAllCTSP();
-    }
-
-    @Override
-    public List<ChiTietSanPham> findChiTietSanPhamBySanPham(SanPham sanPham) {
-        return chiTietSanPhamRepository.findChiTietSanPhamBySanPham(sanPham);
-    }
-
-    @Override
-    public SanPham findByMa(String ma) {
-        return sanPhamRepo.findSanPhamByMa(ma);
-    }
-
-    @Override
-    public SanPham findByTen(String ten) {
-        return sanPhamRepo.findSanPhamByTen(ten);
-    }
-
-    @Override
-    public List<ChiTietSanPham> showQR(UUID id) {
-        return chiTietSanPhamRepository.showQR(id);
-    }
-
-    @Override
-    public boolean existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieuAndSanPham(ChatLieu chatLieu, CoAo coAo, KichCo kichCo, MauSac mauSac, ThuongHieu thuongHieu, SanPham sanPham) {
-        return chiTietSanPhamRepository.existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieuAndSanPham(chatLieu, coAo, kichCo, mauSac, thuongHieu, sanPham);
-    }
-
-    @Override
     public List<ChiTietSanPham> loc(UUID idSanPham, UUID idChatLieu, UUID idCoAo, UUID idKichCo, UUID idMauSac, UUID idThuongHieu) {
         return chiTietSanPhamRepository.loc(idSanPham, idChatLieu, idCoAo, idKichCo, idMauSac, idThuongHieu);
     }
@@ -143,5 +97,10 @@ public class SanPhamServiceImpl implements SanPhamService {
     @Override
     public ChiTietSanPham scan(String ma) {
         return chiTietSanPhamRepository.scan(ma);
+    }
+
+    @Override
+    public List<ChiTietSanPham> showQR(UUID id) {
+        return chiTietSanPhamRepository.showQR(id);
     }
 }

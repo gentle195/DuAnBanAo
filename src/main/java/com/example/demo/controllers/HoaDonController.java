@@ -2669,6 +2669,7 @@ public class HoaDonController {
                                     @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         HoaDon hd = hoaDonSerice.findById(id);
         hd.setTrangThaiGiaoHang(3);
+        hd.setTrangThaiHoaDon(2);
         hoaDonSerice.update(id, hd);
         model.addAttribute("hoaDon", hoaDonSerice.findById(id));
         model.addAttribute("listPGG", phieuGiamGiaService.findAll());
@@ -2691,6 +2692,7 @@ public class HoaDonController {
                                       @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         HoaDon hd = hoaDonSerice.findById(id);
         hd.setTrangThaiGiaoHang(3);
+        hd.setTrangThaiHoaDon(2);
         hoaDonSerice.update(id, hd);
         model.addAttribute("hoaDon", hoaDonSerice.findById(id));
         model.addAttribute("listPGG", phieuGiamGiaService.findAll());
@@ -2713,6 +2715,30 @@ public class HoaDonController {
                                       @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         HoaDon hd = hoaDonSerice.findById(id);
         hd.setTrangThaiGiaoHang(4);
+        hd.setTrangThaiHoaDon(3);
+        hoaDonSerice.update(id, hd);
+        HoaDon hoaDons = hoaDonSerice.findById(id);
+        model.addAttribute("hoaDon", hoaDonSerice.findById(id));
+        model.addAttribute("listPGG", phieuGiamGiaService.findAll());
+        model.addAttribute("listKhachHang", khachHangService.findAll());
+        model.addAttribute("listHoaDonChiTiet", hoaDonChiTietSerice.hoaDonChiTietAll(id));
+        model.addAttribute("listCTSP", sanPhamService.findAllCTSP());
+        model.addAttribute("listChatLieu", chatLieuService.findAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
+        model.addAttribute("listCoAo", coAoService.findAll());
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        model.addAttribute("listSanPham", sanPhamService.findAll());
+        model.addAttribute("thongBaoThanhCong", "Hóa đơn đã cập nhật thành công");
+        model.addAttribute("contentPage", "../hoadon/hoa-don-detail.jsp");
+        return "home/layout";
+    }
+    @GetMapping("/hoa-don/update-thanh-toan/{id}")
+    public String UpdatethanToan(Model model, @PathVariable("id") UUID id, @ModelAttribute("hoaDon") HoaDon hoaDon, @RequestParam("pageNum") Optional<Integer> pageNum,
+                                      @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        HoaDon hd = hoaDonSerice.findById(id);
+        hd.setTrangThaiGiaoHang(4);
+        hd.setTrangThaiHoaDon(4);
         hoaDonSerice.update(id, hd);
         HoaDon hoaDons = hoaDonSerice.findById(id);
         model.addAttribute("hoaDon", hoaDonSerice.findById(id));
@@ -2736,6 +2762,7 @@ public class HoaDonController {
                                         @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         HoaDon hd = hoaDonSerice.findById(id);
         hd.setTrangThaiGiaoHang(6);
+        hd.setTrangThaiHoaDon(5);
         hoaDonSerice.update(id, hd);
         model.addAttribute("hoaDon", hoaDonSerice.findById(id));
         model.addAttribute("listPGG", phieuGiamGiaService.findAll());

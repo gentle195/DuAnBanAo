@@ -30,6 +30,7 @@ public interface NhanVienService {
 
     boolean existNhanVienByEmail(String email);
     boolean existNhanVienBySDT(String sdt);
+    boolean existNhanVienByCCCD(String CCCD);
     List<NhanVien> locTT(int tinhTrang);
     Page<NhanVien> locGT(Boolean gioiTinh,Pageable pageable);
     List<NhanVien> findAllByTinhTrangAndGioiTinh(int tinhTrang,Boolean gioiTinh);

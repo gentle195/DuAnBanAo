@@ -238,14 +238,14 @@
                                                     <td>
                                                         <button type="button" class="btn mb-1  btn-outline-primary">
                                                             <a href="/hoa-don/detail/${HT.id}">Xem</a></button>
-                                                        <a href="/hoa-don/xuat-pdf-hoan-tat/${HT.id}"
-                                                           id="toastr-success-top-right-hoa-don-hoan-tat"
-                                                           class="btn btn-outline-success btn-icon-text"
-                                                           tabindex="-1"
-                                                           role="button"
-                                                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
-                                                            <i class="ti-file btn-icon-prepend"></i>
-                                                            Xuất PDF</a>
+<%--                                                        <a href="/hoa-don/xuat-pdf-hoan-tat/${HT.id}"--%>
+<%--                                                           id="toastr-success-top-right-hoa-don-hoan-tat"--%>
+<%--                                                           class="btn btn-outline-success btn-icon-text"--%>
+<%--                                                           tabindex="-1"--%>
+<%--                                                           role="button"--%>
+<%--                                                           onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">--%>
+<%--                                                            <i class="ti-file btn-icon-prepend"></i>--%>
+<%--                                                            Xuất PDF</a>--%>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

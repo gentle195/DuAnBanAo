@@ -1,6 +1,7 @@
 package com.example.demo.utils;
 
 import com.example.demo.models.ChiTietSanPham;
+import com.example.demo.models.NhanVien;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -70,4 +71,21 @@ public class QRCodeGenerator {
         Path path = FileSystems.getDefault().getPath(qrCodeName);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
     }
+//    public static void generatorQRCodeNV(NhanVien sp, String outputFolderPath) throws WriterException, IOException {
+//        // Generate code:
+//        String qrCodeData = String.valueOf(sp.getMa());
+//
+//
+//        // Configure UTF-8 encoding
+//        Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
+//        hints.put(EncodeHintType.CHARACTER_SET, StandardCharsets.UTF_8.name());
+//
+//        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+//
+//        String qrCodeName = outputFolderPath + File.separator + sp.getMa() + ".png";
+//
+//        BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeData, BarcodeFormat.QR_CODE, 400, 400, hints);
+//        Path path = FileSystems.getDefault().getPath(qrCodeName);
+//        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+//    }
 }

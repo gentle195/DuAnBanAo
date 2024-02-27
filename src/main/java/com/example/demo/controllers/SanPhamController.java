@@ -2,864 +2,521 @@ package com.example.demo.controllers;
 
 
 import com.example.demo.models.*;
+import com.example.demo.repositories.*;
 import com.example.demo.services.*;
-import com.example.demo.services.SanPhamService;
-import com.example.demo.util.FileUploadUtil;
 import com.example.demo.utils.QRCodeGenerator;
 import com.google.zxing.WriterException;
 import jakarta.validation.Valid;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
-@RequestMapping("/san-pham")
 public class SanPhamController {
+
     @Autowired
-    private SanPhamService sanPhamService;
+    ChiTietSanPhamService service;
+
     @Autowired
-    private ThuongHieuService thuongHieuService;
+    ThuongHieuRepository deGiayRepo;
     @Autowired
-    private CoAoService coAoService;
+    ChatLieuRepository chatLieuRepo;
     @Autowired
-    private KichCoService kichCoService;
+    KichCoRepository kichCoRepo;
     @Autowired
-    private MauSacService mauSacService;
+    CoAoRepository loaiGiayRepo;
     @Autowired
-    private ChatLieuService chatLieuService;
+    MauSacRepository mauSacReponsitories;
     @Autowired
-    private HinhAnhService hinhAnhService;
+    SanPhamRepository sanPhamRepo;
+    @Autowired
+    SanPhamService sanPhamService;
+//
+    @Autowired
+    ThuongHieuService deGiayService;
+    @Autowired
+    ChatLieuService chatLieuService;
+    @Autowired
+    KichCoService kichCoService;
+    @Autowired
+    CoAoService loaiGiayService;
+    @Autowired
+    MauSacService mauSacService;
 
-    private UUID idSanPham = null;
+    @ModelAttribute("listDeGiay")
+    List<ThuongHieu> listDeGiay() {
+        return deGiayRepo.findAll();
+    }
 
-    @GetMapping("/hien-thi")
-    public String hienThi(Model model, @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("sanPham") SanPham sanPham) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<SanPham> page = sanPhamService.getAll(pageable);
+    @ModelAttribute("listChatLieu")
+    List<ChatLieu> listChatLieu() {
+        return chatLieuRepo.findAll();
+    }
+
+    @ModelAttribute("listKichCo")
+    List<KichCo> listKichCo() {
+        return kichCoRepo.findAll();
+    }
+
+    @ModelAttribute("listMau")
+    List<MauSac> listMauSac() {
+        return mauSacReponsitories.findAll();
+    }
+
+    @ModelAttribute("listLoaiGiay")
+    List<CoAo> listLoaiGiay() {
+        return loaiGiayRepo.findAll();
+    }
+
+    @ModelAttribute("dsGioiTinh")
+    public Map<Boolean, String> getDsGioiTinh() {
+        Map<Boolean, String> dsGT = new HashMap<>();
+        dsGT.put(true, "Nam");
+        dsGT.put(false, "Nữ");
+        return dsGT;
+    }
+
+    @ModelAttribute("dsTrangThai")
+    public Map<Integer, String> getDSTrangThai() {
+        Map<Integer, String> dsTrangThai = new HashMap<>();
+        dsTrangThai.put(0, "Hoạt động");
+        dsTrangThai.put(1, "Ngừng hoạt động");
+        return dsTrangThai;
+    }
+
+    @Getter
+    @Setter
+    public static class SearchForm {
+        String keyword = "";
+    }
+
+    @GetMapping("/san-pham/hien-thi")
+    public String hienThi(Model model, @RequestParam(defaultValue = "0") int p) {
+//        model.addAttribute("view", "../san_pham/list_san_pham.jsp");
+        if (p < 0) {
+            p = 0;
+        }
+        Pageable pageable = PageRequest.of(p, 5);
+        Page<SanPham> page = sanPhamService.findAllSP(pageable);
+        model.addAttribute("search", new SearchForm());
+        model.addAttribute("page", page);
         model.addAttribute("listSanPham", page.getContent());
         model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
+        model.addAttribute("contentPage", "../san_pham/list_san_pham.jsp");
         return "home/layout";
     }
 
-    @GetMapping("/hien-thi-delete")
-    public String hienThiNgungHoatDong(Model model, @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ModelAttribute("sanPham") SanPham sanPham) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<SanPham> page = sanPhamService.getAll1(pageable);
+
+    @RequestMapping("/san-pham/search")
+    public String search(Model model, @ModelAttribute("search") SearchForm searchForm, @RequestParam(defaultValue = "0") int p) {
+//        model.addAttribute("view", "../san_pham/list_san_pham.jsp");
+        if (p < 0) {
+            p = 0;
+        }
+        Pageable pageable = PageRequest.of(p, 5);
+        Page<SanPham> page = sanPhamService.findByKeyword(searchForm.keyword, pageable);
+        model.addAttribute("page", page);
         model.addAttribute("listSanPham", page.getContent());
         model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("contentPage", "../san-pham/hien-thi-ngung-hoat-dong.jsp");
+        model.addAttribute("contentPage", "../san_pham/list_san_pham.jsp");
         return "home/layout";
     }
 
-    @GetMapping("/view-add")
-    public String viewAdd(Model model, @ModelAttribute("sanPham") SanPham sanPham
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<SanPham> page = sanPhamService.getAll(pageable);
-        model.addAttribute("listSanPham", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("sanPham", new SanPham());
-        model.addAttribute("batmodalthemsanpham", 0);
-        model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
+    @GetMapping("/san-pham/view-add")
+    public String viewAdd(Model model, @ModelAttribute("SP") SanPham sanPham) {
+        model.addAttribute("action", "/san-pham/add");
+        model.addAttribute("contentPage",  "../san_pham/view_add_update.jsp");
         return "home/layout";
     }
 
-    @GetMapping("/view-ctsp/{id}")
-    public String viewCTSP(Model model, @PathVariable("id") UUID id, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham) {
-        model.addAttribute("sanPham", sanPhamService.findById(id));
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("listCTSP", sanPhamService.findChiTietSanPhamBySanPham(sanPhamService.findById(id)));
-        model.addAttribute("contentPage", "../san-pham/hien-thi-chi-tiet-san-pham.jsp");
-        idSanPham = id;
+    @GetMapping("/san-pham/view-update/{id}")
+    public String viewUpdate(Model model, @PathVariable("id") UUID id, @ModelAttribute("SP") SanPham sanPham) {
+//        model.addAttribute("view", "../san_pham/view_add_update.jsp");
+        SanPham product = sanPhamService.getOne(id);
+        model.addAttribute("action1", "/san-pham/update/" + product.getId());
+        model.addAttribute("SP", product);
+        SanPham sp = sanPhamService.getOne(id);
+        model.addAttribute("contentPage",  "../san_pham/view_add_update1.jsp");
         return "home/layout";
     }
 
-    @PostMapping("/add")
-    public String add(Model model, @Valid @ModelAttribute("sanPham") SanPham sanPham, BindingResult bindingResult
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        if (bindingResult.hasErrors()) {
+    @PostMapping("/san-pham/add")
+    public String add(Model model, @Valid @ModelAttribute("SP") SanPham sanPham, BindingResult result) {
+        Boolean hasError = result.hasErrors();
+        SanPham product = sanPhamService.getByMa(sanPham.getMa());
+        if (product != null) {
+            hasError = true;
+            model.addAttribute("maspError", "Vui lòng không nhập trùng mã");
+            model.addAttribute("contentPage",  "../san_pham/view_add_update.jsp");
 
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<SanPham> page = sanPhamService.getAll(pageable);
-            model.addAttribute("listSanPham", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("batmodalthemsanpham", 0);
-            model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
             return "home/layout";
         }
+        if (hasError) {
+            model.addAttribute("contentPage",  "../san_pham/view_add_update.jsp");
+            return "home/layout";
+        }
+        sanPhamService.addSanPham(sanPham);
+        return "redirect:/san-pham/hien-thi";
+    }
+
+    @PostMapping("/san-pham/update/{id}")
+    public String udpate(@PathVariable("id") UUID id, Model model, @Valid @ModelAttribute("SP") SanPham sanPham,
+                         BindingResult result) {
+        Boolean hasError = result.hasErrors();
+        if (sanPham.getMa().trim().length() < 4) {
+            hasError = true;
+            model.addAttribute("erorLenghMa", "Mã sản phẩm phải lớn hơn hoặc bằng 5");
+            model.addAttribute("contentPage",  "../san_pham/view_add_update1.jsp");
+            return "home/layout";
+        }
+        if (hasError) {
+            model.addAttribute("contentPage",  "../san_pham/view_add_update1.jsp");
+            return "home/layout";
+        }
+        SanPham sp = sanPhamService.getOne(id);
+        sp.setMa(sanPham.getMa());
+        sp.setTen(sanPham.getTen());
+        sp.setTrangThai(sanPham.getTrangThai());
+        sanPhamService.udpateSanPham(sp);
+
+        List<ChiTietSanPham> listCTSPByIDSP = service.listCTSPByIDSP(id);
+        for (ChiTietSanPham ctsp: listCTSPByIDSP) {
+            ctsp.setTrangThai(sanPham.getTrangThai());
+            service.addKC(ctsp);
+        }
+        return "redirect:/san-pham/hien-thi";
+    }
+
+    @RequestMapping("/chi-tiet-san-pham/view-add/{id}")
+    public String viewAdd(Model model, @ModelAttribute("sanpham") QLSanPham sp, @PathVariable("id") UUID id) {
+        model.addAttribute("lg", new CoAo());
+        model.addAttribute("degiay", new ThuongHieu());
+        model.addAttribute("vm", new ChatLieu());
+        model.addAttribute("kichco", new KichCo());
+        model.addAttribute("ms", new MauSac());
+        model.addAttribute("action2", "/san-pham/kich-co/add/" + id);
+        model.addAttribute("action3", "/san-pham/mau-sac/add/" + id);
+        model.addAttribute("action4", "/san-pham/loai-giay/add/" + id);
+        model.addAttribute("action5", "/san-pham/de-giay/add/" + id);
+        model.addAttribute("action6", "/san-pham/chat-lieu/add/" + id);
+        model.addAttribute("act", "add");
+        SanPham sanPham1 = sanPhamService.getOne(id);
+        model.addAttribute("tensp", sanPham1.getTen());
+        model.addAttribute("action", "/chi-tiet-san-pham/add/" + sanPham1.getId());
+        model.addAttribute("contentPage", "../chi-tiet-san-pham/add_update.jsp");
+        return "home/layout";
+    }
+
+    // add ctsp
+    @PostMapping("/chi-tiet-san-pham/add/{id}")
+    public String AddSanPham(Model model, @PathVariable("id") UUID id, @Valid @ModelAttribute("sanpham") ChiTietSanPham sp
+            ,
+                             BindingResult result, RedirectAttributes redirectAttributes, @RequestParam(value = "kichCo", required = false) List<String> kichCoList,
+                             @RequestParam(value = "mauSac", required = false) List<String> mauSacList,
+                             @RequestParam(name = "soLuong", required = false) List<String> listSoLuong) throws WriterException, IOException {
+        model.addAttribute("lg", new CoAo());
+        model.addAttribute("degiay", new ThuongHieu());
+        model.addAttribute("vm", new ChatLieu());
+        model.addAttribute("ms", new MauSac());
+        model.addAttribute("kichco", new KichCo());
+        model.addAttribute("act", "add");
+        SanPham sanPham1 = sanPhamService.getOne(id);
         String mhd = "";
-        Integer sl = sanPhamService.findAllFullTT().size() + 1;
-        if (sl < 9) {
-            mhd = "SP0" + sl;
-        } else {
-            mhd = "SP" + sl;
-        }
-        sanPham.setMa(mhd);
-        sanPham.setNgayTao(Date.valueOf(LocalDate.now()));
-        sanPham.setTrangThai(0);
-        sanPhamService.add(sanPham);
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<SanPham> page = sanPhamService.getAll(pageable);
-        model.addAttribute("listSanPham", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodalthemsanpham", 1);
-        model.addAttribute("thongBaoThanhCong", "Thêm dữ liệu thành công");
-        model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
-        return "home/layout";
-    }
+        sp.setSanPham(sanPham1);
+        sp.setNgayTao(Date.valueOf(LocalDate.now()));
+        ChiTietSanPham ctsp = new ChiTietSanPham();
+        if (kichCoList != null && mauSacList != null && listSoLuong != null) {
+            for (int i = 0; i < kichCoList.size(); i++) {
+                if (i >= kichCoList.size()) {
+                    System.out.println("Chỉ số vượt quá kích thước của kichCoList");
+                    // hoặc thực hiện hành động cụ thể tùy thuộc vào logic ứng dụng của bạn
+                    continue;
+                }
+                String kichCoID =kichCoList.get(i);
+                for (int j = 0; j < mauSacList.size(); j++) {
+                    if (j >= mauSacList.size()) {
+                        System.out.println("Chỉ số vượt quá kích thước của mauSacList");
+                        // hoặc thực hiện hành động cụ thể tùy thuộc vào logic ứng dụng của bạn
+                        continue;
+                    }
+                    String mauSacID = mauSacList.get(j);
+                    //
+                    int index = i * mauSacList.size() + j;
+                    if (index >= listSoLuong.size()) {
+                        System.out.println("Chỉ số vượt quá kích thước của listSoLuong");
+                        // hoặc thực hiện hành động cụ thể tùy thuộc vào logic ứng dụng của bạn
+                        continue;
+                    }
+                    //
+                    String soLuong = listSoLuong.get(index);
+                    sp.setSoLuongTon(Integer.valueOf(soLuong));
+                    sp.setKichCo(kichCoService.findById(UUID.fromString(kichCoID)));
+                    sp.setMauSac(mauSacReponsitories.getOne(UUID.fromString(mauSacID)));
+                    Integer sl = sanPhamService.findAllCTSP().size() + 1;
+                    if (sl < 9) {
+                        mhd = "CTSP0" + sl;
+                    } else {
+                        mhd = "CTSP" + sl;
+                    }
+                    sp.setMa(mhd);
+                    String projectRootPath = System.getProperty("user.dir");
+                    String outputFolderPath = projectRootPath + "/src/main/webapp/maqr";
+                    QRCodeGenerator.generatorQRCode(sp, outputFolderPath);
+                    sp.setMaQR(sp.getMa()+ ".png");
+                    if (service.isChiTietSanPhamExists(sp)) {
+                        ChiTietSanPham ctspExit = service.findFirstBySanPhamAndChatLieuAndCoAoAndMauSacAndThuongHieuAndKichCo(sp);
+//
+                        ctspExit.setSoLuongTon(Integer.valueOf(soLuong) + ctspExit.getSoLuongTon());
+                        sp.setGiaBan(ctspExit.getGiaBan());
 
-    @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") UUID id, @ModelAttribute("sanPham") SanPham sanPham
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                         @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<SanPham> page = sanPhamService.getAll(pageable);
-        model.addAttribute("listSanPham", page.getContent());
-        model.addAttribute("sanPham", sanPhamService.findById(id));
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodaldetailsanpham", 0);
-        model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
-        return "home/layout";
-    }
+                        service.addKC(ctspExit);
 
-    @GetMapping("/detail-ngung-hoat-dong/{id}")
-    public String detailNgungHoatDong(Model model, @PathVariable("id") UUID id, @ModelAttribute("sanPham") SanPham sanPham
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<SanPham> page = sanPhamService.getAll1(pageable);
-        model.addAttribute("listSanPham", page.getContent());
-        model.addAttribute("sanPham", sanPhamService.findById(id));
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodaldetailsanpham", 0);
-        model.addAttribute("contentPage", "../san-pham/hien-thi-ngung-hoat-dong.jsp");
-        return "home/layout";
-    }
-
-    @GetMapping("/view-update/{id}")
-    public String viewUpdate(Model model, @PathVariable("id") UUID id, @ModelAttribute("sanPham") SanPham sanPham
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<SanPham> page = sanPhamService.getAll(pageable);
-        model.addAttribute("listSanPham", page.getContent());
-        model.addAttribute("sanPham", sanPhamService.findById(id));
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodalupdatesanpham", 0);
-        model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
-        return "home/layout";
-    }
-
-    @PostMapping("/update/{id}")
-    public String add(Model model, @PathVariable("id") UUID id, @Valid @ModelAttribute("sanPham") SanPham sanPham, BindingResult bindingResult
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        if (bindingResult.hasErrors()) {
-
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<SanPham> page = sanPhamService.getAll(pageable);
-            model.addAttribute("listSanPham", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("batmodalupdatesanpham", 0);
-            model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
-            return "home/layout";
-        }
-        SanPham cl = sanPhamService.findById(id);
-        cl.setNgaySua(Date.valueOf(LocalDate.now()));
-        cl.setTrangThai(sanPham.getTrangThai());
-        cl.setTen(sanPham.getTen());
-        sanPhamService.update(id, cl);
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<SanPham> page = sanPhamService.getAll(pageable);
-        model.addAttribute("listSanPham", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("batmodalupdatesanpham", 1);
-        model.addAttribute("thongBaoThanhCong", "Cập nhật dữ liệu thành công");
-        model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
-        return "home/layout";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String updateTrangThai(Model model, @PathVariable("id") UUID id, @ModelAttribute("sanPham") SanPham sanPham
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        SanPham cl = sanPhamService.findById(id);
-        cl.setTrangThai(1);
-        cl.setNgaySua(Date.valueOf(LocalDate.now()));
-        sanPhamService.update(id, cl);
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<SanPham> page = sanPhamService.getAll(pageable);
-        model.addAttribute("listSanPham", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("thongBaoThanhCong", "Cập nhật trạng thái thành công");
-        model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
-        return "home/layout";
-    }
-
-    @GetMapping("/khoi-phuc/{id}")
-    public String updateTrangThaiNgung(Model model, @PathVariable("id") UUID id, @ModelAttribute("sanPham") SanPham sanPham
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        SanPham cl = sanPhamService.findById(id);
-        cl.setTrangThai(0);
-        cl.setNgaySua(Date.valueOf(LocalDate.now()));
-        sanPhamService.update(id, cl);
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<SanPham> page = sanPhamService.getAll1(pageable);
-        model.addAttribute("listSanPham", page.getContent());
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("thongBaoThanhCong", "Cập nhật trạng thái thành công");
-        model.addAttribute("contentPage", "../san-pham/hien-thi-ngung-hoat-dong.jsp");
-        return "home/layout";
-    }
-
-    @PostMapping("/search-con-hoat-dong")
-    public String search0(Model model, @ModelAttribute("sanPham") SanPham sanPham, @RequestParam("search") String search
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        if (search.isEmpty()) {
-            model.addAttribute("thongBao", "Không để trống thông tin");
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<SanPham> page = sanPhamService.getAll(pageable);
-            model.addAttribute("listSanPham", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
-            return "home/layout";
-        } else {
-            List<SanPham> list = sanPhamService.search0(search);
-            model.addAttribute("listSanPham", list);
-            model.addAttribute("thongBaoThanhCong", "Tìm kiếm dữ liệu thành công");
-            model.addAttribute("contentPage", "../san-pham/hien-thi.jsp");
-            return "home/layout";
-        }
-
-    }
-
-    @PostMapping("/search-ngung-hoat-dong")
-    public String search1(Model model, @ModelAttribute("sanPham") SanPham sanPham, @RequestParam("search") String search
-            , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        if (search.isEmpty()) {
-            model.addAttribute("thongBao", "Không để trống thông tin");
-            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<SanPham> page = sanPhamService.getAll1(pageable);
-            model.addAttribute("listSanPham", page.getContent());
-            model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("contentPage", "../san-pham/hien-thi-ngung-hoat-dong.jsp");
-            return "home/layout";
-        } else {
-            List<SanPham> list = sanPhamService.search1(search);
-            model.addAttribute("listSanPham", list);
-            model.addAttribute("thongBaoThanhCong", "Tìm kiếm dữ liệu thành công");
-            model.addAttribute("contentPage", "../san-pham/hien-thi-ngung-hoat-dong.jsp");
-            return "home/layout";
-        }
-
-    }
-
-    @GetMapping("/them-chi-tiet-san-pham")
-    public String them(Model model, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham,
-                       @ModelAttribute("thuongHieu") ThuongHieu thuongHieu,
-                       @ModelAttribute("kichCo") KichCo kichCo,
-                       @ModelAttribute("mauSac") MauSac mauSac,
-                       @ModelAttribute("coAo") CoAo coAo,
-                       @ModelAttribute("chatLieu") ChatLieu chatLieu
-    ) {
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("chatLieu", new ChatLieu());
-        model.addAttribute("thuongHieu", new ThuongHieu());
-        model.addAttribute("mauSac", new MauSac());
-        model.addAttribute("coAo", new CoAo());
-        model.addAttribute("kichCo", new KichCo());
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-        return "home/layout";
-    }
-
-    @PostMapping("/chat-lieu/add")
-    public String addCL(Model model, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham,
-                        @ModelAttribute("thuongHieu") ThuongHieu thuongHieu,
-                        @ModelAttribute("kichCo") KichCo kichCo,
-                        @ModelAttribute("mauSac") MauSac mauSac,
-                        @ModelAttribute("coAo") CoAo coAo,
-                        @ModelAttribute("chatLieu") ChatLieu chatLieu) {
-        String mhd = "";
-        Integer sl = chatLieuService.findAllFullTT().size() + 1;
-        if (sl < 9) {
-            mhd = "CL0" + sl;
-        } else {
-            mhd = "CL" + sl;
-        }
-        chatLieu.setMa(mhd);
-        chatLieu.setNgayTao(Date.valueOf(LocalDate.now()));
-        chatLieu.setTrangThai(0);
-        chatLieuService.add(chatLieu);
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("chatLieu", new ChatLieu());
-        model.addAttribute("thuongHieu", new ThuongHieu());
-        model.addAttribute("mauSac", new MauSac());
-        model.addAttribute("coAo", new CoAo());
-        model.addAttribute("kichCo", new KichCo());
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("batmodalthemchatlieu", 1);
-        model.addAttribute("thongBaoThanhCong", "Thêm dữ liệu thành công");
-        model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-        return "home/layout";
-    }
-
-    @PostMapping("/thuong-hieu/add")
-    public String addTH(Model model, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham,
-                        @ModelAttribute("thuongHieu") ThuongHieu thuongHieu,
-                        @ModelAttribute("kichCo") KichCo kichCo,
-                        @ModelAttribute("mauSac") MauSac mauSac,
-                        @ModelAttribute("coAo") CoAo coAo,
-                        @ModelAttribute("chatLieu") ChatLieu chatLieu) {
-        String mhd = "";
-        Integer sl = thuongHieuService.findAllFullTT().size() + 1;
-        if (sl < 9) {
-            mhd = "TH0" + sl;
-        } else {
-            mhd = "TH" + sl;
-        }
-        thuongHieu.setMa(mhd);
-        thuongHieu.setNgayTao(Date.valueOf(LocalDate.now()));
-        thuongHieu.setTrangThai(0);
-        thuongHieuService.add(thuongHieu);
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("chatLieu", new ChatLieu());
-        model.addAttribute("thuongHieu", new ThuongHieu());
-        model.addAttribute("mauSac", new MauSac());
-        model.addAttribute("coAo", new CoAo());
-        model.addAttribute("kichCo", new KichCo());
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("batmodalthemchatlieu", 1);
-        model.addAttribute("thongBaoThanhCong", "Thêm dữ liệu thành công");
-        model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-        return "home/layout";
-    }
-
-    @PostMapping("/mau-sac/add")
-    public String addMS(Model model, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham,
-                        @ModelAttribute("thuongHieu") ThuongHieu thuongHieu,
-                        @ModelAttribute("kichCo") KichCo kichCo,
-                        @ModelAttribute("mauSac") MauSac mauSac,
-                        @ModelAttribute("coAo") CoAo coAo,
-                        @ModelAttribute("chatLieu") ChatLieu chatLieu) {
-        String mhd = "";
-        Integer sl = mauSacService.findAllFullTT().size() + 1;
-        if (sl < 9) {
-            mhd = "MS0" + sl;
-        } else {
-            mhd = "MS" + sl;
-        }
-        mauSac.setMa(mhd);
-        mauSac.setNgayTao(Date.valueOf(LocalDate.now()));
-        mauSac.setTrangThai(0);
-        mauSacService.add(mauSac);
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("chatLieu", new ChatLieu());
-        model.addAttribute("thuongHieu", new ThuongHieu());
-        model.addAttribute("mauSac", new MauSac());
-        model.addAttribute("coAo", new CoAo());
-        model.addAttribute("kichCo", new KichCo());
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("batmodalthemchatlieu", 1);
-        model.addAttribute("thongBaoThanhCong", "Thêm dữ liệu thành công");
-        model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-        return "home/layout";
-    }
-
-    @PostMapping("/kich-co/add")
-    public String addKC(Model model, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham,
-                        @ModelAttribute("thuongHieu") ThuongHieu thuongHieu,
-                        @ModelAttribute("kichCo") KichCo kichCo,
-                        @ModelAttribute("mauSac") MauSac mauSac,
-                        @ModelAttribute("coAo") CoAo coAo,
-                        @ModelAttribute("chatLieu") ChatLieu chatLieu) {
-        String mhd = "";
-        Integer sl = kichCoService.findAllFullTT().size() + 1;
-        if (sl < 9) {
-            mhd = "KC0" + sl;
-        } else {
-            mhd = "KC" + sl;
-        }
-        kichCo.setMa(mhd);
-        kichCo.setNgayTao(Date.valueOf(LocalDate.now()));
-        kichCo.setTrangThai(0);
-        kichCoService.add(kichCo);
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("chatLieu", new ChatLieu());
-        model.addAttribute("thuongHieu", new ThuongHieu());
-        model.addAttribute("mauSac", new MauSac());
-        model.addAttribute("coAo", new CoAo());
-        model.addAttribute("kichCo", new KichCo());
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("batmodalthemchatlieu", 1);
-        model.addAttribute("thongBaoThanhCong", "Thêm dữ liệu thành công");
-        model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-        return "home/layout";
-    }
-
-    @PostMapping("/co-ao/add")
-    public String addCA(Model model, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham,
-                        @ModelAttribute("thuongHieu") ThuongHieu thuongHieu,
-                        @ModelAttribute("kichCo") KichCo kichCo,
-                        @ModelAttribute("mauSac") MauSac mauSac,
-                        @ModelAttribute("coAo") CoAo coAo,
-                        @ModelAttribute("chatLieu") ChatLieu chatLieu) {
-        String mhd = "";
-        Integer sl = coAoService.findAllFullTT().size() + 1;
-        if (sl < 9) {
-            mhd = "CA0" + sl;
-        } else {
-            mhd = "CA" + sl;
-        }
-        coAo.setMa(mhd);
-        coAo.setNgayTao(Date.valueOf(LocalDate.now()));
-        coAo.setTrangThai(0);
-        coAoService.add(coAo);
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("chatLieu", new ChatLieu());
-        model.addAttribute("thuongHieu", new ThuongHieu());
-        model.addAttribute("mauSac", new MauSac());
-        model.addAttribute("coAo", new CoAo());
-        model.addAttribute("kichCo", new KichCo());
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("batmodalthemchatlieu", 1);
-        model.addAttribute("thongBaoThanhCong", "Thêm dữ liệu thành công");
-        model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-        return "home/layout";
-    }
-
-    @PostMapping("/chi-tiet-san-pham/add")
-    public String AddCTSP(Model model, @Valid @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, BindingResult bindingResult,
-                          @ModelAttribute("thuongHieu") ThuongHieu thuongHieu,
-                          @ModelAttribute("kichCo") KichCo kichCo,
-                          @ModelAttribute("mauSac") MauSac mauSac,
-                          @ModelAttribute("coAo") CoAo coAo,
-                          @ModelAttribute("chatLieu") ChatLieu chatLieu,
-                          @RequestParam("anh1s") MultipartFile anh1,
-                          @RequestParam("anh2s") MultipartFile anh2,
-                          @RequestParam("anh3s") MultipartFile anh3,
-                          @RequestParam("anh4s") MultipartFile anh4
-    ) throws IOException, WriterException {
-        if (bindingResult.hasErrors() || chiTietSanPham.getChatLieu() == null) {
-            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-            model.addAttribute("chatLieu", new ChatLieu());
-            model.addAttribute("thuongHieu", new ThuongHieu());
-            model.addAttribute("mauSac", new MauSac());
-            model.addAttribute("coAo", new CoAo());
-            model.addAttribute("kichCo", new KichCo());
-            model.addAttribute("errorChatLieu", "Không để trống chất liệu");
-            model.addAttribute("listChatLieu", chatLieuService.findAll());
-            model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-            model.addAttribute("listCoAo", coAoService.findAll());
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-            return "home/layout";
-        }
-        if (bindingResult.hasErrors() || chiTietSanPham.getMauSac() == null) {
-            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-            model.addAttribute("chatLieu", new ChatLieu());
-            model.addAttribute("thuongHieu", new ThuongHieu());
-            model.addAttribute("mauSac", new MauSac());
-            model.addAttribute("coAo", new CoAo());
-            model.addAttribute("kichCo", new KichCo());
-            model.addAttribute("errorMauSac", "Không để trống màu sắc");
-            model.addAttribute("listChatLieu", chatLieuService.findAll());
-            model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-            model.addAttribute("listCoAo", coAoService.findAll());
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-            return "home/layout";
-        }
-        if (bindingResult.hasErrors() || chiTietSanPham.getCoAo() == null) {
-            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-            model.addAttribute("chatLieu", new ChatLieu());
-            model.addAttribute("thuongHieu", new ThuongHieu());
-            model.addAttribute("mauSac", new MauSac());
-            model.addAttribute("coAo", new CoAo());
-            model.addAttribute("kichCo", new KichCo());
-            model.addAttribute("errorCoAo", "Không để trống cổ áo");
-            model.addAttribute("listChatLieu", chatLieuService.findAll());
-            model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-            model.addAttribute("listCoAo", coAoService.findAll());
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-            return "home/layout";
-        }
-        if (bindingResult.hasErrors() || chiTietSanPham.getThuongHieu() == null) {
-            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-            model.addAttribute("chatLieu", new ChatLieu());
-            model.addAttribute("thuongHieu", new ThuongHieu());
-            model.addAttribute("mauSac", new MauSac());
-            model.addAttribute("coAo", new CoAo());
-            model.addAttribute("kichCo", new KichCo());
-            model.addAttribute("errorThuongHieu", "Không để trống thương hiệu");
-            model.addAttribute("listChatLieu", chatLieuService.findAll());
-            model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-            model.addAttribute("listCoAo", coAoService.findAll());
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-            return "home/layout";
-        }
-        if (bindingResult.hasErrors() || chiTietSanPham.getKichCo() == null) {
-            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-            model.addAttribute("chatLieu", new ChatLieu());
-            model.addAttribute("thuongHieu", new ThuongHieu());
-            model.addAttribute("mauSac", new MauSac());
-            model.addAttribute("coAo", new CoAo());
-            model.addAttribute("kichCo", new KichCo());
-            model.addAttribute("errorKichThuoc", "Không để trống kích cỡ");
-            model.addAttribute("listChatLieu", chatLieuService.findAll());
-            model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-            model.addAttribute("listCoAo", coAoService.findAll());
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-            return "home/layout";
-        }
-        if (chiTietSanPham.getSoLuongTon() == 0) {
-            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-            model.addAttribute("chatLieu", new ChatLieu());
-            model.addAttribute("thuongHieu", new ThuongHieu());
-            model.addAttribute("mauSac", new MauSac());
-            model.addAttribute("coAo", new CoAo());
-            model.addAttribute("kichCo", new KichCo());
-            model.addAttribute("errorKichThuoc", "Không để trống kích cỡ");
-            model.addAttribute("thongBaoSoLuong", "Số lượng tồn phải lớn hơn 0");
-            model.addAttribute("listChatLieu", chatLieuService.findAll());
-            model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-            model.addAttribute("listCoAo", coAoService.findAll());
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-            return "home/layout";
-        }
-        if (sanPhamService.existsByChatLieuAndCoAoAndKichCoAndMauSacAndThuongHieuAndSanPham(chiTietSanPham.getChatLieu(),
-                chiTietSanPham.getCoAo(), chiTietSanPham.getKichCo(), chiTietSanPham.getMauSac(), chiTietSanPham.getThuongHieu(), chiTietSanPham.getSanPham())) {
-            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-            model.addAttribute("chatLieu", new ChatLieu());
-            model.addAttribute("thuongHieu", new ThuongHieu());
-            model.addAttribute("mauSac", new MauSac());
-            model.addAttribute("coAo", new CoAo());
-            model.addAttribute("kichCo", new KichCo());
-            model.addAttribute("thongBao", "Chi tiết sản phẩm đã tồn tại");
-            model.addAttribute("listChatLieu", chatLieuService.findAll());
-            model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-            model.addAttribute("listCoAo", coAoService.findAll());
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-            return "home/layout";
-        }
-
-        String mhd = "";
-        Integer sl = sanPhamService.findAllCTSPFullTT().size() + 1;
-        if (sl < 9) {
-            mhd = "CTSP0" + sl;
-        } else {
-            mhd = "CTSP" + sl;
-        }
-        String mha = "";
-        Integer sla = sanPhamService.findAllCTSPFullTT().size() + 1;
-        if (sla < 9) {
-            mha = "HA0" + sl;
-        } else {
-            mha = "HA" + sl;
-        }
-        HinhAnh hinhAnh = new HinhAnh();
-        String fileName1 = StringUtils.cleanPath(anh1.getOriginalFilename());
-
-        if (fileName1.equals("")) {
-
-        } else {
-            String uploadDir = "src/main/webapp/uploads/";
-            FileUploadUtil.saveFile(uploadDir, fileName1, anh1);
-            hinhAnh.setDuongDan1(fileName1);
-        }
-
-        // Xử lý ảnh 2
-        String fileName2 = StringUtils.cleanPath(anh2.getOriginalFilename());
-
-        if (fileName2.equals("")) {
-
-        } else {
-            String uploadDir = "src/main/webapp/uploads/";
-            FileUploadUtil.saveFile(uploadDir, fileName2, anh2);
-            hinhAnh.setDuongDan2(fileName2);
-        }
-
-        // Xử lý ảnh 3
-        String fileName3 = StringUtils.cleanPath(anh3.getOriginalFilename());
-
-        if (fileName3.equals("")) {
-
-        } else {
-            String uploadDir = "src/main/webapp/uploads/";
-            FileUploadUtil.saveFile(uploadDir, fileName3, anh3);
-            hinhAnh.setDuongDan3(fileName3);
-        }
-        // Xử lý ảnh 4
-        String fileName4 = StringUtils.cleanPath(anh4.getOriginalFilename());
-
-        if (fileName4.equals("")) {
-
-        } else {
-            String uploadDir = "src/main/webapp/uploads/";
-            FileUploadUtil.saveFile(uploadDir, fileName4, anh4);
-            hinhAnh.setDuongDan4(fileName4);
-        }
-        String tenAnh = mha + mhd;
-        hinhAnh.setTenAnh(tenAnh);
-        hinhAnh.setNgayTao(Date.valueOf(LocalDate.now()));
-        hinhAnh.setTrangThai(0);
-        hinhAnhService.add(hinhAnh);
-        HinhAnh search = hinhAnhService.search(tenAnh);
-        chiTietSanPham.setHinhAnh(search);
-        chiTietSanPham.setMa(mhd);
-        chiTietSanPham.setNgayTao(Date.valueOf(LocalDate.now()));
-        chiTietSanPham.setSanPham(sanPhamService.findById(idSanPham));
-        chiTietSanPham.setTrangThai(0);
-        String projectRootPath = System.getProperty("user.dir");
-        String outputFolderPath = projectRootPath + "/src/main/webapp/maqr";
-        QRCodeGenerator.generatorQRCode(chiTietSanPham, outputFolderPath);
-        chiTietSanPham.setMaQR(chiTietSanPham.getMa() + ".png");
-        sanPhamService.addCTSP(chiTietSanPham);
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("chiTiet", new ChiTietSanPham());
-        model.addAttribute("thongBaoThanhCong", "Thêm dữ liệu thành công");
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("contentPage", "../san-pham/view-add.jsp");
-        return "home/layout";
-
-    }
-
-    @GetMapping("/chi-tiet-san-pham/detail/{id}")
-    public String detailCTSP(Model model, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @PathVariable("id") UUID id) {
-
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("chiTiet", sanPhamService.findCTSPById(id));
-        model.addAttribute("tenSP", sanPhamService.findCTSPById(id).getSanPham().getTen());
-        model.addAttribute("tenTH", sanPhamService.findCTSPById(id).getThuongHieu().getTen());
-        model.addAttribute("tenCL", sanPhamService.findCTSPById(id).getChatLieu().getTen());
-        model.addAttribute("tenMS", sanPhamService.findCTSPById(id).getMauSac().getTen());
-        model.addAttribute("tenCA", sanPhamService.findCTSPById(id).getCoAo().getTen());
-        model.addAttribute("tenKC", sanPhamService.findCTSPById(id).getKichCo().getTen());
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("batmodaldetailchitiet", 0);
-        model.addAttribute("listCTSP", sanPhamService.findChiTietSanPhamBySanPham(sanPhamService.findById(idSanPham)));
-        model.addAttribute("contentPage", "../san-pham/hien-thi-chi-tiet-san-pham.jsp");
-        return "home/layout";
-    }
-
-    @GetMapping("/chi-tiet-san-pham/view-update/{id}")
-    public String viewUpdateCTSP(Model model, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, @PathVariable("id") UUID id) {
-
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("chiTiet", sanPhamService.findCTSPById(id));
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("batmodalupdatechitiet", 0);
-        model.addAttribute("listCTSP", sanPhamService.findChiTietSanPhamBySanPham(sanPhamService.findById(idSanPham)));
-        model.addAttribute("contentPage", "../san-pham/hien-thi-chi-tiet-san-pham.jsp");
-        return "home/layout";
-    }
-
-    @PostMapping("/chi-tiet-san-pham/update/{id}")
-    public String updateCTSP(Model model, @Valid @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham, BindingResult bindingResult,
-                             @PathVariable("id") UUID id,
-                             @RequestParam("checkanh1") String checkanh1,
-                             @RequestParam("checkanh2") String checkanh2,
-                             @RequestParam("checkanh3") String checkanh3,
-                             @RequestParam("checkanh4") String checkanh4,
-                             @RequestParam("anh1s") MultipartFile anh1,
-                             @RequestParam("anh2s") MultipartFile anh2,
-                             @RequestParam("anh3s") MultipartFile anh3,
-                             @RequestParam("anh4s") MultipartFile anh4
-    ) throws IOException {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("batmodalupdatechitiet", 0);
-            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-            model.addAttribute("listCTSP", sanPhamService.findChiTietSanPhamBySanPham(sanPhamService.findById(idSanPham)));
-            model.addAttribute("contentPage", "../san-pham/hien-thi-chi-tiet-san-pham.jsp");
-            return "home/layout";
-        }
-        if (chiTietSanPham.getSoLuongTon() == 0) {
-            model.addAttribute("batmodalupdatechitiet", 0);
-            model.addAttribute("thongBaoSoLuong", "Số lượng tồn phải lớn hơn 0");
-            model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-            model.addAttribute("listCTSP", sanPhamService.findChiTietSanPhamBySanPham(sanPhamService.findById(idSanPham)));
-            model.addAttribute("contentPage", "../san-pham/hien-thi-chi-tiet-san-pham.jsp");
-            return "home/layout";
-        }
-        HinhAnh hinhAnh = hinhAnhService.searchId(chiTietSanPham.getHinhAnh().getId());
-        String fileName1 = StringUtils.cleanPath(anh1.getOriginalFilename());
-        if (checkanh1.equals("cu1")) {
-        } else {
-            if (fileName1.equals("")) {
-            } else {
-                String uploadDir = "src/main/webapp/uploads/";
-                FileUploadUtil.saveFile(uploadDir, fileName1, anh1);
+                    } else {
+                        service.addKC(sp);
+                    }
+                }
             }
-            hinhAnh.setDuongDan1(fileName1);
         }
-        String fileName2 = StringUtils.cleanPath(anh2.getOriginalFilename());
-        if (checkanh2.equals("cu2")) {
-        } else {
-            if (fileName2.equals("")) {
-            } else {
-                String uploadDir = "src/main/webapp/uploads/";
-                FileUploadUtil.saveFile(uploadDir, fileName2, anh2);
-            }
-            hinhAnh.setDuongDan2(fileName2);
-        }
-        String fileName3 = StringUtils.cleanPath(anh3.getOriginalFilename());
-        if (checkanh3.equals("cu3")) {
-        } else {
-            if (fileName3.equals("")) {
-            } else {
-                String uploadDir = "src/main/webapp/uploads/";
-                FileUploadUtil.saveFile(uploadDir, fileName3, anh3);
-            }
-            hinhAnh.setDuongDan3(fileName3);
-        }
-        String fileName4 = StringUtils.cleanPath(anh4.getOriginalFilename());
-        if (checkanh4.equals("cu4")) {
-        } else {
-            if (fileName4.equals("")) {
-            } else {
-                String uploadDir = "src/main/webapp/uploads/";
-                FileUploadUtil.saveFile(uploadDir, fileName4, anh4);
-            }
-            hinhAnh.setDuongDan4(fileName4);
-        }
-        hinhAnh.setNgaySua(Date.valueOf(LocalDate.now()));
-        hinhAnhService.update(hinhAnh.getId(), hinhAnh);
-        chiTietSanPham.setHinhAnh(hinhAnh);
-        chiTietSanPham.setNgaySua(Date.valueOf(LocalDate.now()));
-        chiTietSanPham.setTrangThai(0);
-        sanPhamService.updateCTSP(id, chiTietSanPham);
-//        chiTietSanPham.setNgaySua();
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("chiTiet", sanPhamService.findCTSPById(id));
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("listCTSP", sanPhamService.findChiTietSanPhamBySanPham(sanPhamService.findById(idSanPham)));
-        model.addAttribute("contentPage", "../san-pham/hien-thi-chi-tiet-san-pham.jsp");
-        model.addAttribute("thongBaoThanhCong", "Cập nhật thông tin thành công");
-        return "home/layout";
+
+        model.addAttribute("tensp", sanPham1.getTen());
+
+        redirectAttributes.addFlashAttribute("redirectUrl", "/chi-tiet-san-pham/list-san-pham/" + id);
+        return "redirect:/chi-tiet-san-pham/list-san-pham/" + id;
     }
 
+
+    // New method to handle AJAX requests
+//    @PostMapping("/chi-tiet-san-pham/ajax/add/{id}")
+//    @ResponseBody
+//    public ResponseEntity<String> addSanPhamAjax(Model model,@PathVariable("id") UUID id, @Valid @ModelAttribute("sanpham") QLSanPham sp, BindingResult result) {
+//        if (result.hasErrors()) {
+//            return ResponseEntity.badRequest().body("Validation failed");
+//        }
+//        SanPham sanPham1 = sanPhamService.getOne(id);
+//        model.addAttribute("idsp", id);
+//        // Process the data and generate QR code if needed
+//
+//        return ResponseEntity.ok("Product added successfully");
+//    }
+
+    //add modal loai giay
+    @RequestMapping("/san-pham/loai-giay/add/{id}")
     @ResponseBody
-    @GetMapping("/chi-tiet-san-pham/show-qr/{id}")
-    public List<ChiTietSanPham> showQR(Model model, @PathVariable("id") UUID id) {
-        List<ChiTietSanPham> list = sanPhamService.showQR(id);
-        System.out.println(1);
-        return list;
+    public Map<String, Object> save(Model model, @PathVariable("id") UUID id, @Valid @ModelAttribute("lg") CoAo coAo, BindingResult result) {
+        Boolean hasE = result.hasErrors();
+        List<CoAo> list = loaiGiayRepo.findAll();
+        Map<String, Object> response = new HashMap<>();
+        SanPham sanPham1 = sanPhamService.getOne(id);
+        model.addAttribute("idsp", sanPham1.getId());
+        model.addAttribute("tensp", sanPham1.getTen());
+        if (result.hasErrors()) {
+            response.put("status", "error4");
+            response.put("errors", getErrors(result));
+            return response;
+        }
+
+        if (loaiGiayService.findByMa(coAo.getMa()) != null) {
+            result.rejectValue("ma", "duplicate4", "Lỗi! Mã không được trùng");
+            response.put("status", "error4");
+            response.put("errors", getErrors(result));
+            response.put("field", "ma");
+            return response;
+        }
+        if (loaiGiayService.findByTen(coAo.getTen()) != null) {
+            result.rejectValue("ten", "duplicate4", "Lỗi! Tên không được trùng");
+            response.put("status", "error4");
+            response.put("errors", getErrors(result));
+            response.put("field", "ten");
+            return response;
+        }
+
+        loaiGiayRepo.save(coAo);
+        response.put("status", "success");
+        return response;
+
     }
 
-    @GetMapping("/chi-tiet-san-pham/delete/{id}")
-    public String updateTrangThai(Model model, @PathVariable("id") UUID id, @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham) {
-        ChiTietSanPham cl = sanPhamService.findCTSPById(id);
-        cl.setTrangThai(2);
-        cl.setNgaySua(Date.valueOf(LocalDate.now()));
-        sanPhamService.updateCTSP(id, cl);
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("listCTSP", sanPhamService.findChiTietSanPhamBySanPham(sanPhamService.findById(idSanPham)));
-        model.addAttribute("contentPage", "../san-pham/hien-thi-chi-tiet-san-pham.jsp");
-        model.addAttribute("thongBaoThanhCong", "Cập nhật thông tin thành công");
-        return "home/layout";
+    @RequestMapping("/san-pham/kich-co/add/{id}")
+    @ResponseBody
+    public Map<String, Object> addKC(Model model, @PathVariable("id") UUID id, @Valid @ModelAttribute("kichco") KichCo kichCo, BindingResult result) {
+        Map<String, Object> response = new HashMap<>();
+        SanPham sanPham1 = sanPhamService.getOne(id);
+        model.addAttribute("idsp", sanPham1.getId());
+        model.addAttribute("tensp", sanPham1.getTen());
+
+        if (result.hasErrors()) {
+            response.put("status", "error3");
+            response.put("errors", getErrors(result));
+            return response;
+        }
+
+        if (kichCoService.findByMa(kichCo.getMa()) != null) {
+            result.rejectValue("ma", "duplicate3", "Lỗi! Mã không được trùng");
+            response.put("status", "error3");
+            response.put("errors", getErrors(result));
+            response.put("field", "ma");
+            return response;
+        }
+        if (kichCoService.findByTen(kichCo.getTen()) != null) {
+            result.rejectValue("ten", "duplicate3", "Lỗi! Size không được trùng");
+            response.put("status", "error3");
+            response.put("errors", getErrors(result));
+            response.put("field", "ten");
+            return response;
+        }
+        kichCoService.add(kichCo);
+        response.put("status", "success");
+        return response;
     }
 
-    @PostMapping("/chi-tiet-san-pham/loc")
-    public String loc(Model model, @RequestParam(value = "chatLieu", required = false) UUID chatLieuu,
-                      @RequestParam(value = "mauSac", required = false) UUID mauSacc,
-                      @RequestParam(value = "thuongHieu", required = false) UUID thuongHieuu,
-                      @RequestParam(value = "kichCo", required = false) UUID kichCoo,
-                      @RequestParam(value = "coAo", required = false) UUID coAoo,
-                      @ModelAttribute("chiTiet") ChiTietSanPham chiTietSanPham
+    @PostMapping("/san-pham/mau-sac/add/{id}")
+    @ResponseBody
+    public Map<String, Object> add(Model model, @PathVariable("id") UUID id, @Valid @ModelAttribute("ms") MauSac ms, BindingResult result) {
+        Map<String, Object> response = new HashMap<>();
+        SanPham sanPham1 = sanPhamService.getOne(id);
+        model.addAttribute("idsp", sanPham1.getId());
+        model.addAttribute("tensp", sanPham1.getTen());
+        if (result.hasErrors()) {
+            response.put("status", "error2");
+            response.put("errors", getErrors(result));
+            return response;
+        }
+
+        if (mauSacReponsitories.findMauSacByMa(ms.getMa()) != null) {
+            result.rejectValue("ma", "duplicate2", "Lỗi! Mã không được trùng");
+            response.put("status", "error2");
+            response.put("errors", getErrors(result));
+            response.put("field", "ma");
+            return response;
+        }
+        if (mauSacReponsitories.findMauSacByTen(ms.getTen()) != null) {
+            result.rejectValue("ten", "duplicate2", "Lỗi! Tên màu không được trùng");
+            response.put("status", "error2");
+            response.put("errors", getErrors(result));
+            response.put("field", "ten");
+            return response;
+        }
+
+        mauSacReponsitories.save(ms);
+        response.put("status", "success");
+        return response;
+    }
+
+
+    @RequestMapping("/san-pham/chat-lieu/add/{id}")
+    @ResponseBody
+    public Map<String, Object> store(Model model, @PathVariable("id") UUID id,
+                                     @Valid @ModelAttribute("vm") ChatLieu cl,
+                                     BindingResult result
     ) {
-        List<ChiTietSanPham> list = sanPhamService.loc(idSanPham, chatLieuu, coAoo, kichCoo, mauSacc, thuongHieuu);
-        model.addAttribute("listCTSP", list);
-        model.addAttribute("thongBaoThanhCong", "Lọc dữ liệu thành công");
-        model.addAttribute("sanPham", sanPhamService.findById(idSanPham));
-        model.addAttribute("listChatLieu", chatLieuService.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuService.findAll());
-        model.addAttribute("listCoAo", coAoService.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
-        model.addAttribute("contentPage", "../san-pham/hien-thi-chi-tiet-san-pham.jsp");
-        model.addAttribute("thongBaoThanhCong", "Cập nhật thông tin thành công");
-        return "home/layout";
+        Map<String, Object> response = new HashMap<>();
+        SanPham sanPham1 = sanPhamService.getOne(id);
+        model.addAttribute("idsp", sanPham1.getId());
+        model.addAttribute("tensp", sanPham1.getTen());
+        ChatLieu chatLieu = chatLieuService.findByMa(cl.getMa());
+
+        if (result.hasErrors()) {
+            response.put("status", "error1");
+            response.put("errors", getErrors(result));
+            return response;
+        }
+
+        if (chatLieuService.findByMa(cl.getMa()) != null) {
+            result.rejectValue("ma", "duplicate1", "Lỗi! Mã không được trùng");
+            response.put("status", "error1");
+            response.put("errors", getErrors(result));
+            response.put("field", "ma");
+            return response;
+        }
+        if (chatLieuService.findByTen(cl.getTen()) != null) {
+            result.rejectValue("ten", "duplicate1", "Lỗi! Tên chất liệu không được trùng");
+            response.put("status", "error1");
+            response.put("errors", getErrors(result));
+            response.put("field", "ten");
+            return response;
+        }
+
+        chatLieuRepo.save(cl);
+        response.put("status", "success");
+        return response;
+    }
+
+
+    @PostMapping("/san-pham/de-giay/add/{id}")
+    @ResponseBody
+    public Map<String, Object> add(@PathVariable("id") UUID id, @Valid @ModelAttribute("degiay") ThuongHieu thuongHieu, BindingResult result) {
+        Map<String, Object> response = new HashMap<>();
+        SanPham sanPham = sanPhamService.getOne(id);
+
+        if (result.hasErrors()) {
+            response.put("status", "error");
+            response.put("errors", getErrors(result));
+            return response;
+        }
+
+        if (deGiayService.findByMa(thuongHieu.getMa()) != null) {
+            result.rejectValue("ma", "duplicate", "Lỗi! Mã không được trùng");
+            response.put("status", "error");
+            response.put("errors", getErrors(result));
+            response.put("field", "ma");
+            return response;
+        }
+        if (deGiayService.findByTen(thuongHieu.getTen()) != null) {
+            result.rejectValue("ten", "duplicate", "Lỗi! Loại đế không được trùng");
+            response.put("status", "error");
+            response.put("errors", getErrors(result));
+            response.put("field", "ten");
+            return response;
+        }
+
+        deGiayRepo.save(thuongHieu);
+        response.put("status", "success");
+        return response;
+    }
+
+    private List<String> getErrors(BindingResult result) {
+        List<String> errors = new ArrayList<>();
+        result.getFieldErrors().forEach(error -> errors.add(error.getField() + ": " + error.getDefaultMessage()));
+        return errors;
+    }
+
+    //list ctsp theo id
+    @RequestMapping("/chi-tiet-san-pham/list-san-pham/{id}")
+
+    public String hienListSanPham(@ModelAttribute("sortForm") ChiTietSanPhamController.SortFormSP sortFormSP, @ModelAttribute("sanpham") QLSanPham sp, @RequestParam(defaultValue = "0") int p, @PathVariable("id") UUID id, Model model) throws IOException, WriterException {
+
+        if (p < 0) {
+            p = 0;
+        }
+        SanPham sanPham1 = sanPhamService.getOne(id);
+        model.addAttribute("idsp", sanPham1.getId());
+        model.addAttribute("tensp", sanPham1.getTen());
+        Pageable pageable = PageRequest.of(p, 5);
+        Page<ChiTietSanPham> qlSanPhamPage = service.listCTSP(id, pageable);
+        model.addAttribute("page", qlSanPhamPage);
+        model.addAttribute("searchChatLieu", new ChiTietSanPhamController.SearchChatlieu());
+        model.addAttribute("lg", new ChiTietSanPhamController.SearchLoaiGiay());
+        model.addAttribute("SP", new SanPham());
+
+        model.addAttribute("searchForm", new ChiTietSanPhamController.SearchFormSP());
+        model.addAttribute("searchFormByMau", new ChiTietSanPhamController.SearchFormSPByMau());
+        model.addAttribute("searchKC", new ChiTietSanPhamController.SearchKC());
+        model.addAttribute("searchDG", new ChiTietSanPhamController.SearchDeGiay());
+        model.addAttribute("contentPage","../chi-tiet-san-pham/list-spct.jsp");
+        return "/home/layout";
     }
 }

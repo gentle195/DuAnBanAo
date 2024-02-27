@@ -1,7 +1,9 @@
 package com.example.demo.controllers;
 
 
+import com.example.demo.models.ChiTietSanPham;
 import com.example.demo.models.ChucVu;
+import com.example.demo.models.HoaDon;
 import com.example.demo.models.NhanVien;
 import com.example.demo.services.ChucVuService;
 import com.example.demo.services.MailerService;
@@ -103,7 +105,7 @@ public class NhanVienController {
     }
 
     @PostMapping("/add")
-    public String add(Model model, @Valid @ModelAttribute("nhanVien") NhanVien nhanVien, @ModelAttribute("chucVu") ChucVu chucVu, BindingResult bindingResult
+    public String add(Model model, @Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult bindingResult, @ModelAttribute("chucVu") ChucVu chucVu
             , @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         if (bindingResult.hasErrors()) {
@@ -125,7 +127,7 @@ public class NhanVienController {
             model.addAttribute("listChucVu", chucVuService.findAll());
             model.addAttribute("chucVu", new ChucVu());
             model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("tbtrungemail","Email trùng!");
+            model.addAttribute("tbtrungemail","Tai khoan Email trùng!");
             model.addAttribute("contentPage", "../nhan-vien/view-add.jsp");
             return "home/layout";
         }
@@ -137,7 +139,19 @@ public class NhanVienController {
             model.addAttribute("listChucVu", chucVuService.findAll());
             model.addAttribute("chucVu", new ChucVu());
             model.addAttribute("totalPage", page.getTotalPages());
-            model.addAttribute("tbtrungsdt","Số điện thoại  trùng!");
+            model.addAttribute("tbtrungsdt","Số điện thoại trùng!");
+            model.addAttribute("contentPage", "../nhan-vien/view-add.jsp");
+            return "home/layout";
+        }
+        if (nhanVienService.existNhanVienByCCCD(nhanVien.getCCCD())) {
+
+            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+            Page<NhanVien> page = nhanVienService.getAll(pageable);
+            model.addAttribute("listNhanVien", page.getContent());
+            model.addAttribute("listChucVu", chucVuService.findAll());
+            model.addAttribute("chucVu", new ChucVu());
+            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("tbtrungcccd","Số CCCD trùng!");
             model.addAttribute("contentPage", "../nhan-vien/view-add.jsp");
             return "home/layout";
         }
@@ -336,6 +350,39 @@ public class NhanVienController {
             model.addAttribute("contentPage", "../nhan-vien/hien-thi-ngung-hoat-dong.jsp");
             return "home/layout";
         }
-
     }
+
+    @GetMapping("/quet-qr/{ma}")
+    public String qrCode(Model model, @PathVariable("ma") String scan,
+                         @ModelAttribute("nhanVien") NhanVien nhanVien
+    ) {
+
+        String[] s2 = scan.split("\\|");
+        if (scan.contains("|")) {
+            String cccd = s2[0];
+            String hoTen = s2[2];
+            String ngaySinh = s2[3];
+            String gioiTinh = s2[4];
+            String diaChi = s2[5];
+
+//            nhanVien.setHoTen(hoTen);
+//            nhanVien.setCCCD(cccd);
+//            nhanVien.setNgaySinh(Date.valueOf(ngaySinh));
+//            nhanVien.setGioiTinh(gioiTinh=="Nam"?true:false);
+//            nhanVien.setDiaChi(diaChi);
+            System.out.println("Số CCCD: " + cccd);
+            System.out.println("Họ và tên: " + hoTen);
+            System.out.println("Ngày sinh: " + ngaySinh);
+            System.out.println("Giới tính: " + gioiTinh);
+            System.out.println("Địa chỉ: " + diaChi);
+
+        } else {
+            System.out.println(scan);
+            return "home/layout";
+        }
+        model.addAttribute("nhanVien",nhanVien);
+        return "redirect:/nhan-vien/view-add";
+        }
+
+
 }

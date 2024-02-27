@@ -17,10 +17,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -68,9 +69,11 @@ public class HoaDon {
 
     @CreationTimestamp
     @Column(name = "NgayTao")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date ngayTao;
 
     @Column(name = "NgaySua")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date ngaySua;
 
     @Column(name = "NguoiTao")

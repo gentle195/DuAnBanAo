@@ -88,6 +88,11 @@ public class NhanVienServiceImpl implements NhanVienService {
     }
 
     @Override
+    public boolean existNhanVienByCCCD(String cccd) {
+        return nhanVienRepo.existsNhanVienByCCCD(cccd);
+    }
+
+    @Override
     public List<NhanVien> locTT(int tinhTrang) {
         return nhanVienRepo.findAllByTinhTrang(tinhTrang);
     }

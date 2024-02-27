@@ -38,7 +38,7 @@ public class KhachHang {
     private String ma;
 
     @NotBlank(message = "Không để trống thông tin")
-    @Column(name = "HoTen")
+    @Column(name = "hoTen")
     private String hoTen;
 
     @Column(name = "NgaySinh")
@@ -53,7 +53,7 @@ public class KhachHang {
     private Boolean gioiTinh;
 
     @NotBlank(message = "Không để trống thông tin")
-    @Email(message = "Email không hợp lệ!")
+//    @Email(message = "Email không hợp lệ!")
     @Column(name = "Email")
     private String email;
 

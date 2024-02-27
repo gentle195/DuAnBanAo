@@ -13,6 +13,7 @@
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Favicon icon -->
 </head>
 <body>
@@ -135,6 +136,9 @@
                                                 <BUTTON type="submit" class="btn btn-warning" style="" id="bt">
                                                     Lọc phiếu
                                                 </BUTTON>
+                                                <a href="/phieu-giam-gia/hien-thi" class=" btn btn-secondary" style="margin-left: 10px">
+                                                    <i class="bi bi-arrow-clockwise"></i></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </form:form>
@@ -163,8 +167,8 @@
                                             <th>Giá trị giảm</th>
                                             <th>Hóa đơn tối thiểu</th>
                                             <th>Số tiền giảm tối đa</th>
-                                            <th>Ngày Tạo</th>
-                                            <th>Ngày Sửa</th>
+<%--                                            <th>Ngày Tạo</th>--%>
+<%--                                            <th>Ngày Sửa</th>--%>
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
                                             <th>Số lượng</th>
@@ -197,8 +201,8 @@
                                                     </script>
                                                     VND
                                                 </td>
-                                                <td>${phieuGiamGia.ngayTao}</td>
-                                                <td>${phieuGiamGia.ngaySua}</td>
+<%--                                                <td>${phieuGiamGia.ngayTao}</td>--%>
+<%--                                                <td>${phieuGiamGia.ngaySua}</td>--%>
                                                 <td>${phieuGiamGia.ngayBatDau}</td>
                                                 <td>${phieuGiamGia.ngayketThuc}</td>
                                                 <td>${phieuGiamGia.soLuong}</td>

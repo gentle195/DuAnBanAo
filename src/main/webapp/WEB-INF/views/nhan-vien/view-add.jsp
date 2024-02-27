@@ -95,6 +95,7 @@
                                     <form:label class="form-label" path="CCCD">CCCD:</form:label>
                                     <form:input class="form-control" path="CCCD"/>
                                     <form:errors path="CCCD" cssStyle="color: red"></form:errors>
+                                    <span style="color: red">${tbtrungcccd}</span>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -149,11 +150,38 @@
                                 <button type="submit" class="btn btn-primary mr-2"
                                         onclick="if(!(confirm('Bạn có muốn thực hiện thao tác này không ? ')))return false;">
                                     Thêm thông tin
+
                                 </button>
                             </div>
                         </div>
                     </form:form>
+                    <button class="btn btn-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#QRScan"
+                            style="float: right; height: 45px;color: black">Scan QR</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="QRScan" tabindex="-1" aria-labelledby="modal-1-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" style="color: black;text-align: center">
+                <div class="ban-hang" style="align-items: center">
+                    <video
+                            style="border: 1px solid"
+                            id="video"
+                            autoplay="true"
+                            width="200px"
+                            height="120px"
+                    ></video>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close
+                </button>
             </div>
         </div>
     </div>
@@ -233,4 +261,6 @@
     document.getElementById('batmodalthemnhanvien').click();
     </c:if>
 </script>
+<script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script src="../../js/scan-qr-3.js"></script>
 </html>

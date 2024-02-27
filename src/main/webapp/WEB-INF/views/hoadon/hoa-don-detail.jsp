@@ -195,28 +195,33 @@
                                     <div>
                                         <div class="status-bar">
                                             <div class="status">
-                                                <div class="pill ${hoaDon.trangThaiGiaoHang==1 ? 'waiting' : 'default'}">
+                                                <div class="pill ${hoaDon.trangThaiHoaDon == 0 ? 'waiting' : 'default'}">
                                                     Chờ xác nhận
                                                 </div>
                                             </div>
                                             <div class="status">
-                                                <div class="pill ${hoaDon.trangThaiGiaoHang==2 ? 'waiting' : 'default'}">
+                                                <div class="pill ${hoaDon.trangThaiHoaDon == 1 ? 'waiting' : 'default'}">
                                                     Đã xác nhận
                                                 </div>
                                             </div>
                                             <div class="status">
-                                                <div class="pill ${(hoaDon.trangThaiHoaDon == 2|| hoaDon.trangThaiHoaDon==3) && hoaDon.trangThaiGiaoHang==3 ? 'pending' : 'default'}">
+                                                <div class="pill ${hoaDon.trangThaiHoaDon == 2 ? 'pending' : 'default'}">
                                                     Chờ giao hàng
                                                 </div>
                                             </div>
                                             <div class="status">
-                                                <div class="pill ${(hoaDon.trangThaiHoaDon == 2|| hoaDon.trangThaiHoaDon==3) && hoaDon.trangThaiGiaoHang==4 ? 'confirmed' : 'default'}">
+                                                <div class="pill ${hoaDon.trangThaiHoaDon == 3 ? 'confirmed' : 'default'}">
                                                     Đang giao hàng
                                                 </div>
                                             </div>
                                             <div class="status">
-                                                <div class="pill ${(hoaDon.trangThaiHoaDon == 2|| hoaDon.trangThaiHoaDon==3) && hoaDon.trangThaiGiaoHang==6 ? 'paid' : 'default'}">
-                                                    Giao hàng hoàn tất
+                                                <div class="pill ${hoaDon.trangThaiHoaDon == 4 ? 'confirmed' : 'default'}">
+                                                    Đã thanh toán
+                                                </div>
+                                            </div>
+                                            <div class="status">
+                                                <div class="pill ${hoaDon.trangThaiHoaDon == 5 ? 'paid' : 'default'}">
+                                                    Hoàn tất
                                                 </div>
                                             </div>
                                             <div class="status">
@@ -235,81 +240,92 @@
                                                     data-bs-target="#updateHoaDon">Cập nhập
                                             </button>
                                         </c:if>
-
-                                        <%--                                        trạng thái chờ xác nhận--%>
+                                        <%-- trạng thái chờ xác nhận--%>
                                         <c:if test="${hoaDon.trangThaiHoaDon == 0 && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==0}">
-                                            <a href="/hoa-don/update-tt-1/${hoaDon.id}" class="btn btn-warning">Xác nhận
-                                                hóa đơn
+                                            <a href="/hoa-don/update-tt-1/${hoaDon.id}" class="btn btn-success"> Xác nhận
+
                                             </a>
                                         </c:if>
-                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3) && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1}">
-                                            <a href="/hoa-don/update-tt-1-online/${hoaDon.id}" class="btn btn-warning">Xác
-                                                nhận hóa đơn online
-                                            </a>
-                                        </c:if>
+
                                         <c:if test="${hoaDon.trangThaiHoaDon == 0}">
                                             <a href="/hoa-don/update-tt-8/${hoaDon.id}" class="btn btn-danger">Huỷ hóa
-                                                đơn tại quầy
+                                                đơn
                                             </a>
                                         </c:if>
 
-                                        <%--                                        trạng thái đã xác nhận--%>
+                                        <%--  trạng thái đã xác nhận--%>
                                         <c:if test="${hoaDon.trangThaiHoaDon == 1}">
                                             <a href="/hoa-don/update-tt-0/${hoaDon.id}" class="btn btn-outline-warning">
                                                 <- Quay lại trạng thái trước
                                             </a>
                                         </c:if>
+                                        <c:if test="${hoaDon.trangThaiHoaDon == 1}">
+                                            <a href="/hoa-don/update-cho-giao-hang/${hoaDon.id}" class="btn btn-success">
+                                                Chờ vận chuyển
+                                            </a>
+                                        </c:if>
 
                                         <c:if test="${hoaDon.trangThaiHoaDon == 1}">
-                                            <a href="/hoa-don/update-tt-3/${hoaDon.id}" class="btn btn-warning">Thanh
-                                                toán hoá đơn
-                                            </a>
-                                        </c:if>
-                                        <c:if test="${hoaDon.trangThaiHoaDon == 1}">
                                             <a href="/hoa-don/update-tt-8/${hoaDon.id}" class="btn btn-danger">Huỷ hoá
-                                                đơn tại quầy
+                                                đơn
+                                            </a>
+                                            <%--  trạng thái chờ giao--%>
+                                        </c:if>
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 )
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==0}">
+                                            <a href="/hoa-don/update-tt-1/${hoaDon.id}" class="btn btn-outline-warning">
+                                                <- Quay lại trạng thái trước
                                             </a>
                                         </c:if>
-                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
-                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1 && hoaDon.trangThaiGiaoHang== 2}">
-                                            <a href="/hoa-don/update-cho-giao-hang/${hoaDon.id}" class="btn btn-danger">
-                                                Chờ giao hàng
-                                            </a>
-                                        </c:if>
-                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
-                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1 && hoaDon.trangThaiGiaoHang== 2}">
-                                            <a href="/hoa-don/update-ve-cho-xac-nhan/${hoaDon.id}" class="btn btn-danger">
-                                                Quay về chờ xác nhận
-                                            </a>
-                                        </c:if>
-                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
-                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1 && hoaDon.trangThaiGiaoHang== 3}">
+
+
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2)
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==0}">
                                             <a href="/hoa-don/update-dang-van-chuyen/${hoaDon.id}"
-                                               class="btn btn-danger">
-                                                Đang vận chuyển
+                                               class="btn btn-success">
+                                                Vận chuyển
                                             </a>
                                         </c:if>
-                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
-                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1 && hoaDon.trangThaiGiaoHang== 3}">
+
+                                        <%-- trạng thái dang giao--%>
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 3)
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==0}">
                                             <a href="/hoa-don/update-ve-cho-giao-hang/${hoaDon.id}"
-                                               class="btn btn-danger">
-                                                Quay về chờ giao hàng
+                                               class="btn btn-outline-warning">
+                                                <- Quay lại trạng thái trước
                                             </a>
                                         </c:if>
-                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
-                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1 && hoaDon.trangThaiGiaoHang== 4}">
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 3)
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==0}">
+                                            <a href="/hoa-don/update-thanh-toan/${hoaDon.id}"
+                                               class="btn btn-success">
+                                                Thanh toán
+                                            </a>
+                                        </c:if>
+                                        <%-- trạng thái thanh toan--%>
+
+                                        <c:if test="${(hoaDon.trangThaiHoaDon == 4)
+                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==0}">
                                             <a href="/hoa-don/update-giao-hang-hoan-tat/${hoaDon.id}"
-                                               class="btn btn-danger">
-                                                Giao hàng hoàn tất
+                                               class="btn btn-success">
+                                               Xác nhận thanh toán
                                             </a>
                                         </c:if>
-                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)
-                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1}">
-                                            <a href="/hoa-don/update-huy-hoa-don-online/${hoaDon.id}"
-                                               class="btn btn-danger">
-                                                Hủy hóa đơn online
-                                            </a>
-                                        </c:if>
+
+<%--                                        <c:if test="${(hoaDon.trangThaiHoaDon == 5)--%>
+<%--                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==0}">--%>
+<%--                                            <a href="/hoa-don/update-giao-hang-hoan-tat/${hoaDon.id}"--%>
+<%--                                               class="btn btn-danger">--%>
+<%--                                                Hoàn thành--%>
+<%--                                            </a>--%>
+<%--                                        </c:if>--%>
+<%--                                        <c:if test="${(hoaDon.trangThaiHoaDon == 2 || hoaDon.trangThaiHoaDon == 3)--%>
+<%--                                        && listHoaDonChiTiet.size()>=1 && hoaDon.loaiHoaDon==1}">--%>
+<%--                                            <a href="/hoa-don/update-huy-hoa-don-online/${hoaDon.id}"--%>
+<%--                                               class="btn btn-danger">--%>
+<%--                                                Hủy hóa đơn--%>
+<%--                                            </a>--%>
+<%--                                        </c:if>--%>
                                         <%--                                        trạng thái thanh toán--%>
                                         <%--                                        <c:if test="${hoaDon.trangThaiHoaDon == 3}">--%>
                                         <%--                                            <a href="/hoa-don/update-tt-0/${hoaDon.id}" class="btn btn-outline-warning">--%>
@@ -344,11 +360,18 @@
                                                 </div>
                                                 <div class="col">
                                                     <label>Trạng thái:
-                                                        <c:if test="${hoaDon.trangThaiHoaDon == 0}"> Chờ xác nhận</c:if>
-                                                        <c:if test="${hoaDon.trangThaiHoaDon == 1}"> Đã xác nhận</c:if>
-                                                        <c:if test="${hoaDon.trangThaiHoaDon == 2}"> Chờ thanh toán</c:if>
-                                                        <c:if test="${hoaDon.trangThaiHoaDon == 3}"> Đã thanh toán</c:if>
-                                                        <c:if test="${hoaDon.trangThaiHoaDon == 3 && hoaDon.trangThaiGiaoHang==6}"> Hoàn tất</c:if>
+<%--                                                        <c:if test="${hoaDon.trangThaiHoaDon == 0}"> Chờ xác nhận</c:if>--%>
+<%--                                                        <c:if test="${hoaDon.trangThaiHoaDon == 1}"> Đã xác nhận</c:if>--%>
+<%--                                                        <c:if test="${hoaDon.trangThaiHoaDon == 2}"> Chờ thanh toán</c:if>--%>
+<%--                                                        <c:if test="${hoaDon.trangThaiHoaDon == 3}"> Đã thanh toán</c:if>--%>
+<%--                                                        <c:if test="${hoaDon.trangThaiHoaDon == 3 && hoaDon.trangThaiGiaoHang==6}"> Hoàn tất</c:if>--%>
+<%--                                                        <c:if test="${hoaDon.trangThaiHoaDon == 8}"> Đã hủy</c:if>--%>
+                                                        <c:if test="${hoaDon.trangThaiHoaDon == 0}"> Tạo đơn hàng</c:if>
+                                                        <c:if test="${hoaDon.trangThaiHoaDon == 1}"> Chờ xác nhân</c:if>
+                                                        <c:if test="${hoaDon.trangThaiHoaDon == 2}"> Chờ giao hàng</c:if>
+                                                        <c:if test="${hoaDon.trangThaiHoaDon == 3}"> Đang vận chuyển</c:if>
+                                                        <c:if test="${hoaDon.trangThaiHoaDon == 4}"> Đã thanh toán</c:if>
+                                                        <c:if test="${hoaDon.trangThaiHoaDon == 5}"> Thành công</c:if>
                                                         <c:if test="${hoaDon.trangThaiHoaDon == 8}"> Đã hủy</c:if>
                                                     </label>
                                                 </div>
@@ -358,6 +381,11 @@
                                                         <c:if test="${hoaDon.loaiHoaDon == 1}">Online</c:if>
                                                     </label>
                                                 </div>
+<%--                                                <div class="col">--%>
+<%--                                                    <label>Địa chỉ :${hoaDon.khachHang.diaChi.soDiaChi}--%>
+
+<%--                                                    </label>--%>
+<%--                                                </div>--%>
                                             </div>
                                         </form>
                                     </div>
@@ -387,27 +415,28 @@
                                                            data-bs-target="#newSanPham"
                                                            style="float: right; height: 45px;color: black">Thêm sản
                                                             phẩm</a>
-                                                    </c:if>
-                                                    <c:if test="${hoaDon.phieuGiamGia == null && listHoaDonChiTiet.size()>=1}">
+                                                        <c:if test="${hoaDon.phieuGiamGia == null && listHoaDonChiTiet.size()>=1}">
 
-                                                        <a class="btn btn-secondary"
-                                                           data-bs-toggle="modal"
-                                                           data-bs-target="#phieuGiamGia"
-                                                           style="height: 45px; color: black">Chọn
-                                                            PGG</a>
+                                                            <a class="btn btn-secondary"
+                                                               data-bs-toggle="modal"
+                                                               data-bs-target="#phieuGiamGia"
+                                                               style="height: 45px; color: black">Chọn
+                                                                PGG</a>
+                                                        </c:if>
                                                     </c:if>
-                                                    <c:if test="${hoaDon.phieuGiamGia != null && listHoaDonChiTiet.size()>=1}">
 
-                                                        <a class="btn btn-secondary"
-                                                           data-bs-toggle="modal"
-                                                           data-bs-target="#phieuGiamGia"
-                                                           style="height: 45px; color: black">Chọn
-                                                            PGG</a>
+<%--                                                    <c:if test="${hoaDon.phieuGiamGia != null && listHoaDonChiTiet.size()>=1}">--%>
 
-                                                        <a class="btn btn-secondary"
-                                                           href="/ban-hang/bo-phieu/${HoaDonCho.id}"
-                                                           style="height: 45px; color: black">Bỏ PGG</a>
-                                                    </c:if>
+<%--                                                        <a class="btn btn-secondary"--%>
+<%--                                                           data-bs-toggle="modal"--%>
+<%--                                                           data-bs-target="#phieuGiamGia"--%>
+<%--                                                           style="height: 45px; color: black">Đổi--%>
+<%--                                                            PGG</a>--%>
+
+<%--                                                        <a class="btn btn-secondary"--%>
+<%--                                                           href="/ban-hang/bo-phieu/${HoaDon.id}"--%>
+<%--                                                           style="height: 45px; color: black">Bỏ PGG</a>--%>
+<%--                                                    </c:if>--%>
                                                 </div>
 
                                             </div>
@@ -423,7 +452,7 @@
                                                                 <th>Thông tin sản phẩm</th>
                                                                 <th>Đơn giá</th>
                                                                 <th>Số lượng</th>
-                                                                <th>Thành tiền</th>
+                                                                <th>Tổng tiền hàng</th>
                                                                 <c:if test="${hoaDon.trangThaiHoaDon==0}">
                                                                     <th></th>
                                                                 </c:if>
@@ -482,13 +511,39 @@
                                                     </div>
                                                 </div>
                                                 <br>
-                                                <h5>Tổng tiền hàng:
-                                                    <script>
-                                                        var donGia = ${hoaDon.tongTien};
-                                                        document.write(donGia.toLocaleString('vi-VN'));
-                                                    </script>
-                                                    VNĐ
-                                                </h5>
+                                               <div style="text-align: right">
+                                                   <c:forEach items="${listHoaDonChiTiet}" var="hdct">
+                                                       <%--                                                <h5>Tổng tiền hàng:--%>
+                                                       <%--                                                    <script>--%>
+                                                       <%--                                                        var sum = ${hdct.donGia * hdct.soLuong}.reduce(add, 0);--%>
+                                                       <%--                                                        document.write(sum.toLocaleString('vi-VN'));--%>
+                                                       <%--                                                    </script>--%>
+                                                       <%--                                                    VNĐ--%>
+                                                       <%--                                                </h5>--%>
+                                                   </c:forEach>
+                                                   <h6>Giảm giá:
+                                                       <script>
+                                                           var giamGia = ${hoaDon.phieuGiamGia.tienGiam}
+                                                               document.write(giamGia.toLocaleString('vi-VN'));
+                                                       </script>
+                                                       %
+                                                   </h6>
+
+                                                   <h6>Phí vận chuyển:
+                                                       <script>
+                                                           var phiShip = 0;
+                                                           document.write(phiShip.toLocaleString('vi-VN'));
+                                                       </script>
+                                                       VNĐ
+                                                   </h6>
+                                                   <h4>Thành tiền:
+                                                       <script>
+                                                           var donGia = ${hoaDon.tongTien};
+                                                           document.write(donGia.toLocaleString('vi-VN'));
+                                                       </script>
+                                                       VNĐ
+                                                   </h4>
+                                               </div>
                                             </div>
                                         </div>
                                     </div>
@@ -532,6 +587,7 @@
                             <c:forEach items="${listKhachHang}" var="kh">
                                 <option value="${kh.id}">${kh.hoTen}- ${kh.soDienThoai}</option>
                             </c:forEach>
+
                         </form:select>
                     </div>
                     <div style="text-align: center">
@@ -818,9 +874,11 @@
                                                style="min-width: 1200px; color: black;text-align: center">
                                             <thead>
                                             <tr>
+                                                <th>STT</th>
                                                 <th>Mã</th>
+
                                                 <th>Ảnh Sản Phẩm</th>
-                                                <th>Tên Sản Phẩm</th>
+<%--                                                <th>Tên Sản Phẩm</th>--%>
                                                 <th>Thương Hiệu</th>
                                                 <th>Cổ Áo</th>
                                                 <th>Chất Liệu</th>
@@ -833,9 +891,10 @@
                                             </thead>
                                             <tbody class="san_pham_search" style="text-align: center"
                                                    id="banglocthaydoi">
-                                            <c:forEach items="${listCTSP}" var="ctsp">
+                                            <c:forEach items="${listCTSP}" var="ctsp" varStatus="i">
                                                 <tr>
-                                                    <td>${ctsp.ma}</td>
+                                                    <td>${i.index+1}</td>
+<%--                                                    <td>${ctsp.ma}</td>--%>
                                                     <td>
                                                         <img src="../../../uploads/${ctsp.hinhAnh.duongDan1}" width="40"
                                                              height="40"

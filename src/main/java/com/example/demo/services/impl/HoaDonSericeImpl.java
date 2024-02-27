@@ -3,7 +3,7 @@ package com.example.demo.services.impl;
 import com.example.demo.models.ChiTietSanPham;
 import com.example.demo.models.HoaDon;
 import com.example.demo.models.HoaDonChiTiet;
-import com.example.demo.repositories.ChiTietSanPhamRepository;
+import com.example.demo.repositories.ChiTietSanPhamRepo;
 import com.example.demo.repositories.HoaDonChiTietRepository;
 import com.example.demo.repositories.HoaDonRepository;
 import com.example.demo.repositories.PhieuGiamGiaRepository;
